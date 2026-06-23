@@ -1,64 +1,82 @@
 ---
-//
-// CONCEPTO CLAVE — getStaticPaths():
-// Astro es un generador de sitios estáticos. Necesita saber de antemano
-// cuántas páginas va a generar y cuál es la URL de cada una.
-//
-// getStaticPaths() le dice a Astro:
-//   "Para cada archivo .md que encuentres, crea una página en /services/{id}"
-//
-// params: { id: service.id }   →  el valor entre [] en la URL
-//   instalacion-residencial.md →  params.id = "instalacion-residencial" →  URL: /services/instalacion-residencial
-//   reparacion-goteras.md      →  params.id = "reparacion-goteras"      →  URL: /services/reparacion-goteras
-//   techado-comercial.md       →  params.id = "techado-comercial"       →  URL: /services/techado-comercial
-//   techos-de-metal.md         →  params.id = "techos-de-metal"         →  URL: /services/techos-de-metal
-//
-// props: { service }  →  datos disponibles en Astro.props dentro de la página
-
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
+// getStaticPaths() le dice a Astro qué páginas dinámicas generar
 export async function getStaticPaths() {
     const services = await getCollection("services");
 
     return services.map((service) => ({
-        params: { id: service.id }, // "web-design", "seo", "branding"
+        params: { id: service.id },
         props: { service },
     }));
 }
 
-// Recibir el servicio como prop (definido arriba en getStaticPaths)
+// Recibir el servicio como prop
 const { service } = Astro.props;
 
-// Convertir el markdown del cuerpo a componente HTML
+// Convertir el markdown a componente HTML
 const { Content } = await render(service);
+
+// Diccionario para traducir datos de markdown Frontmatter a nivel de UI
+const serviceTranslations: Record<string, { title: string; tagline: string }> =
+    {
+        "instalacion-residencial": {
+            title: "Residential Roof Installation",
+            tagline:
+                "New roofing systems with comprehensive material and workmanship warranties.",
+        },
+        "reparacion-goteras": {
+            title: "Roof & Leak Repair",
+            tagline:
+                "Rapid diagnosis and reliable solutions for active leaks and storm damage.",
+        },
+        "techado-comercial": {
+            title: "Commercial Roofing",
+            tagline:
+                "High-quality, large-scale solutions for commercial buildings and facilities.",
+        },
+        "techos-de-metal": {
+            title: "Metal Roofing Systems",
+            tagline:
+                "Superior durability and maximum resistance against hurricanes and hail.",
+        },
+    };
+
+const translation = serviceTranslations[service.id] || {
+    title: service.data.title,
+    tagline: service.data.tagline,
+};
 ---
 
-<BaseLayout title={`${service.data.title}`} description={service.data.tagline}>
-    <!-- HERO DE PÁGINA -->
+<BaseLayout
+    title={`${translation.title} — Carolina Prime Construction`}
+    description={`${translation.tagline} Professional roofing, remodeling and construction services based in Magnolia, NC.`}
+>
+    <!-- PAGE HERO -->
     <section class="page-hero">
         <div class="container">
-            <a href={`${import.meta.env.BASE_URL}services`} class="back-link"
-                >← Todos los servicios</a
-            >
+            <a href={`${import.meta.env.BASE_URL}services`} class="back-link">
+                ← All Services
+            </a>
             <div class="hero-inner">
                 <span class="service-icon" aria-hidden="true">
                     {service.data.icon}
                 </span>
                 <div>
-                    <span class="sec-subtitle">Nuestros Servicios</span>
-                    <h1>{service.data.title}</h1>
-                    <p class="service-tagline">{service.data.tagline}</p>
+                    <span class="page-hero__badge">Our Services</span>
+                    <h1 class="page-hero__title">{translation.title}</h1>
+                    <p class="page-hero__subtitle">{translation.tagline}</p>
                     <p class="service-price">
-                        Estimado desde
-                        <strong>${service.data.price} USD</strong>
+                        Estimates From
+                        <strong> ${service.data.price} USD</strong>
                     </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CONTENIDO PRINCIPAL -->
+    <!-- MAIN SERVICE CONTENT -->
     <section class="service-content container">
         <div class="prose-wrapper">
             <div class="prose">
@@ -71,10 +89,11 @@ const { Content } = await render(service);
     <section class="cta-banner container">
         <div class="cta-banner-box">
             <div class="cta-text-cnt">
-                <h2>¿Interesado en este servicio?</h2>
+                <h2>Interested in this Service?</h2>
                 <p>
-                    Contáctanos hoy y recibe una inspección gratuita y un
-                    presupuesto detallado en menos de 24 horas.
+                    Contact us today and receive a free inspection and a
+                    detailed estimate in less than 24 hours. We serve Magnolia,
+                    NC, and surrounding communities within 70 miles.
                 </p>
             </div>
             <div class="cta-action-cnt">
@@ -82,7 +101,7 @@ const { Content } = await render(service);
                     href={`${import.meta.env.BASE_URL}contact`}
                     class="btn-white-accent"
                 >
-                    Solicitar este Servicio →
+                    Request Free Estimate →
                 </a>
             </div>
         </div>
@@ -90,30 +109,61 @@ const { Content } = await render(service);
 </BaseLayout>
 
 <style>
-    /* HERO DE PÁGINA */
+    /* ── Design Tokens ── */
+    :root {
+        --color-primary: #395ca0;
+        --color-primary-dark: #293a8b;
+        --color-primary-light: #4a7fd4;
+        --color-accent: #d4a853;
+        --color-accent-light: #f0d48a;
+        --color-dark: #1a1a2e;
+        --color-dark-soft: #16213e;
+        --color-text: #2d2d2d;
+        --color-text-light: #6b7280;
+        --color-text-inverse: #f8fafc;
+        --color-bg: #fafafa;
+        --color-bg-alt: #f1f5f9;
+        --color-border: #e2e8f0;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+        --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.15);
+        --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.2);
+        --radius-sm: 6px;
+        --radius-md: 12px;
+        --radius-lg: 20px;
+        --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ── PAGE HERO (Carolina Prime Signature Header Style) ── */
     .page-hero {
-        background-color: #0f172a;
+        position: relative;
+        background: linear-gradient(
+            135deg,
+            rgba(26, 26, 46, 0.9) 0%,
+            rgba(57, 92, 160, 0.75) 100%
+        );
         color: #fff;
-        padding: 80px 24px;
+        padding: 100px 24px;
     }
 
     .back-link {
         display: inline-block;
-        color: #94a3b8;
-        font-size: 0.85rem;
-        font-weight: 500;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-decoration: none;
         margin-bottom: 32px;
-        transition: color 0.2s ease;
+        transition: color var(--transition);
     }
 
     .back-link:hover {
-        color: #fff;
+        color: var(--color-accent-light);
     }
 
     .hero-inner {
         display: flex;
         align-items: flex-start;
-        gap: 28px;
+        gap: 32px;
     }
 
     .service-icon {
@@ -121,45 +171,62 @@ const { Content } = await render(service);
         line-height: 1;
         flex-shrink: 0;
         margin-top: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-sm);
     }
 
-    .sec-subtitle {
-        color: #395ca0;
-        font-size: 0.85rem;
-        font-weight: 700;
-        text-transform: uppercase;
+    .page-hero__badge {
+        display: inline-block;
+        font-size: 0.75rem;
+        font-weight: 600;
         letter-spacing: 2px;
-        display: block;
-        margin-bottom: 12px;
+        text-transform: uppercase;
+        color: var(--color-accent);
+        border: 1px solid rgba(212, 168, 83, 0.4);
+        padding: 6px 16px;
+        border-radius: 50px;
+        margin-bottom: 16px;
     }
 
-    .page-hero h1 {
-        font-size: 2.5rem;
+    .page-hero__title {
+        font-family: "Poppins", sans-serif;
+        font-size: clamp(2rem, 5vw, 3rem);
         font-weight: 700;
+        color: #fff;
         line-height: 1.15;
         margin-bottom: 12px;
-        letter-spacing: -0.5px;
     }
 
-    .service-tagline {
-        font-size: 1.1rem;
-        color: #cbd5e1;
+    .page-hero__subtitle {
+        font-size: clamp(1rem, 2.5vw, 1.15rem);
+        color: rgba(255, 255, 255, 0.85);
         line-height: 1.6;
-        margin-bottom: 12px;
+        max-width: 700px;
+        margin-bottom: 16px;
     }
 
     .service-price {
         font-size: 0.95rem;
-        color: #94a3b8;
+        color: rgba(255, 255, 255, 0.7);
         margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
 
     .service-price strong {
-        color: #93c5fd;
-        font-size: 1.1rem;
+        color: var(--color-accent);
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-left: 4px;
     }
 
-    /* CONTENIDO MARKDOWN */
+    /* ── MARKDOWN CONTENT (PROSE) ── */
     .service-content {
         padding: 80px 24px;
     }
@@ -169,24 +236,26 @@ const { Content } = await render(service);
     }
 
     .prose h2 {
+        font-family: "Poppins", sans-serif;
         font-size: 1.75rem;
         font-weight: 700;
-        color: #0f172a;
+        color: var(--color-dark);
         margin: 40px 0 16px;
         padding-bottom: 8px;
-        border-bottom: 2px solid #e2e8f0;
+        border-bottom: 2px solid var(--color-border);
     }
 
     .prose h3 {
-        font-size: 1.2rem;
+        font-family: "Poppins", sans-serif;
+        font-size: 1.25rem;
         font-weight: 700;
-        color: #0f172a;
+        color: var(--color-dark);
         margin: 28px 0 12px;
     }
 
     .prose p {
         font-size: 1.05rem;
-        color: #475569;
+        color: var(--color-text);
         line-height: 1.8;
         margin-bottom: 18px;
     }
@@ -199,31 +268,35 @@ const { Content } = await render(service);
 
     .prose li {
         font-size: 1rem;
-        color: #475569;
+        color: var(--color-text);
         line-height: 1.7;
         margin-bottom: 6px;
     }
 
     .prose strong {
-        color: #0f172a;
+        color: var(--color-dark);
         font-weight: 600;
     }
 
-    /* CTA BANNER */
+    /* ── CTA BANNER (Carolina Prime Standard Design) ── */
     .cta-banner {
         padding: 80px 24px;
     }
 
     .cta-banner-box {
-        background-color: #395ca0;
-        border-radius: 16px;
+        background: linear-gradient(
+            135deg,
+            var(--color-primary) 0%,
+            var(--color-primary-dark) 100%
+        );
+        border-radius: var(--radius-md);
         padding: 48px 60px;
-        color: #fff;
+        color: var(--color-text-inverse);
         display: flex;
         justify-content: space-between;
         align-items: center;
         gap: 40px;
-        box-shadow: 0 20px 45px rgba(57, 92, 160, 0.25);
+        box-shadow: var(--shadow-xl);
     }
 
     .cta-text-cnt {
@@ -239,38 +312,57 @@ const { Content } = await render(service);
 
     .cta-banner-box p {
         font-size: 1.1rem;
-        color: #e2e8f0;
+        color: rgba(255, 255, 255, 0.85);
         line-height: 1.5;
         margin: 0;
     }
 
     .btn-white-accent {
-        display: inline-block;
-        background-color: #fff;
-        color: #395ca0;
+        display: inline-flex;
+        align-items: center;
+        background-color: var(--color-accent);
+        color: var(--color-dark);
         padding: 16px 32px;
-        border-radius: 6px;
+        border-radius: var(--radius-sm);
         font-weight: 700;
         font-size: 1.05rem;
+        text-decoration: none;
         white-space: nowrap;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        transition: all 0.25s ease;
+        box-shadow: var(--shadow-md);
+        transition: all var(--transition);
     }
 
     .btn-white-accent:hover {
-        background-color: #f1f5f9;
-        color: #293a8b;
+        background-color: var(--color-accent-light);
         transform: translateY(-2px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        box-shadow: var(--shadow-lg);
     }
 
-    /* ---- SOPORTE MODO OSCURO ---- */
+    /* ── MODO OSCURO (DARK MODE) ── */
     @media (prefers-color-scheme: dark) {
-        .sec-subtitle {
-            color: #60a5fa;
+        :root {
+            --color-primary: #4a7fd4;
+            --color-primary-light: #60a5fa;
+            --color-bg: #0f172a;
+            --color-bg-alt: #1e293b;
+            --color-text: #e2e8f0;
+            --color-text-light: #94a3b8;
+            --color-border: rgba(255, 255, 255, 0.08);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6);
+            --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.7);
         }
 
-        .prose h1,
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+        }
+
+        .back-link:hover {
+            color: var(--color-primary-light);
+        }
+
         .prose h2,
         .prose h3,
         .prose strong {
@@ -278,15 +370,16 @@ const { Content } = await render(service);
         }
 
         .prose h2 {
-            border-bottom-color: rgba(255, 255, 255, 0.1);
+            border-bottom-color: var(--color-border);
         }
 
         .prose p,
         .prose li {
-            color: #94a3b8;
+            color: var(--color-text-light);
         }
     }
 
+    /* ── RESPONSIVE MEDIA QUERIES ── */
     @media (max-width: 1024px) {
         .cta-banner-box {
             flex-direction: column;
@@ -303,10 +396,11 @@ const { Content } = await render(service);
         .hero-inner {
             flex-direction: column;
             gap: 16px;
+            align-items: flex-start;
         }
 
-        .page-hero h1 {
-            font-size: 2rem;
+        .prose h2 {
+            font-size: 1.5rem;
         }
 
         .service-content,

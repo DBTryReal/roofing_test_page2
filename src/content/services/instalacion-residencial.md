@@ -1,32 +1,32 @@
 ---
-title: "Instalación de Techos Residenciales"
-tagline: "Techos nuevos con garantía de materiales y mano de obra"
+title: "Residential Roof Installation"
+tagline: "New roofing systems with material and workmanship warranties"
 price: 5000
 icon: "🏠"
 order: 1
----
+--------
 
-## ¿Qué incluye este servicio?
+## What's Included in This Service?
 
-Instalamos techos completos en viviendas nuevas y en sustitución de techumbres deterioradas, usando materiales certificados para el clima húmedo y con temporadas de huracanes del sureste estadounidense.
+We install complete roofing systems for new homes and replace damaged or aging roofs using certified materials designed for the humid climate and hurricane seasons of the southeastern United States.
 
-### El servicio incluye:
+### This service includes:
 
-- Inspección estructural previa sin costo
-- Remoción y desecho del techo anterior
-- Instalación de barrera de humedad (underlayment)
-- Colocación de tejas asfálticas de alta resistencia (30 años)
-- Sellado de bordes, canaletas y chimeneas
-- Limpieza completa del área de trabajo
-- Garantía escrita de mano de obra (5 años)
+* Free structural roof inspection
+* Removal and disposal of the existing roof
+* Installation of a moisture barrier (underlayment)
+* Installation of high-performance asphalt shingles (30-year warranty)
+* Sealing of roof edges, gutters, and chimneys
+* Complete cleanup of the work area
+* Written workmanship warranty (5 years)
 
-## Proceso de trabajo
+## Work Process
 
-1. **Inspección** — Evaluamos el estado estructural del techo y te entregamos el presupuesto detallado (1-2 días)
-2. **Planificación** — Selección de materiales y coordinación de permisos si aplica (2-3 días)
-3. **Instalación** — Ejecución completa del trabajo (1-3 días según tamaño)
-4. **Inspección final** — Revisión punto a punto y entrega con garantía por escrito
+1. **Inspection** — We assess the structural condition of the roof and provide a detailed estimate (1–2 days)
+2. **Planning** — Material selection and permit coordination, if required (2–3 days)
+3. **Installation** — Full execution of the roofing project (1–3 days depending on size)
+4. **Final Inspection** — Comprehensive review and project handoff with a written warranty
 
-## ¿Para quién es ideal?
+## Who Is This Service Ideal For?
 
-Propietarios de viviendas en Carolina del Norte que necesitan reemplazar un techo con más de 15 años, con daños visibles por granizo, vientos fuertes o humedad acumulada.
+Homeowners in North Carolina who need to replace a roof that is more than 15 years old and shows visible damage from hail, strong winds, or accumulated moisture.

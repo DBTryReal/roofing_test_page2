@@ -1,31 +1,31 @@
 ---
-title: "Techado Comercial"
-tagline: "Soluciones de gran escala para edificios e instalaciones comerciales"
+title: "Commercial Roofing"
+tagline: "Large-scale solutions for buildings and commercial facilities"
 price: 10000
 icon: "🏢"
 order: 4
 ---
 
-## ¿Qué incluye este servicio?
+## What does this service include?
 
-Diseñamos e instalamos sistemas de techado para edificios comerciales, naves industriales y locales de negocios en Carolina del Norte, cumpliendo con los códigos de construcción locales y estatales.
+We design and install roofing systems for commercial buildings, industrial warehouses, and business properties in North Carolina, fully complying with local and state building codes.
 
-### El servicio incluye:
+### The service includes:
 
-- Evaluación estructural y diagnóstico del estado actual
-- Propuesta de sistema de techado (TPO, EPDM, metal, asfáltico)
-- Gestión de permisos de construcción
-- Instalación con equipo especializado para superficies planas e inclinadas
-- Impermeabilización y drenaje pluvial
-- Garantía comercial por escrito de materiales y mano de obra
+- Structural evaluation and diagnostic of the current condition
+- Roofing system proposal (TPO, EPDM, metal, modified bitumen)
+- Construction permit management
+- Installation with specialized equipment for flat and sloped surfaces
+- Waterproofing and stormwater drainage
+- Written commercial warranty for materials and workmanship
 
-## Sistemas que instalamos
+## Systems we install
 
-- **TPO (Termoplástico):** Ideal para techos planos, resistente a rayos UV y químicos
-- **EPDM (Goma):** Excelente para climas variados, muy durable
-- **Metal standing seam:** Para naves y estructuras de alto tráfico
-- **Asfáltico modificado:** Solución económica y confiable para techos planos
+- **TPO (Thermoplastic):** Ideal for flat roofs, highly resistant to UV rays and chemicals
+- **EPDM (Rubber):** Excellent for varied climates, highly durable
+- **Metal standing seam:** For warehouses and high-traffic structures
+- **Modified Bitumen:** Affordable and reliable solution for flat roofs
 
-## ¿Para quién es ideal?
+## Who is it ideal for?
 
-Empresas, arrendadores y administradores de propiedades comerciales que necesitan mantenimiento preventivo, reemplazo o instalación nueva de techumbres en sus instalaciones.
+Businesses, landlords, and commercial property managers who need preventive maintenance, replacement, or new roofing installation at their facilities.

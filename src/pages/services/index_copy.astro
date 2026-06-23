@@ -1,0 +1,249 @@
+---
+// // import type { CollectionEntry } from "astro:content";
+// import BaseLayout from "../../layouts/BaseLayout.astro";
+
+// // interface Props {
+// //     service: CollectionEntry<"service">;
+// // }
+
+//
+// CONCEPTO CLAVE:
+// getCollection("services") carga TODOS los .md de la colección.
+// Devuelve un array de objetos, uno por cada archivo .md.
+// Aquí los ordenamos por el campo "order" del frontmatter.
+
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ServiceCard from "../../components/ServiceCard.astro";
+
+// Carga todos los archivos .md (servicios y ordenarlos) de la carpeta services
+const services = await getCollection("services");
+
+// Ordenar por el campo "order" del frontmatter (ascendente)
+// Si no tienen order definido, quedan al final
+const sortedServices = services.sort((a, b) => {
+    const orderA = a.data.order ?? 999;
+    const orderB = b.data.order ?? 999;
+    return orderA - orderB;
+});
+---
+
+<BaseLayout
+    title="Servicios de Techado"
+    description="Servicios profesionales de instalación, reparación y techado comercial en Carolina del Norte."
+>
+    <!-- HERO DE PÁGINA -->
+    <section class="page-hero">
+        <div class="container">
+            <span class="sec-subtitle">Nuestra especialidad</span>
+            <h1>Servicios Profesionales de Techado</h1>
+            <p>
+                Soluciones integrales de techado residencial y comercial para
+                proteger tu propiedad en Carolina del Norte.
+            </p>
+        </div>
+    </section>
+
+    <!-- LISTADO DE SERVICIOS -->
+    <section class="services-listing container">
+        <div class="section-header-cnt">
+            <span class="sec-subtitle">Lo que ofrecemos</span>
+            <h2>Todos Nuestros Servicios</h2>
+            <p class="section-desc">
+                Cada servicio incluye inspección inicial gratuita, materiales
+                certificados y garantía escrita de mano de obra.
+            </p>
+        </div>
+
+        <div class="services-grid">
+            {sortedServices.map((service) => <ServiceCard service={service} />)}
+        </div>
+
+        {
+            sortedServices.length < 1 && (
+                <p class="empty-message">
+                    No hay servicios disponibles por el momento.
+                </p>
+            )
+        }
+    </section>
+
+    <!-- CTA BANNER -->
+    <section class="cta-banner container">
+        <div class="cta-banner-box">
+            <div class="cta-text-cnt">
+                <h2>¿Listo para proteger tu propiedad?</h2>
+                <p>
+                    Te hacemos una inspección sin costo y te entregamos un
+                    presupuesto detallado en menos de 24 horas.
+                </p>
+            </div>
+            <div class="cta-action-cnt">
+                <a
+                    href={`${import.meta.env.BASE_URL}contact`}
+                    class="btn-white-accent"
+                >
+                    Agendar Mi Inspección Gratis
+                </a>
+            </div>
+        </div>
+    </section>
+</BaseLayout>
+
+<style>
+    /* HERO DE PÁGINA */
+    .page-hero {
+        background-color: #0f172a;
+        color: #fff;
+        padding: 80px 24px;
+    }
+
+    .page-hero .sec-subtitle {
+        color: #395ca0;
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        display: block;
+        margin-bottom: 12px;
+    }
+
+    .page-hero h1 {
+        font-size: 2.75rem;
+        font-weight: 700;
+        line-height: 1.15;
+        margin-bottom: 20px;
+        letter-spacing: -1px;
+    }
+
+    .page-hero p {
+        font-size: 1.15rem;
+        color: #cbd5e1;
+        line-height: 1.6;
+        max-width: 600px;
+    }
+
+    /* LISTADO DE SERVICIOS */
+    .services-listing {
+        padding: 80px 24px;
+    }
+
+    .section-header-cnt {
+        max-width: 650px;
+        margin-bottom: 50px;
+    }
+
+    .sec-subtitle {
+        color: #395ca0;
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        display: block;
+        margin-bottom: 12px;
+    }
+
+    .section-header-cnt h2 {
+        font-size: 2.25rem;
+        color: #0f172a;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 16px;
+    }
+
+    .section-desc {
+        font-size: 1.1rem;
+        color: #555;
+        line-height: 1.6;
+    }
+
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 24px;
+    }
+
+    .empty-message {
+        text-align: center;
+        color: #94a3b8;
+        padding: 48px 0;
+    }
+
+    /* CTA BANNER */
+    .cta-banner {
+        padding: 80px 24px;
+    }
+
+    .cta-banner-box {
+        background-color: #395ca0;
+        border-radius: 16px;
+        padding: 48px 60px;
+        color: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 40px;
+        box-shadow: 0 20px 45px rgba(57, 92, 160, 0.25);
+    }
+
+    .cta-text-cnt {
+        max-width: 600px;
+    }
+
+    .cta-banner-box h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        line-height: 1.2;
+    }
+
+    .cta-banner-box p {
+        font-size: 1.1rem;
+        color: #e2e8f0;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    /* .btn-white-accent {
+        display: inline-block;
+        background-color: #fff;
+        color: #395ca0;
+        padding: 16px 32px;
+        border-radius: 6px;
+        font-weight: 700;
+        font-size: 1.05rem;
+        white-space: nowrap;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        transition: all 0.25s ease;
+    }
+
+    .btn-white-accent:hover {
+        background-color: #f1f5f9;
+        color: #293a8b;
+        transform: translateY(-2px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    } */
+
+    @media (max-width: 1024px) {
+        .cta-banner-box {
+            flex-direction: column;
+            text-align: center;
+            padding: 40px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .page-hero {
+            padding: 60px 16px;
+        }
+
+        .page-hero h1 {
+            font-size: 2rem;
+        }
+
+        .services-listing,
+        .cta-banner {
+            padding: 60px 16px;
+        }
+    }
+</style>

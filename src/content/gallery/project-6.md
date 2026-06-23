@@ -1,15 +1,12 @@
 ---
-title: "Instalación de techo en construcción nueva"
-location: "Apex, NC"
+title: "Roof Installation for New Construction"
+location: "Wallace, NC"
 category: "instalacion"
 image: "../../assets/images/gallery/project-6.webp"
-alt: "Techo nuevo con tejas de tres capas instalado durante construcción de vivienda en Apex, NC"
+alt: "New roof with architectural laminated shingles installed during home construction in Wallace, NC"
 featured: true
 date: 2024-11-05
 order: 6
 ---
 
-Trabajamos junto al contratista general para instalar la cubierta de una vivienda
-nueva de 3,100 pies cuadrados. Usamos tejas de tres capas (laminated shingles)
-con underlayment sintético de alta resistencia. Terminamos en el plazo acordado
-sin retrasar las etapas siguientes de construcción.
+We worked alongside the general contractor to install the roof of a new 3,100 square foot home. We utilized high-quality laminated shingles with strong synthetic underlayment. The project was completed on schedule without delaying subsequent phases of construction.

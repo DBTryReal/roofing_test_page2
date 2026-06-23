@@ -1,15 +1,12 @@
 ---
-title: "Reemplazo completo de tejado residencial"
-location: "Charlotte, NC"
+title: "Complete Residential Roof Replacement"
+location: "Wilmington, NC"
 category: "instalacion"
 image: "../../assets/images/gallery/project-1.webp"
-alt: "Tejado residencial nuevo con tejas asfálticas arquitectónicas instalado en Charlotte, NC"
+alt: "New residential roof with architectural asphalt shingles installed in Wilmington, NC"
 featured: true
 date: 2024-09-15
 order: 1
 ---
 
-Reemplazamos la cubierta completa de una vivienda unifamiliar de dos plantas
-con tejas asfálticas arquitectónicas de 30 años de garantía. Incluimos remoción
-del material anterior, instalación de barrera de humedad y sellado integral de
-bordes, canaletas y chimenea. Trabajo completado en 3 días.
+We replaced the complete roof of a two-story single-family home with 30-year warranty architectural asphalt shingles. The project included removal of the previous materials, installation of a moisture barrier, and comprehensive sealing of edges, gutters, and the chimney. Work was completed in 3 days.

@@ -1,15 +1,12 @@
 ---
-title: "Techo de metal corrugado en nave industrial"
-location: "Greensboro, NC"
+title: "Corrugated Metal Roof in Industrial Warehouse"
+location: "Jacksonville, NC"
 category: "comercial"
 image: "../../assets/images/gallery/project-4.webp"
-alt: "Instalación de paneles de metal corrugado galvanizado en nave industrial en Greensboro, NC"
+alt: "Installation of galvanized corrugated metal panels on an industrial warehouse in Jacksonville, NC"
 featured: true
 date: 2024-10-12
 order: 4
 ---
 
-Instalamos paneles de acero galvanizado calibre 26 en una nave de almacenamiento
-de 8,000 pies cuadrados. El sistema de metal ofrece durabilidad de 40+ años y
-resistencia a vientos de hasta 130 mph, cumpliendo con los códigos de construcción
-del condado Guilford.
+We installed 26-gauge galvanized steel panels on an 8,000 square foot storage warehouse. This metal roofing system offers 40+ years of durability and wind resistance of up to 130 mph, fully complying with local county building codes.

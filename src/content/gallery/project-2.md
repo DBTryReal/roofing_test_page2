@@ -1,15 +1,12 @@
 ---
-title: "Reparación de daños por granizo"
-location: "Raleigh, NC"
+title: "Hail Damage Repair"
+location: "Goldsboro, NC"
 category: "reparacion"
 image: "../../assets/images/gallery/project-2.webp"
-alt: "Tejas dañadas por granizo reparadas y reemplazadas en Raleigh, NC"
+alt: "Hail-damaged shingles repaired and replaced in Goldsboro, NC"
 featured: true
 date: 2024-09-22
 order: 2
 ---
 
-Tras una tormenta severa, inspeccionamos y reemplazamos las tejas impactadas
-por granizo en una vivienda de un solo nivel. Coordinamos directamente con la
-aseguradora del cliente y completamos la reparación en un día sin interrumpir
-la rutina familiar.
+Following a severe storm, we inspected and replaced the hail-impacted shingles on a single-story home. We coordinated directly with the client's insurance company and completed the repair in a single day without interrupting the family's daily routine.

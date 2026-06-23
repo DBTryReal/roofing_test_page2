@@ -1,31 +1,31 @@
 ---
-title: "Reparación de Techos y Goteras"
-tagline: "Diagnóstico y solución rápida ante daños y filtraciones"
+title: "Roof Repair and Leak Detection"
+tagline: "Fast diagnosis and repair for roof damage and leaks"
 price: 500
 icon: "🔧"
 order: 2
 ---
 
-## ¿Qué incluye este servicio?
+## What's Included in This Service?
 
-Localizamos y corregimos goteras, grietas y daños puntuales en cualquier tipo de techo antes de que causen problemas estructurales mayores en tu hogar.
+We identify and repair leaks, cracks, and localized roof damage before they develop into major structural problems for your home.
 
-### El servicio incluye:
+### This service includes:
 
-- Inspección visual y con detector de humedad
-- Reparación de filtraciones y juntas abiertas
-- Reemplazo de tejas rotas o faltantes
-- Sellado de botas de ventilación y chimeneas
-- Revisión y reparación de canaletas
-- Informe fotográfico del estado antes y después
+* Visual inspection and moisture detection assessment
+* Repair of leaks and open roof joints
+* Replacement of broken or missing shingles
+* Sealing of vent pipe boots and chimneys
+* Gutter inspection and repair
+* Before-and-after photographic condition report
 
-## Señales de que necesitas este servicio
+## Signs You Need This Service
 
-- Manchas de humedad en el cielo raso o paredes
-- Tejas curvadas, sueltas o faltantes tras una tormenta
-- Agua que se filtra por las ventanas de ático
-- Canaletas desbordadas o desprendidas
+* Water stains on ceilings or walls
+* Curled, loose, or missing shingles after a storm
+* Water leaking through attic windows or openings
+* Overflowing or detached gutters
 
-## ¿Para quién es ideal?
+## Who Is This Service Ideal For?
 
-Propietarios que detectan goteras o daños localizados tras tormentas, especialmente durante la temporada de huracanes del Atlántico (junio–noviembre).
+Homeowners who have noticed leaks or localized roof damage following storms, especially during the Atlantic hurricane season (June–November).

@@ -1,33 +1,37 @@
 ---
-title: "Techos de Metal"
-tagline: "Durabilidad superior y resistencia ante huracanes y granizo"
+title: "Metal Roofing"
+tagline: "Superior durability and resistance to hurricanes and hail"
 price: 8000
 icon: "⚡"
 order: 3
 ---
 
-## ¿Qué incluye este servicio?
+## What does this service include?
 
-Instalamos sistemas de techado en metal de alta resistencia, ideales para zonas con tormentas frecuentes, granizo y vientos intensos como los que se registran en Carolina del Norte.
+We install high-resistance metal roofing systems, ideal for areas with frequent storms, hail, and intense winds like those recorded in North Carolina.
 
-### El servicio incluye:
+### The service includes:
 
-- Asesoría en selección de perfil metálico (standing seam, corrugado, panel)
-- Remoción del techo existente si aplica
-- Instalación de aislante térmico y barrera de vapor
-- Montaje de paneles metálicos con fijaciones anticorrosión
-- Sellado perimetral y detalles de acabado
-- Garantía de materiales de hasta 50 años (según fabricante)
+- Consultation on metal profile selection (standing seam, corrugated, panel)
+- Removal of the existing roof, if applicable
+- Installation of thermal insulation and vapor barrier
+- Assembly of metal panels with anti-corrosion fasteners
+- Perimeter sealing and finishing details
+- Material warranty of up to 50 years (depending on the manufacturer)
 
-## Ventajas frente a las tejas asfálticas
+## Advantages over asphalt shingles
 
-| Característica | Teja asfáltica | Metal |
-|---|---|---|
-| Vida útil | 20–30 años | 40–70 años |
-| Resistencia a viento | Hasta 130 mph | Hasta 160 mph |
-| Eficiencia energética | Estándar | Alta (refleja calor solar) |
-| Mantenimiento | Periódico | Mínimo |
+<style>
+  th, td { padding-right: 15px !important; }
+</style>
 
-## ¿Para quién es ideal?
+| Feature           | Asphalt Shingles | Metal Roofing              |
+| :---------------- | :--------------- | :------------------------- |
+| Lifespan          | 20–30 years      | 40–70 years                |
+| Wind Resistance   | Up to 130 mph    | Up to 160 mph              |
+| Energy Efficiency | Standard         | High (reflects solar heat) |
+| Maintenance       | Periodic         | Minimal                    |
 
-Propietarios que quieren una inversión a largo plazo con el menor mantenimiento posible, especialmente en zonas expuestas a temporadas de huracanes.
+## Who is it ideal for?
+
+Homeowners looking for a long-term investment with the least amount of maintenance possible, especially in areas exposed to hurricane seasons.

@@ -1,69 +1,112 @@
 ---
-// // import type { CollectionEntry } from "astro:content";
-// import BaseLayout from "../../layouts/BaseLayout.astro";
-
-// // interface Props {
-// //     service: CollectionEntry<"service">;
-// // }
-
-//
-// CONCEPTO CLAVE:
-// getCollection("services") carga TODOS los .md de la colección.
-// Devuelve un array de objetos, uno por cada archivo .md.
-// Aquí los ordenamos por el campo "order" del frontmatter.
-
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import ServiceCard from "../../components/ServiceCard.astro";
 
 // Carga todos los archivos .md (servicios y ordenarlos) de la carpeta services
 const services = await getCollection("services");
 
 // Ordenar por el campo "order" del frontmatter (ascendente)
-// Si no tienen order definido, quedan al final
 const sortedServices = services.sort((a, b) => {
     const orderA = a.data.order ?? 999;
     const orderB = b.data.order ?? 999;
     return orderA - orderB;
 });
+
+// Diccionario de traducciones dinámicas para mantener el sistema de Markdown intacto
+const serviceTranslations: Record<string, { title: string; tagline: string }> =
+    {
+        "instalacion-residencial": {
+            title: "Residential Roof Installation",
+            tagline:
+                "New roofing systems with comprehensive material and workmanship warranties.",
+        },
+        "reparacion-goteras": {
+            title: "Roof & Leak Repair",
+            tagline:
+                "Rapid diagnosis and reliable solutions for active leaks and storm damage.",
+        },
+        "techado-comercial": {
+            title: "Commercial Roofing",
+            tagline:
+                "High-quality, large-scale solutions for commercial buildings and facilities.",
+        },
+        "techos-de-metal": {
+            title: "Metal Roofing Systems",
+            tagline:
+                "Superior durability and maximum resistance against hurricanes and hail.",
+        },
+    };
 ---
 
 <BaseLayout
-    title="Servicios de Techado"
-    description="Servicios profesionales de instalación, reparación y techado comercial en Carolina del Norte."
+    title="Professional Roofing Services — Carolina Prime Construction"
+    description="Explore our high-quality residential, commercial, metal roofing, and repair services in Magnolia, NC, and surrounding areas within 70 miles."
 >
-    <!-- HERO DE PÁGINA -->
+    <!-- PAGE HERO -->
     <section class="page-hero">
         <div class="container">
-            <span class="sec-subtitle">Nuestra especialidad</span>
-            <h1>Servicios Profesionales de Techado</h1>
-            <p>
-                Soluciones integrales de techado residencial y comercial para
-                proteger tu propiedad en Carolina del Norte.
+            <span class="page-hero__badge">Our Expertise</span>
+            <h1 class="page-hero__title">
+                Professional <span class="page-hero__title--accent"
+                    >Roofing Services</span
+                >
+            </h1>
+            <p class="page-hero__subtitle">
+                Comprehensive residential and commercial roofing solutions to
+                protect your property in Magnolia, NC, and surrounding
+                communities within 70 miles.
             </p>
         </div>
     </section>
 
-    <!-- LISTADO DE SERVICIOS -->
+    <!-- SERVICES LISTING -->
     <section class="services-listing container">
         <div class="section-header-cnt">
-            <span class="sec-subtitle">Lo que ofrecemos</span>
-            <h2>Todos Nuestros Servicios</h2>
-            <p class="section-desc">
-                Cada servicio incluye inspección inicial gratuita, materiales
-                certificados y garantía escrita de mano de obra.
+            <span class="section-label">What We Offer</span>
+            <h2 class="section-title">All Our Services</h2>
+            <p class="section-subtitle">
+                Each service includes an initial free inspection, certified
+                materials, and a written craftsmanship warranty.
             </p>
         </div>
 
         <div class="services-grid">
-            {sortedServices.map((service) => <ServiceCard service={service} />)}
+            {
+                sortedServices.map((service) => {
+                    const translation = serviceTranslations[service.id] || {
+                        title: service.data.title,
+                        tagline: service.data.tagline,
+                    };
+                    return (
+                        <article class="service-teaser-card">
+                            <div class="service-media-icon" aria-hidden="true">
+                                {service.data.icon}
+                            </div>
+                            <div class="service-body">
+                                <h3>{translation.title}</h3>
+                                <p>{translation.tagline}</p>
+                                <div class="card-footer">
+                                    <span class="service-badge-tag">
+                                        Guaranteed
+                                    </span>
+                                    <a
+                                        href={`${import.meta.env.BASE_URL}services/${service.id}`}
+                                        class="text-link"
+                                        aria-label={`Learn more about ${translation.title}`}
+                                    >
+                                        Learn More →
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+                    );
+                })
+            }
         </div>
 
         {
             sortedServices.length < 1 && (
-                <p class="empty-message">
-                    No hay servicios disponibles por el momento.
-                </p>
+                <p class="empty-message">No services available at this time.</p>
             )
         }
     </section>
@@ -72,10 +115,10 @@ const sortedServices = services.sort((a, b) => {
     <section class="cta-banner container">
         <div class="cta-banner-box">
             <div class="cta-text-cnt">
-                <h2>¿Listo para proteger tu propiedad?</h2>
+                <h2>Ready to Protect Your Property?</h2>
                 <p>
-                    Te hacemos una inspección sin costo y te entregamos un
-                    presupuesto detallado en menos de 24 horas.
+                    Get in touch with us today to receive a free inspection and
+                    a detailed estimate in less than 24 hours.
                 </p>
             </div>
             <div class="cta-action-cnt">
@@ -83,7 +126,7 @@ const sortedServices = services.sort((a, b) => {
                     href={`${import.meta.env.BASE_URL}contact`}
                     class="btn-white-accent"
                 >
-                    Agendar Mi Inspección Gratis
+                    Request Free Estimate →
                 </a>
             </div>
         </div>
@@ -91,99 +134,211 @@ const sortedServices = services.sort((a, b) => {
 </BaseLayout>
 
 <style>
-    /* HERO DE PÁGINA */
+    /* ── Design Tokens ── */
+    :root {
+        --color-primary: #395ca0;
+        --color-primary-dark: #293a8b;
+        --color-primary-light: #4a7fd4;
+        --color-accent: #d4a853;
+        --color-accent-light: #f0d48a;
+        --color-dark: #1a1a2e;
+        --color-dark-soft: #16213e;
+        --color-text: #2d2d2d;
+        --color-text-light: #6b7280;
+        --color-text-inverse: #f8fafc;
+        --color-bg: #fafafa;
+        --color-bg-alt: #f1f5f9;
+        --color-border: #e2e8f0;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+        --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.15);
+        --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.2);
+        --radius-sm: 6px;
+        --radius-md: 12px;
+        --radius-lg: 20px;
+        --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ── PAGE HERO (Carolina Prime Signature Header Style) ── */
     .page-hero {
-        background-color: #0f172a;
+        position: relative;
+        background: linear-gradient(
+            135deg,
+            rgba(26, 26, 46, 0.9) 0%,
+            rgba(57, 92, 160, 0.75) 100%
+        );
         color: #fff;
-        padding: 80px 24px;
+        padding: 100px 24px;
+        text-align: center;
     }
-
-    .page-hero .sec-subtitle {
-        color: #395ca0;
-        font-size: 0.85rem;
-        font-weight: 700;
-        text-transform: uppercase;
+    .page-hero__badge {
+        display: inline-block;
+        font-size: 0.75rem;
+        font-weight: 600;
         letter-spacing: 2px;
-        display: block;
-        margin-bottom: 12px;
+        text-transform: uppercase;
+        color: var(--color-accent);
+        border: 1px solid rgba(212, 168, 83, 0.4);
+        padding: 6px 16px;
+        border-radius: 50px;
+        margin-bottom: 24px;
     }
-
-    .page-hero h1 {
-        font-size: 2.75rem;
+    .page-hero__title {
+        font-family: "Poppins", sans-serif;
+        font-size: clamp(2rem, 5vw, 3.25rem);
         font-weight: 700;
+        color: #fff;
         line-height: 1.15;
         margin-bottom: 20px;
-        letter-spacing: -1px;
     }
-
-    .page-hero p {
-        font-size: 1.15rem;
-        color: #cbd5e1;
+    .page-hero__title--accent {
+        color: var(--color-accent);
+    }
+    .page-hero__subtitle {
+        font-size: clamp(1rem, 2.5vw, 1.2rem);
+        color: rgba(255, 255, 255, 0.85);
         line-height: 1.6;
-        max-width: 600px;
+        max-width: 700px;
+        margin: 0 auto;
     }
 
-    /* LISTADO DE SERVICIOS */
+    /* ── SERVICES SECTION LISTING ── */
     .services-listing {
         padding: 80px 24px;
     }
 
     .section-header-cnt {
         max-width: 650px;
-        margin-bottom: 50px;
+        margin: 0 auto 50px;
+        text-align: center;
     }
 
-    .sec-subtitle {
-        color: #395ca0;
-        font-size: 0.85rem;
-        font-weight: 700;
-        text-transform: uppercase;
+    .section-label {
+        font-size: 0.8rem;
+        font-weight: 600;
         letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--color-primary);
+        margin-bottom: 8px;
         display: block;
-        margin-bottom: 12px;
     }
 
-    .section-header-cnt h2 {
-        font-size: 2.25rem;
-        color: #0f172a;
+    .section-title {
+        font-family: "Poppins", sans-serif;
+        font-size: clamp(1.75rem, 4vw, 2.5rem);
         font-weight: 700;
+        color: var(--color-dark);
         line-height: 1.2;
         margin-bottom: 16px;
     }
 
-    .section-desc {
-        font-size: 1.1rem;
-        color: #555;
+    .section-subtitle {
+        color: var(--color-text-light);
+        font-size: 1.05rem;
         line-height: 1.6;
+        margin: 0;
     }
 
+    /* ── GRID LAYOUT ── */
     .services-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 24px;
+    }
+
+    /* ── SERVICE CARD STYLE ── */
+    .service-teaser-card {
+        background-color: #fff;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        box-shadow: var(--shadow-sm);
+        transition: all var(--transition);
+    }
+
+    .service-teaser-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+        border-color: rgba(57, 92, 160, 0.3);
+    }
+
+    .service-media-icon {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+    }
+
+    .service-body h3 {
+        font-size: 1.25rem;
+        color: var(--color-dark);
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .service-body p {
+        font-size: 0.95rem;
+        color: var(--color-text-light);
+        line-height: 1.5;
+        margin-bottom: 24px;
+    }
+
+    .card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid var(--color-bg-alt);
+        padding-top: 16px;
+        margin-top: auto;
+    }
+
+    .service-badge-tag {
+        background-color: #f0fdf4;
+        color: #16a34a;
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: var(--radius-sm);
+    }
+
+    .text-link {
+        color: var(--color-primary);
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition: color var(--transition);
+    }
+
+    .text-link:hover {
+        color: var(--color-primary-dark);
     }
 
     .empty-message {
         text-align: center;
-        color: #94a3b8;
+        color: var(--color-text-light);
         padding: 48px 0;
     }
 
-    /* CTA BANNER */
+    /* ── CTA BANNER (Carolina Prime Standard Design) ── */
     .cta-banner {
         padding: 80px 24px;
     }
 
     .cta-banner-box {
-        background-color: #395ca0;
-        border-radius: 16px;
+        background: linear-gradient(
+            135deg,
+            var(--color-primary) 0%,
+            var(--color-primary-dark) 100%
+        );
+        border-radius: var(--radius-md);
         padding: 48px 60px;
-        color: #fff;
+        color: var(--color-text-inverse);
         display: flex;
         justify-content: space-between;
         align-items: center;
         gap: 40px;
-        box-shadow: 0 20px 45px rgba(57, 92, 160, 0.25);
+        box-shadow: var(--shadow-xl);
     }
 
     .cta-text-cnt {
@@ -199,31 +354,95 @@ const sortedServices = services.sort((a, b) => {
 
     .cta-banner-box p {
         font-size: 1.1rem;
-        color: #e2e8f0;
+        color: rgba(255, 255, 255, 0.85);
         line-height: 1.5;
         margin: 0;
     }
 
-    /* .btn-white-accent {
-        display: inline-block;
-        background-color: #fff;
-        color: #395ca0;
+    .btn-white-accent {
+        display: inline-flex;
+        align-items: center;
+        background-color: var(--color-accent);
+        color: var(--color-dark);
         padding: 16px 32px;
-        border-radius: 6px;
+        border-radius: var(--radius-sm);
         font-weight: 700;
         font-size: 1.05rem;
+        text-decoration: none;
         white-space: nowrap;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        transition: all 0.25s ease;
+        box-shadow: var(--shadow-md);
+        transition: all var(--transition);
     }
 
     .btn-white-accent:hover {
-        background-color: #f1f5f9;
-        color: #293a8b;
+        background-color: var(--color-accent-light);
         transform: translateY(-2px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-    } */
+        box-shadow: var(--shadow-lg);
+    }
 
+    /* ── SOPORTE COMPLETO PARA MODO OSCURO (DARK MODE) ── */
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --color-primary: #4a7fd4;
+            --color-primary-light: #60a5fa;
+            --color-bg: #0f172a;
+            --color-bg-alt: #1e293b;
+            --color-text: #e2e8f0;
+            --color-text-light: #94a3b8;
+            --color-border: rgba(255, 255, 255, 0.08);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6);
+            --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.7);
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+        }
+
+        .section-title {
+            color: #f1f5f9;
+        }
+
+        .service-teaser-card {
+            background-color: #1e293b;
+            border-color: var(--color-border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .service-teaser-card:hover {
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(96, 165, 250, 0.3);
+        }
+
+        .service-body h3 {
+            color: #f1f5f9;
+        }
+
+        .service-body p {
+            color: var(--color-text-light);
+        }
+
+        .card-footer {
+            border-top-color: var(--color-border);
+        }
+
+        .service-badge-tag {
+            background-color: rgba(74, 222, 128, 0.1);
+            color: #4ade80;
+        }
+
+        .text-link {
+            color: var(--color-primary-light);
+        }
+
+        .text-link:hover {
+            color: #93c5fd;
+        }
+    }
+
+    /* ── RESPONSIVE MEDIA QUERIES ── */
     @media (max-width: 1024px) {
         .cta-banner-box {
             flex-direction: column;
@@ -235,10 +454,6 @@ const sortedServices = services.sort((a, b) => {
     @media (max-width: 768px) {
         .page-hero {
             padding: 60px 16px;
-        }
-
-        .page-hero h1 {
-            font-size: 2rem;
         }
 
         .services-listing,
