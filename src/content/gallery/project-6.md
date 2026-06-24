@@ -1,7 +1,7 @@
 ---
 title: "Roof Installation for New Construction"
 location: "Wallace, NC"
-category: "installation"
+category: "instalacion"
 image: "../../assets/images/gallery/project-6.webp"
 alt: "New roof with architectural laminated shingles installed during home construction in Wallace, NC"
 featured: true

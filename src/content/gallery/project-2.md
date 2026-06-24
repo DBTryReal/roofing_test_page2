@@ -1,7 +1,7 @@
 ---
 title: "Hail Damage Repair"
 location: "Goldsboro, NC"
-category: "repair"
+category: "reparacion"
 image: "../../assets/images/gallery/project-2.webp"
 alt: "Hail-damaged shingles repaired and replaced in Goldsboro, NC"
 featured: true

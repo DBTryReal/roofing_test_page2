@@ -1,83 +1,101 @@
 ---
 // src/pages/contact.astro
 //
-// CORE CONCEPT:
-// This page does NOT use markdown. It is fully static content
-// defined directly in the HTML template.
-// No imports from "astro:content" are needed.
-// Ideal for forms, simple pages, legal pages, etc.
+// CONCEPTO CLAVE:
+// Esta página NO usa markdown. Es contenido completamente estático
+// definido directamente en el template HTML.
+// No necesita ninguna importación de "astro:content".
 
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
 
-// You can read environment variables for the API URL
-// const API_URL = import.meta.env.PUBLIC_FORM_URL;
+// Import a high-quality background image for the hero section
+import heroImg from "../assets/images/image12.webp";
 ---
 
 <BaseLayout
-    title="Contact"
-    description="Send us a message and we'll get back to you in less than 24 hours. Free inspections across North Carolina."
+    title="Contact Us — Carolina Prime Construction & Remodeling LLC"
+    description="Get in touch with Carolina Prime Construction & Remodeling LLC. Free roofing and construction estimates in Magnolia, NC and surrounding areas (up to 70 miles)."
 >
     <!-- ============================================================
-         PAGE HEADER
+         SECTION 1 — HERO HEADER
          ============================================================ -->
-    <section class="page-hero">
-        <div class="container">
-            <span class="sec-subtitle">Here to Help</span>
-            <h1>Let's Talk</h1>
-            <p class="page-desc">
-                Tell us about your project. We'll get back to you within 24
-                hours with a no-obligation quote.
+    <section class="hero-contact" aria-label="Contact Us Header">
+        <Image
+            src={heroImg}
+            alt="Carolina Prime Construction worker installing roofing shingles"
+            class="hero-contact__bg"
+            loading="eager"
+            fetchpriority="high"
+        />
+        <div class="hero-contact__overlay" aria-hidden="true"></div>
+        <div class="hero-contact__content container">
+            <p class="hero-contact__badge">Get in Touch</p>
+            <h1 class="hero-contact__title">
+                Let's <span class="hero-contact__title--accent">Talk</span>
+            </h1>
+            <p class="hero-contact__subtitle">
+                Tell us about your project. We respond in less than 24 hours
+                with a custom, hassle-free quote.
             </p>
         </div>
     </section>
 
     <!-- ============================================================
-         CONTACT FORM + CONTACT DETAILS
+         SECTION 2 — CONTACT FORM + INFO SIDEBAR
          ============================================================ -->
     <section class="contact-section">
         <div class="container">
             <div class="contact-grid">
-                <!-- Contact form -->
+                <!-- Contact Form Card -->
                 <form
                     class="contact-form"
                     id="contact-form"
                     method="POST"
                     action="/api/contact"
                 >
+                    <div class="form-header">
+                        <h2>Send Us a Message</h2>
+                        <p>
+                            Fill out the form below and our team will get right
+                            back to you.
+                        </p>
+                    </div>
+
                     <div class="form-group">
-                        <label for="name">Full name *</label>
+                        <label for="name">Full Name *</label>
                         <input
                             type="text"
                             id="name"
                             name="name"
-                            placeholder="John Smith"
+                            placeholder="John Doe"
                             required
                         />
                     </div>
 
                     <div class="form-group">
-                        <label for="email">Email address *</label>
+                        <label for="email">Email Address *</label>
                         <input
                             type="email"
                             id="email"
                             name="email"
-                            placeholder="john@email.com"
+                            placeholder="john@example.com"
                             required
                         />
                     </div>
 
                     <div class="form-group">
-                        <label for="phone">Phone number</label>
+                        <label for="phone">Phone Number</label>
                         <input
                             type="tel"
                             id="phone"
                             name="phone"
-                            placeholder="(704) 000-0000"
+                            placeholder="(919) 555-1234"
                         />
                     </div>
 
                     <div class="form-group">
-                        <label for="service">Service of interest</label>
+                        <label for="service">Service of Interest</label>
                         <select id="service" name="service">
                             <option value="">-- Select a service --</option>
                             <option value="instalacion-residencial"
@@ -89,9 +107,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                             <option value="techado-comercial"
                                 >🏢 Commercial Roofing</option
                             >
-                            <option value="techos-metal"
-                                >🔩 Metal Roofing</option
-                            >
+                            <option value="techos-metal">🔩 Metal Roofs</option>
                             <option value="inspeccion"
                                 >🔍 Inspection Only</option
                             >
@@ -100,7 +116,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                     </div>
 
                     <div class="form-group">
-                        <label for="property">Property type</label>
+                        <label for="property">Property Type</label>
                         <select id="property" name="property">
                             <option value="">-- Select an option --</option>
                             <option value="residencial"
@@ -110,68 +126,85 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                                 >Commercial (Warehouse / Office)</option
                             >
                             <option value="multifamiliar"
-                                >Multi-family (Apartments)</option
+                                >Multifamily (Apartments)</option
                             >
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="message">Tell us about your project *</label
+                        <label for="message">Tell Us About Your Project *</label
                         >
                         <textarea
                             id="message"
                             name="message"
                             rows="5"
-                            placeholder="Describe the issue or work needed: approximate roof size, visible damage, urgency, etc."
+                            placeholder="Please describe the issue or work needed (approximate roof size, visible damage, urgency, etc.)"
                             required></textarea>
                     </div>
 
                     <button type="submit" class="submit-btn">
-                        Send Message →
+                        Send Message &rarr;
                     </button>
                 </form>
 
-                <!-- Sidebar contact information -->
+                <!-- Contact Information Sidebar -->
                 <aside class="contact-info">
-                    <div class="info-block">
+                    <div class="info-header">
                         <h2>Contact Information</h2>
+                        <p>
+                            Prefer direct communication? Reach out to us
+                            anytime.
+                        </p>
                     </div>
 
-                    <div class="info-item">
-                        <span class="info-icon">📞</span>
-                        <div>
+                    <div class="info-card">
+                        <span class="info-card__icon" aria-hidden="true"
+                            >📞</span
+                        >
+                        <div class="info-card__content">
                             <strong>Phone</strong>
-                            <p>(704) 000-0000</p>
+                            <p>(919) 555-1234</p>
                         </div>
                     </div>
 
-                    <div class="info-item">
-                        <span class="info-icon">📧</span>
-                        <div>
+                    <div class="info-card">
+                        <span class="info-card__icon" aria-hidden="true"
+                            >📧</span
+                        >
+                        <div class="info-card__content">
                             <strong>Email</strong>
                             <p>info@carolineprimeconstruction.com</p>
                         </div>
                     </div>
 
-                    <div class="info-item">
-                        <span class="info-icon">📍</span>
-                        <div>
+                    <div class="info-card">
+                        <span class="info-card__icon" aria-hidden="true"
+                            >📍</span
+                        >
+                        <div class="info-card__content">
                             <strong>Service Area</strong>
-                            <p>Wilmington, Raleigh, Greensboro & Durham, NC</p>
+                            <p>
+                                Magnolia, NC and surrounding areas (up to 70
+                                miles)
+                            </p>
                         </div>
                     </div>
 
-                    <div class="info-item">
-                        <span class="info-icon">⏰</span>
-                        <div>
-                            <strong>Business Hours</strong>
-                            <p>Monday – Saturday, 7am – 6pm EST</p>
+                    <div class="info-card">
+                        <span class="info-card__icon" aria-hidden="true"
+                            >⏰</span
+                        >
+                        <div class="info-card__content">
+                            <strong>Hours</strong>
+                            <p>Monday to Saturday, 7am – 6pm EST</p>
                         </div>
                     </div>
 
-                    <div class="info-item">
-                        <span class="info-icon">⚡</span>
-                        <div>
+                    <div class="info-card">
+                        <span class="info-card__icon" aria-hidden="true"
+                            >⚡</span
+                        >
+                        <div class="info-card__content">
                             <strong>Response Time</strong>
                             <p>Within 24 business hours</p>
                         </div>
@@ -183,133 +216,209 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 </BaseLayout>
 
 <style>
-    /* ============================================================
-       PAGE HEADER
-       ============================================================ */
-    .page-hero {
-        background-color: #0f172a;
-        color: #fff;
-        padding: 80px 24px;
+    /* ── Design Tokens (Consistent with about.astro) ── */
+    :root {
+        --color-primary: #395ca0;
+        --color-primary-dark: #293a8b;
+        --color-primary-light: #4a7fd4;
+        --color-accent: #d4a853;
+        --color-accent-light: #f0d48a;
+        --color-dark: #1a1a2e;
+        --color-dark-soft: #16213e;
+        --color-text: #2d2d2d;
+        --color-text-light: #6b7280;
+        --color-text-inverse: #f8fafc;
+        --color-bg: #fafafa;
+        --color-bg-alt: #f1f5f9;
+        --color-border: #e2e8f0;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+        --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.15);
+        --radius-sm: 6px;
+        --radius-md: 12px;
+        --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .sec-subtitle {
-        color: #395ca0;
-        font-size: 0.85rem;
-        font-weight: 700;
-        text-transform: uppercase;
+    /* ═══════ HERO CONTACT SECTION ═══════ */
+    .hero-contact {
+        position: relative;
+        width: 100%;
+        height: 35vh;
+        min-height: 380px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background: var(--color-dark);
+    }
+    .hero-contact__bg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+    }
+    .hero-contact__overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            135deg,
+            rgba(26, 26, 46, 0.88) 0%,
+            rgba(57, 92, 160, 0.6) 100%
+        );
+        z-index: 1;
+    }
+    .hero-contact__content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        padding: 40px 24px;
+        max-width: 800px;
+    }
+    .hero-contact__badge {
+        display: inline-block;
+        font-size: 0.75rem;
+        font-weight: 600;
         letter-spacing: 2px;
-        display: block;
-        margin-bottom: 12px;
+        text-transform: uppercase;
+        color: var(--color-accent);
+        border: 1px solid rgba(212, 168, 83, 0.4);
+        padding: 6px 16px;
+        border-radius: 50px;
+        margin-bottom: 20px;
     }
-
-    .page-hero h1 {
-        font-size: 2.75rem;
+    .hero-contact__title {
+        font-family: "Poppins", sans-serif;
+        font-size: clamp(2.25rem, 5vw, 3.25rem);
         font-weight: 700;
+        color: #fff;
         line-height: 1.15;
         margin-bottom: 20px;
-        letter-spacing: -1px;
     }
-
-    .page-desc {
-        font-size: 1.15rem;
-        color: #cbd5e1;
+    .hero-contact__title--accent {
+        color: var(--color-accent);
+    }
+    .hero-contact__subtitle {
+        font-size: clamp(1rem, 2.5vw, 1.2rem);
+        color: rgba(255, 255, 255, 0.85);
         line-height: 1.6;
-        max-width: 650px;
+        margin-bottom: 0;
     }
 
-    /* ============================================================
-       MAIN SECTION
-       ============================================================ */
+    /* ═══════ SECCIÓN PRINCIPAL ═══════ */
     .contact-section {
-        padding: 72px 24px;
+        padding: 80px 24px;
+        background: var(--color-bg);
     }
 
-    /* Layout de dos columnas */
+    /* Layout responsive variables */
     .contact-grid {
         display: grid;
-        grid-template-columns: 1fr 320px;
-        gap: 56px;
+        grid-template-columns: 1fr;
+        gap: 48px;
         align-items: start;
+        max-width: 1100px;
+        margin: 0 auto;
     }
 
-    @media (max-width: 768px) {
+    @media (min-width: 900px) {
         .contact-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .page-hero h1 {
-            font-size: 1.9rem;
+            grid-template-columns: 1.35fr 1fr;
         }
     }
 
-    /* ============================================================
-       FORM
-       ============================================================ */
+    /* ═══════ FORM CARD STYLING ═══════ */
     .contact-form {
+        background: #fff;
+        border-radius: var(--radius-md);
+        padding: 40px;
+        box-shadow: var(--shadow-md);
+        border: 1px solid var(--color-border);
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 22px;
+    }
+
+    @media (max-width: 480px) {
+        .contact-form {
+            padding: 24px;
+        }
+    }
+
+    .form-header {
+        margin-bottom: 10px;
+    }
+    .form-header h2 {
+        font-family: "Poppins", sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--color-dark);
+        margin: 0 0 8px 0;
+    }
+    .form-header p {
+        font-size: 0.95rem;
+        color: var(--color-text-light);
+        margin: 0;
+        line-height: 1.5;
     }
 
     .form-group {
         display: flex;
         flex-direction: column;
-        gap: 6px;
+        gap: 8px;
     }
 
     .form-group label {
         font-size: 0.9rem;
         font-weight: 600;
-        color: #334155;
+        color: var(--color-dark-soft);
     }
 
     .form-group input,
     .form-group select,
     .form-group textarea {
-        padding: 10px 14px;
-        border: 1px solid #e2e8f0;
-        border-radius: 6px;
+        padding: 12px 16px;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-sm);
         font-size: 0.95rem;
         font-family: inherit;
-        color: #334155;
+        color: var(--color-dark);
         background-color: #fff;
-        transition:
-            border-color 0.2s,
-            box-shadow 0.2s;
+        transition: all var(--transition);
         outline: none;
     }
 
     .form-group input:focus,
     .form-group select:focus,
     .form-group textarea:focus {
-        border-color: #395ca0;
-        box-shadow: 0 0 0 3px rgba(57, 92, 160, 0.1);
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px rgba(57, 92, 160, 0.15);
     }
 
     .form-group textarea {
         resize: vertical;
-        min-height: 120px;
+        min-height: 130px;
     }
 
+    /* Premium Button Style */
     .submit-btn {
-        background-color: #395ca0;
+        background-color: var(--color-primary);
         color: #fff;
         border: none;
-        padding: 14px 28px;
-        border-radius: 6px;
+        padding: 16px 32px;
+        border-radius: var(--radius-sm);
+        font-family: "Poppins", sans-serif;
         font-size: 1rem;
         font-weight: 600;
-        font-family: inherit;
         cursor: pointer;
-        transition:
-            background-color 0.2s,
-            transform 0.1s;
+        transition: all var(--transition);
         align-self: flex-start;
         box-shadow: 0 4px 15px rgba(57, 92, 160, 0.3);
     }
 
     .submit-btn:hover {
-        background-color: #293a8b;
+        background-color: var(--color-primary-dark);
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(57, 92, 160, 0.45);
     }
@@ -318,54 +427,125 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         transform: translateY(0);
     }
 
-    /* ============================================================
-       SIDEBAR INFORMATION
-       ============================================================ */
+    /* ═══════ SIDEBAR CARDS STYLING ═══════ */
     .contact-info {
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: 20px;
     }
 
-    .info-block h2 {
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: #0f172a;
-        padding-bottom: 12px;
-        border-bottom: 3px solid #e2e8f0;
+    .info-header {
         margin-bottom: 4px;
+        padding-left: 4px;
+    }
+    .info-header h2 {
+        font-family: "Poppins", sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--color-dark);
+        margin: 0 0 8px 0;
+    }
+    .info-header p {
+        font-size: 0.95rem;
+        color: var(--color-text-light);
+        margin: 0;
+        line-height: 1.5;
     }
 
-    .info-item {
+    /* Hoverable Info cards */
+    .info-card {
         display: flex;
         align-items: flex-start;
-        gap: 14px;
-        background-color: #f8fafc;
-        padding: 16px;
-        border-radius: 8px;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        gap: 16px;
+        background-color: #fff;
+        padding: 24px;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--color-border);
+        box-shadow: var(--shadow-sm);
+        transition: all var(--transition);
     }
 
-    .info-icon {
-        font-size: 1.4rem;
+    .info-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+        border-color: rgba(57, 92, 160, 0.15);
+    }
+
+    .info-card__icon {
+        font-size: 1.8rem;
         flex-shrink: 0;
         line-height: 1;
         margin-top: 2px;
     }
 
-    .info-item strong {
+    .info-card__content strong {
         display: block;
         font-size: 0.85rem;
-        color: #395ca0;
-        font-weight: 700;
-        margin-bottom: 2px;
+        color: var(--color-primary);
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 6px;
     }
 
-    .info-item p {
-        font-size: 0.9rem;
-        color: #475569;
+    .info-card__content p {
+        font-size: 1rem;
+        color: var(--color-dark-soft);
         margin: 0;
         line-height: 1.5;
+        font-weight: 500;
+    }
+
+    /* ═══════ DARK MODE ═══════ */
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --color-primary: #4a7fd4;
+            --color-primary-light: #60a5fa;
+            --color-bg: #0f172a;
+            --color-bg-alt: #1e293b;
+            --color-text: #e2e8f0;
+            --color-text-light: #94a3b8;
+            --color-border: rgba(255, 255, 255, 0.08);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Headings and labels overrides */
+        .form-header h2,
+        .info-header h2 {
+            color: #f1f5f9;
+        }
+
+        .form-group label {
+            color: #cbd5e1;
+        }
+
+        /* Elements backgrounds and borders */
+        .contact-form {
+            background-color: #1e293b;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            background-color: #0f172a;
+            color: #f8fafc;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--color-primary);
+        }
+
+        .info-card {
+            background-color: #1e293b;
+        }
+
+        .info-card__content p {
+            color: #cbd5e1;
+        }
     }
 </style>

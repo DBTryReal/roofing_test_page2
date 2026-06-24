@@ -1,65 +1,43 @@
 ---
-// ①─────────────────────────────────────────────────────────────────────────
-// FRONTMATTER — This block runs at BUILD TIME (Node.js), not in the browser.
-// Everything written here disappears from the client bundle.
-// ─────────────────────────────────────────────────────────────────────────
-
+// ① FRONTMATTER — Executed at BUILD TIME
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
-// ↑ Official Astro component. Processes images with Sharp:
-//   converts to WebP, infers width/height, auto-generates srcset.
 
 const allProjects = await getCollection("gallery");
 const projects = allProjects.sort(
-  (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999)
+  (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999),
 );
 const categories = [...new Set(projects.map((p) => p.data.category))];
 
-// // ② Import each image — Astro must know the files at build time.
-// //   Dynamic paths with variables are NOT allowed here (Vite/Rollup limitation).
-// //   Each import generates a { src, width, height, format } object consumed by <Image>.
-
-// // ③ Projects array — centralizes all data in one place.
-// //   "category" is the value used by the filter buttons (data-filter).
-
-// // ④ Extract unique categories from the array → avoids duplicating text manually.
-// //   Set removes duplicates. The spread [...] converts the Set to an Array for .map().
-// const categories = [...new Set(projects.map((p) => p.category))];
+// Dictionary to translate content categories dynamically into English labels
+const categoryTranslations: Record<string, string> = {
+  instalacion: "Installation",
+  reparacion: "Repairs",
+  comercial: "Commercial",
+  mantenimiento: "Maintenance",
+};
 ---
 
-<!--
-  ⑤ BaseLayout receives title and description.
-  - title appears in the <title> of the <head> → important for SEO (browser tab, Google)
-  - description goes in <meta name="description"> → shown in search results
--->
 <BaseLayout
-  title="Project Gallery"
-  description="Gallery of completed roofing projects in North Carolina: repairs, installations, and roof maintenance."
+  title="Project Gallery — Carolina Prime Construction"
+  description="Explore completed roofing and home construction work by Carolina Prime Construction. Premium services in Magnolia, NC, and surrounding areas."
 >
-
-   <!-- ⑥ INTRO SECTION
-    h1: there should be ONLY ONE h1 per page. It is the main heading for SEO.
-    class="container" centers content respecting the global max-width.
-  -->
+  <!-- PAGE HERO -->
   <section class="page-hero">
     <div class="container">
-      <span class="sec-subtitle">Our Projects</span>
-      <h1>Project Gallery</h1>
-      <p>
-        Explore our featured work in roofing repair, installation, and
-        maintenance across North Carolina.
+      <span class="page-hero__badge">Our Work</span>
+      <h1 class="page-hero__title">
+        Project <span class="page-hero__title--accent">Gallery</span>
+      </h1>
+      <p class="page-hero__subtitle">
+        Explore our outstanding roofing, repair, and installation projects
+        across Magnolia, NC, and surrounding communities within 70 miles.
       </p>
     </div>
   </section>
 
-  <!-- ⑦ FILTERS
-    role="group": semantically groups related buttons (ARIA)
-    aria-label: describes the group for screen readers
-    data-filter="all": special value that shows all items
-    aria-pressed: communicates to screen readers whether the button is active (toggle)
-    Counts ({projects.filter...length}) help the user anticipate results
-  -->
+  <!-- GALLERY FILTERS -->
   <div
     class="gallery-filters container"
     role="group"
@@ -71,51 +49,28 @@ const categories = [...new Set(projects.map((p) => p.data.category))];
     {
       categories.map((cat) => (
         <button class="filter-btn" data-filter={cat} aria-pressed="false">
-          {cat.charAt(0).toUpperCase() + cat.slice(1)} (
-          {projects.filter((p) => p.data.category === cat).length})
+          {categoryTranslations[cat] ||
+            cat.charAt(0).toUpperCase() + cat.slice(1)}{" "}
+          ({projects.filter((p) => p.data.category === cat).length})
         </button>
       ))
     }
   </div>
 
-    <!-- ⑧ IMAGE GRID
-    id="gallery-grid": selected by JS to handle the empty state
-    role="list" + role="listitem": correct semantics for a list of items
-    (CSS grid has no list semantics by default)
-  -->
+  <!-- GALLERY GRID -->
   <div class="gallery-grid container" id="gallery-grid" role="list">
     {
       projects.map((project, index) => (
-        <!-- ⑨ <figure> is the correct HTML element for a related image + caption -->
         <figure
           class="gallery-item"
           data-category={project.data.category}
           role="listitem"
         >
-          <!--
-            ⑩ <button> wraps the image to make it clickable and keyboard-navigable
-            (Tab + Enter/Space). Using <div onClick> would be incorrect for accessibility.
-            aria-label describes the ACTION ("Expand image of..."), not the image itself.
-            The image description is handled by the alt attribute of <Image>.
-            data-index stores the position in the array for the lightbox.
-          -->
           <button
             class="gallery-trigger"
-            aria-label={`View full image: ${project.data.title} in ${project.data.location}`}
+            aria-label={`Enlarge image: ${project.data.title} in ${project.data.location}`}
             data-index={index}
           >
-            <!--
-              ⑪ <Image> from astro:assets — differences vs a plain <img>:
-              · src accepts the imported OBJECT (not a URL string)
-              · Automatically generates <img srcset="..." sizes="..."> for responsive
-              · Converts to WebP at build time (Sharp)
-              · width + height → the browser reserves space before loading
-                → prevents Cumulative Layout Shift (CLS), a Core Web Vitals metric
-              · loading="lazy" → the browser loads the image only when it enters
-                the viewport. Reduces initial load time.
-              · decoding="async" → the browser decodes the image in the background
-                without blocking the main thread (non-blocking rendering)
-            -->
             <Image
               src={project.data.image}
               alt={project.data.alt}
@@ -126,24 +81,12 @@ const categories = [...new Set(projects.map((p) => p.data.category))];
               class="gallery-img"
             />
 
-            <!--
-              ⑫ Hover OVERLAY — appears over the image on cursor hover.
-              aria-hidden="true": the overlay text is decorative/redundant
-              (figcaption already has the same text) → screen readers ignore it.
-              The overlay uses position:absolute + opacity transition (see CSS).
-            -->
             <div class="gallery-overlay" aria-hidden="true">
               <strong>{project.data.title}</strong>
               <span>{project.data.location}</span>
             </div>
           </button>
 
-          <!--
-            ⑬ <figcaption> is the visible text below the image.
-            Semantically describes the content of <figure>.
-            This text is read by screen readers (the overlay with aria-hidden is not).
-            It is also indexed by Google as descriptive text for the image.
-          -->
           <figcaption>
             <strong>{project.data.title}</strong>
             <span>{project.data.location}</span>
@@ -153,13 +96,7 @@ const categories = [...new Set(projects.map((p) => p.data.category))];
     }
   </div>
 
-  <!--
-    ⑭ EMPTY STATE MESSAGE
-    Shown when a filter has no results.
-    aria-live="polite": screen readers announce the text change
-    when it appears, without interrupting what they are currently reading.
-    hidden: native HTML attribute, more semantic than display:none via class.
-  -->
+  <!-- EMPTY STATE NOTIFICATION -->
   <p
     class="gallery-empty container"
     id="gallery-empty"
@@ -169,37 +106,30 @@ const categories = [...new Set(projects.map((p) => p.data.category))];
     No projects in this category yet.
   </p>
 
-    <!--
-    ⑮ LIGHTBOX with <dialog> — native HTML element for modals.
-    Advantages over a hand-rolled <div> modal:
-    · ESC to close: works natively without extra JS
-    · Focus trap: keyboard focus stays trapped inside the dialog
-    · ::backdrop pseudo-element for the dark background
-    · showModal() / close() are native methods
-    aria-modal="true": reinforces to screen readers that content
-    outside the dialog is inert while it's open.
-    aria-label: accessible name of the dialog.
-  -->
-  <dialog class="lightbox" id="lightbox" aria-modal="true" aria-label="Image viewer">
-    <!--
-      ⑯ Close button — minimum 44x44px recommended by WCAG for touch targets.
-      aria-label describes the action (the "✕" symbol has no meaning on its own).
-    -->
-    <button class="lightbox-close" id="lightbox-close" aria-label="Close image viewer">
+  <!-- LIGHTBOX (NATIVE DIALOG MODAL) -->
+  <dialog
+    class="lightbox"
+    id="lightbox"
+    aria-modal="true"
+    aria-label="Image viewer"
+  >
+    <button
+      class="lightbox-close"
+      id="lightbox-close"
+      aria-label="Close image viewer"
+    >
       ✕
     </button>
 
-    <button class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Previous image">
+    <button
+      class="lightbox-nav lightbox-prev"
+      id="lightbox-prev"
+      aria-label="Previous image"
+    >
       ‹
     </button>
 
     <figure class="lightbox-figure">
-      <!--
-        ⑰ The lightbox image uses a plain <img> (not Astro's <Image>)
-        because its src is populated dynamically by JS at runtime.
-        astro:assets only processes images known at build time.
-        Empty src="" + width/height reserve space to avoid reflow.
-      -->
       <img
         id="lightbox-img"
         src=""
@@ -211,7 +141,11 @@ const categories = [...new Set(projects.map((p) => p.data.category))];
       <figcaption id="lightbox-caption" class="lightbox-caption"></figcaption>
     </figure>
 
-    <button class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Next image">
+    <button
+      class="lightbox-nav lightbox-next"
+      id="lightbox-next"
+      aria-label="Next image"
+    >
       ›
     </button>
   </dialog>
@@ -220,15 +154,15 @@ const categories = [...new Set(projects.map((p) => p.data.category))];
   <section class="cta-banner container">
     <div class="cta-banner-box">
       <div class="cta-text-cnt">
-        <h2>Ready to start your next project?</h2>
+        <h2>Ready for Your Next Project?</h2>
         <p>
-          Contact us today and receive a free inspection plus a
-          detailed quote in less than 24 hours.
+          Contact us today to receive a free inspection and a detailed estimate
+          in less than 24 hours.
         </p>
       </div>
       <div class="cta-action-cnt">
         <a href={`${import.meta.env.BASE_URL}contact`} class="btn-white-accent">
-          Get a Free Quote →
+          Request Free Estimate →
         </a>
       </div>
     </div>
@@ -236,39 +170,78 @@ const categories = [...new Set(projects.map((p) => p.data.category))];
 </BaseLayout>
 
 <style>
-  /* ── PAGE HERO ─────────────────────────────────────────────── */
+  /* ── Design Tokens ── */
+  :root {
+    --color-primary: #395ca0;
+    --color-primary-dark: #293a8b;
+    --color-primary-light: #4a7fd4;
+    --color-accent: #d4a853;
+    --color-accent-light: #f0d48a;
+    --color-dark: #1a1a2e;
+    --color-dark-soft: #16213e;
+    --color-text: #2d2d2d;
+    --color-text-light: #6b7280;
+    --color-text-inverse: #f8fafc;
+    --color-bg: #fafafa;
+    --color-bg-alt: #f1f5f9;
+    --color-border: #e2e8f0;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.15);
+    --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.2);
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* ── PAGE HERO (Matches index2/about header designs) ─────────────────────── */
   .page-hero {
-    background-color: #0f172a;
+    position: relative;
+    background: linear-gradient(
+      135deg,
+      rgba(26, 26, 46, 0.9) 0%,
+      rgba(57, 92, 160, 0.75) 100%
+    );
     color: #fff;
-    padding: 80px 24px;
+    padding: 100px 24px;
+    text-align: center;
   }
-  .sec-subtitle {
-    color: #395ca0;
-    font-size: 0.85rem;
-    font-weight: 700;
-    text-transform: uppercase;
+  .page-hero__badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
     letter-spacing: 2px;
-    display: block;
-    margin-bottom: 12px;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    border: 1px solid rgba(212, 168, 83, 0.4);
+    padding: 6px 16px;
+    border-radius: 50px;
+    margin-bottom: 24px;
   }
-  .page-hero h1 {
-    font-size: 2.75rem;
+  .page-hero__title {
+    font-family: "Poppins", sans-serif;
+    font-size: clamp(2rem, 5vw, 3.25rem);
     font-weight: 700;
+    color: #fff;
     line-height: 1.15;
     margin-bottom: 20px;
-    letter-spacing: -1px;
   }
-  .page-hero p {
-    font-size: 1.15rem;
-    color: #cbd5e1;
+  .page-hero__title--accent {
+    color: var(--color-accent);
+  }
+  .page-hero__subtitle {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: rgba(255, 255, 255, 0.85);
     line-height: 1.6;
-    max-width: 600px;
+    max-width: 700px;
+    margin: 0 auto;
   }
 
   /* ── FILTERS ─────────────────────────────────────────────────────── */
   .gallery-filters {
     display: flex;
-    flex-wrap: wrap; /* Wrap to next line if they don't fit */
+    flex-wrap: wrap;
     gap: 8px;
     justify-content: center;
     padding: 0 0 32px;
@@ -277,111 +250,99 @@ const categories = [...new Set(projects.map((p) => p.data.category))];
   .filter-btn {
     background: #f0f4f8;
     border: 2px solid transparent;
-    border-radius: 999px; /* Perfect pill shape */
+    border-radius: 999px;
     padding: 8px 20px;
     font-size: 0.875rem;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s ease;
-    color: #555;
-    font-family: inherit;  /* Hering Poppins of body */
+    transition: all var(--transition);
+    color: var(--color-text);
+    font-family: inherit;
   }
   .filter-btn:hover {
-    border-color: #395ca0;
-    color: #395ca0;
+    border-color: var(--color-primary);
+    color: var(--color-primary);
   }
-  /* Active state — class + aria-pressed for double coverage */
   .filter-btn.active,
   .filter-btn[aria-pressed="true"] {
-    background: #395ca0;
+    background: var(--color-primary);
     color: #fff;
-    border-color: #395ca0;
+    border-color: var(--color-primary);
   }
-   /* focus-visible: focus ring ONLY with keyboard, not mouse (better UX) */
   .filter-btn:focus-visible {
-    outline: 3px solid #395ca0;
+    outline: 3px solid var(--color-primary);
     outline-offset: 2px;
   }
 
   /* ── GRID ────────────────────────────────────────────────────────── */
-
-  /* ══ Uniform grid (clean, professional) ════════════════
-    auto-fill: creates ALL columns that fit the available width
-    minmax(280px, 1fr): each column is min 280px and max 1fr
-    Effect: large screen → 3-4 cols, tablet → 2, mobile → 1
-    Fully responsive with no media queries.
-  ══════════════════════════════════════════════════════════════════ */
   .gallery-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
-    padding-bottom: 64px;    
-    /* Prevents items with different captions from stretching */
-    align-items: start; 
+    padding-bottom: 64px;
+    align-items: start;
   }
 
-  /* ── ITEM ────────────────────────────────────────────────────────── */
+  /* ── ITEM CARDS ─────────────────────────────────────────────────── */
   .gallery-item {
     margin: 0;
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     overflow: hidden;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-    transition:
-      transform 0.25s ease,
-      box-shadow 0.25s ease;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition);
     background: #fff;
+    border: 1px solid var(--color-border);
   }
   .gallery-item:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.14);
+    box-shadow: var(--shadow-lg);
   }
-  /* [hidden] is the native attribute used by JS to hide filtered items */
   .gallery-item[hidden] {
-    display: none; /* necessary to override the display:block of the element */
+    display: none;
   }
 
-  /* ── TRIGGER (button wrapping the image) ──────────────────────── */
+  /* ── TRIGGER BUTTON ────────────────────────────────────────────── */
   .gallery-trigger {
-    position: relative;    /* Necessary for the absolute overlay to be positioned here */
+    position: relative;
     width: 100%;
     padding: 0;
     border: none;
     background: none;
     cursor: pointer;
     display: block;
-    overflow: hidden;      /* The zoom of the image does not go outside the container */
+    overflow: hidden;
   }
   .gallery-trigger:focus-visible {
-    outline: 3px solid #395ca0;
+    outline: 3px solid var(--color-primary);
     outline-offset: 0;
   }
 
-  /* ── IMAGE ──────────────────────────────────────────────────────── */
+  /* ── IMAGE zoom effect ─────────────────────────────────────────── */
   .gallery-img {
     width: 100%;
     height: 220px;
-    object-fit: cover; /* Crops to fill the space without distortion */
+    object-fit: cover;
     display: block;
     transition: transform 0.35s ease;
   }
   .gallery-trigger:hover .gallery-img,
   .gallery-trigger:focus-visible .gallery-img {
-    transform: scale(1.06);  /* Subtle zoom — attractive and communicates interactivity */
+    transform: scale(1.06);
   }
 
-  /* ── OVERLAY ─────────────────────────────────────────────────────── */
+  /* ── HOVER OVERLAY ──────────────────────────────────────────────── */
   .gallery-overlay {
     position: absolute;
-    inset: 0; /* Equivalent to top:0; right:0; bottom:0; left:0; */
+    inset: 0;
     background: linear-gradient(
       to top,
-      rgba(41, 58, 139, 0.88) 0%, /* Brand color — dark blue */
+      rgba(41, 58, 139, 0.88) 0%,
       rgba(57, 92, 160, 0.3) 60%,
       transparent 100%
     );
     display: flex;
     flex-direction: column;
-    justify-content: flex-end; /* Text at the bottom */
+    justify-content: flex-end;
     padding: 16px;
     color: #fff;
     opacity: 0;
@@ -401,7 +362,7 @@ const categories = [...new Set(projects.map((p) => p.data.category))];
     opacity: 0.85;
   }
 
-  /* ── FIGCAPTION ──────────────────────────────────────────────────── */
+  /* ── CAPTIONS ───────────────────────────────────────────────────── */
   .gallery-item figcaption {
     padding: 12px 16px;
     display: flex;
@@ -410,40 +371,35 @@ const categories = [...new Set(projects.map((p) => p.data.category))];
   }
   .gallery-item figcaption strong {
     font-size: 0.9rem;
-    color: #1a1a1a;
+    color: var(--color-dark);
   }
   .gallery-item figcaption span {
     font-size: 0.8rem;
-    color: #777;
+    color: var(--color-text-light);
   }
 
   /* ── EMPTY STATE ────────────────────────────────────────────────── */
   .gallery-empty {
     text-align: center;
-    color: #888;
+    color: var(--color-text-light);
     padding: 48px 24px;
     font-size: 1rem;
   }
 
-  /* ── LIGHTBOX (<dialog>) ─────────────────────────────────────────── */
+  /* ── LIGHTBOX (Modal) ───────────────────────────────────────────── */
   .lightbox {
     border: none;
     padding: 0;
     background: transparent;
     max-width: 100vw;
-    max-height: 100dvh; /* dvh: dynamic viewport height, correct on mobile */
+    max-height: 100dvh;
     width: 100vw;
     height: 100dvh;
-    position: fixed;  /* Required to cover the full screen */
+    position: fixed;
   }
-  /*
-    ::backdrop — native pseudo-element of <dialog>.
-    This is the dark background behind the modal.
-    Only exists when the dialog is opened with showModal().
-  */
   .lightbox::backdrop {
     background: rgba(0, 0, 0, 0.92);
-    backdrop-filter: blur(4px); /* Blurs content behind */
+    backdrop-filter: blur(4px);
   }
   .lightbox-figure {
     display: flex;
@@ -456,10 +412,10 @@ const categories = [...new Set(projects.map((p) => p.data.category))];
     box-sizing: border-box;
   }
   #lightbox-img {
-    max-height: calc(100dvh - 140px);  /* Space for caption and buttons */
+    max-height: calc(100dvh - 140px);
     max-width: 100%;
-    object-fit: contain; /* Displays the full image without cropping */
-    border-radius: 6px;
+    object-fit: contain;
+    border-radius: var(--radius-sm);
     box-shadow: 0 8px 48px rgba(0, 0, 0, 0.5);
   }
   .lightbox-caption {
@@ -468,7 +424,6 @@ const categories = [...new Set(projects.map((p) => p.data.category))];
     margin-top: 14px;
     text-align: center;
   }
-  /* Lightbox buttons — minimum 44x44px (WCAG 2.5.5) */
   .lightbox-close {
     position: fixed;
     top: 16px;
@@ -509,9 +464,15 @@ const categories = [...new Set(projects.map((p) => p.data.category))];
     line-height: 1;
     font-family: inherit;
   }
-  .lightbox-prev { left: 16px; }
-  .lightbox-next { right: 16px; }
-  .lightbox-nav:hover { background: rgba(255, 255, 255, 0.28); }
+  .lightbox-prev {
+    left: 16px;
+  }
+  .lightbox-next {
+    right: 16px;
+  }
+  .lightbox-nav:hover {
+    background: rgba(255, 255, 255, 0.28);
+  }
   .lightbox-nav:disabled {
     opacity: 0.25;
     cursor: not-allowed;
@@ -522,20 +483,24 @@ const categories = [...new Set(projects.map((p) => p.data.category))];
     outline-offset: 2px;
   }
 
-  /* ── CTA BANNER ─────────────────────────────────────────────────── */
+  /* ── CTA BANNER (Carolina Prime aesthetic) ───────────────────────── */
   .cta-banner {
     padding: 80px 24px;
   }
   .cta-banner-box {
-    background-color: #395ca0;
-    border-radius: 16px;
+    background: linear-gradient(
+      135deg,
+      var(--color-primary) 0%,
+      var(--color-primary-dark) 100%
+    );
+    border-radius: var(--radius-md);
     padding: 48px 60px;
-    color: #fff;
+    color: var(--color-text-inverse);
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 40px;
-    box-shadow: 0 20px 45px rgba(57, 92, 160, 0.25);
+    box-shadow: var(--shadow-xl);
   }
   .cta-text-cnt {
     max-width: 600px;
@@ -548,140 +513,164 @@ const categories = [...new Set(projects.map((p) => p.data.category))];
   }
   .cta-banner-box p {
     font-size: 1.1rem;
-    color: #e2e8f0;
+    color: rgba(255, 255, 255, 0.85);
     line-height: 1.5;
     margin: 0;
   }
-  /* .btn-white-accent {
-    display: inline-block;
-    background-color: #fff;
-    color: #395ca0;
-    background-color: #4a7fd4;
-    color: #f1f5f9;
+  .btn-white-accent {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--color-accent);
+    color: var(--color-dark);
     padding: 16px 32px;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     font-weight: 700;
     font-size: 1.05rem;
+    text-decoration: none;
     white-space: nowrap;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    transition: all 0.25s ease;
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition);
   }
   .btn-white-accent:hover {
-    background-color: #f1f5f9;
-    color: #293a8b;
-    background-color: #3b6cbf;
-    color: #e3effb;
+    background-color: var(--color-accent-light);
     transform: translateY(-2px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-  } */
+    box-shadow: var(--shadow-lg);
+  }
 
-  /* ── RESPONSIVE ──────────────────────────────────────────────────── */
+  /* ============================================================
+     DARK MODE SUPPORT
+     ============================================================ */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-primary: #4a7fd4;
+      --color-primary-light: #60a5fa;
+      --color-bg: #0f172a;
+      --color-bg-alt: #1e293b;
+      --color-text: #e2e8f0;
+      --color-text-light: #94a3b8;
+      --color-border: rgba(255, 255, 255, 0.08);
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+      --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6);
+      --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.7);
+    }
+
+    body {
+      background-color: var(--color-bg);
+      color: var(--color-text);
+    }
+
+    /* Cards context adjustment in dark */
+    .gallery-item {
+      background: #1e293b;
+      border-color: var(--color-border);
+      box-shadow: var(--shadow-sm);
+    }
+    .gallery-item:hover {
+      box-shadow: var(--shadow-lg);
+    }
+    .gallery-item figcaption strong {
+      color: #f1f5f9;
+    }
+    .gallery-item figcaption span {
+      color: var(--color-text-light);
+    }
+
+    /* Filters toggler in dark */
+    .filter-btn {
+      background: #1e293b;
+      color: var(--color-text-light);
+      border-color: var(--color-border);
+    }
+    .filter-btn:hover {
+      border-color: var(--color-primary-light);
+      color: var(--color-primary-light);
+    }
+    .filter-btn.active,
+    .filter-btn[aria-pressed="true"] {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: #fff;
+    }
+    .filter-btn:focus-visible {
+      outline-color: var(--color-primary-light);
+    }
+
+    .gallery-empty {
+      color: var(--color-text-light);
+    }
+  }
+
+  /* ── RESPONSIVE ── */
   @media (max-width: 640px) {
     .gallery-grid {
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       gap: 12px;
     }
-    .page-hero { padding: 60px 16px; }
-    .page-hero h1 { font-size: 2rem; }
-    .cta-banner { padding: 60px 16px; }
+    .page-hero {
+      padding: 60px 16px;
+    }
+    .cta-banner {
+      padding: 60px 16px;
+    }
     .cta-banner-box {
       flex-direction: column;
       text-align: center;
       padding: 40px;
     }
-    .lightbox-figure { padding: 52px 12px 32px; }
-    /* On mobile, navigation is handled by swipe (see JS) — nav buttons are hidden */
-    .lightbox-nav { display: none; }
+    .lightbox-figure {
+      padding: 52px 12px 32px;
+    }
+    .lightbox-nav {
+      display: none;
+    }
   }
 </style>
 
-<!--
-  ⑱ <script> en Astro — se ejecuta en el navegador (client-side).
-  Astro lo procesa con Vite: bundling, minificación, tree-shaking.
-  Se ejecuta una sola vez cuando la página carga.
-  TypeScript es soportado directamente (Astro lo transpila).
--->
+<!-- client-side scripts (completely untouched logic) -->
 <script>
-  // ══ FILTERS ══════════════════════════════════════════════════════
-  // dataset.filter reads the data-filter attribute from the button
-
-      // 1. Reset all buttons
-      // 2. Activate the clicked button
-      // 3. Show/hide items by category
-      // item.hidden is the native HTML5 [hidden] attribute
-      // 4. Show message if no visible results
   const filterBtns =
     document.querySelectorAll<HTMLButtonElement>(".filter-btn");
   const items = document.querySelectorAll<HTMLElement>(".gallery-item");
   const emptyMsg = document.getElementById(
-    "gallery-empty"
+    "gallery-empty",
   ) as HTMLParagraphElement;
 
   filterBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
       const filter = btn.dataset.filter!;
-      // dataset.filter reads the data-filter attribute from the button
 
-      // 1. Reset all buttons
       filterBtns.forEach((b) => {
         b.classList.remove("active");
         b.setAttribute("aria-pressed", "false");
       });
-      // 2. Activate the clicked button
       btn.classList.add("active");
       btn.setAttribute("aria-pressed", "true");
 
-      // 3. Show/hide items by category
       let visibleCount = 0;
       items.forEach((item) => {
-        const isMatch =
-          filter === "all" || item.dataset.category === filter;
+        const isMatch = filter === "all" || item.dataset.category === filter;
         item.hidden = !isMatch;
-        // item.hidden is the native HTML5 [hidden] attribute
         if (isMatch) visibleCount++;
       });
 
-      // 4. Show message if no visible results
       emptyMsg.hidden = visibleCount > 0;
     });
   });
 
-  // ══ LIGHTBOX ════════════════════════════════════════════════════
-  // Get ONLY the visible triggers (affected by active filter)
-
-    // Read the src generated by astro:assets (already optimized WebP)
-    // textContent.trim() strips whitespace and line breaks from HTML
-    // Disable buttons at the edges of the array
-    // showModal() does three things:
-    // 1. Displays the dialog above everything
-    // 2. Activates the ::backdrop
-    // 3. Traps focus inside the dialog (native focus trap)
-
-  // Open lightbox on any trigger click
-
-  // Keyboard navigation inside the lightbox
-  // ESC is handled NATIVELY by <dialog> — no extra code needed
-
-  // Close when clicking the backdrop (area outside the content)
-  // e.target === lightbox when clicking on the backdrop
   const lightbox = document.getElementById("lightbox") as HTMLDialogElement;
   const lbImg = document.getElementById("lightbox-img") as HTMLImageElement;
-  const lbCaption = document.getElementById(
-    "lightbox-caption"
-  ) as HTMLElement;
+  const lbCaption = document.getElementById("lightbox-caption") as HTMLElement;
   const lbClose = document.getElementById("lightbox-close")!;
   const lbPrev = document.getElementById("lightbox-prev") as HTMLButtonElement;
   const lbNext = document.getElementById("lightbox-next") as HTMLButtonElement;
 
   let currentIndex = 0;
 
-  // Obtain ONLY the visible triggers (affects after filtering)
   function getVisibleTriggers(): HTMLButtonElement[] {
     return Array.from(
-      document.querySelectorAll<HTMLButtonElement>(".gallery-trigger")
-    ).filter(
-      (t) => !(t.closest(".gallery-item") as HTMLElement)?.hidden
-    );
+      document.querySelectorAll<HTMLButtonElement>(".gallery-trigger"),
+    ).filter((t) => !(t.closest(".gallery-item") as HTMLElement)?.hidden);
   }
 
   function openLightbox(index: number) {
@@ -691,37 +680,29 @@ const categories = [...new Set(projects.map((p) => p.data.category))];
 
     const trigger = visible[index];
     const img = trigger.querySelector("img")!;
-    // Read the src generated by astro:assets (already optimized WebP)
     const captionEl = trigger
       .closest(".gallery-item")!
       .querySelector("figcaption")!;
 
     lbImg.src = img.src;
     lbImg.alt = img.alt;
-    // textContent.trim() strips whitespace and line breaks from HTML
     lbCaption.textContent = captionEl.textContent?.trim() ?? "";
 
-    // Disable buttons at the edges of the array
     lbPrev.disabled = index === 0;
     lbNext.disabled = index === visible.length - 1;
 
     lightbox.showModal();
-    // showModal() does three things:
-    // 1. Displays the dialog above everything
-    // 2. Activates the ::backdrop
-    // 3. Traps focus inside the dialog (native focus trap)
   }
 
-  // Open lightbox on any trigger click
-  document.querySelectorAll<HTMLButtonElement>(".gallery-trigger").forEach(
-    (trigger, _) => {
+  document
+    .querySelectorAll<HTMLButtonElement>(".gallery-trigger")
+    .forEach((trigger) => {
       trigger.addEventListener("click", () => {
         const visible = getVisibleTriggers();
         const visibleIndex = visible.indexOf(trigger);
         if (visibleIndex !== -1) openLightbox(visibleIndex);
       });
-    }
-  );
+    });
 
   lbClose.addEventListener("click", () => lightbox.close());
 
@@ -733,38 +714,32 @@ const categories = [...new Set(projects.map((p) => p.data.category))];
     if (currentIndex < visible.length - 1) openLightbox(currentIndex + 1);
   });
 
-  // Keyboard navigation inside the lightbox
-  // ESC is handled NATIVELY by <dialog> — no extra code needed
   lightbox.addEventListener("keydown", (e) => {
     if (e.key === "ArrowLeft" && !lbPrev.disabled) lbPrev.click();
     if (e.key === "ArrowRight" && !lbNext.disabled) lbNext.click();
   });
 
-  // Close when clicking the backdrop (area outside the content)
-  // e.target === lightbox when clicking on the backdrop
   lightbox.addEventListener("click", (e) => {
     if (e.target === lightbox) lightbox.close();
   });
 
-  // Swipe for mobile (touch devices)
   let touchStartX = 0;
   lightbox.addEventListener(
     "touchstart",
     (e) => {
       touchStartX = e.touches[0].clientX;
     },
-    { passive: true } // passive:true → does not block scroll, better performance
+    { passive: true },
   );
   lightbox.addEventListener(
     "touchend",
     (e) => {
       const delta = e.changedTouches[0].clientX - touchStartX;
       if (Math.abs(delta) > 50) {
-        // Threshold of 50px to distinguish swipe from tap
-        if (delta < 0) lbNext.click(); // swipe left → next
-        else lbPrev.click();           // swipe right → previous
+        if (delta < 0) lbNext.click();
+        else lbPrev.click();
       }
     },
-    { passive: true }
+    { passive: true },
   );
 </script>
