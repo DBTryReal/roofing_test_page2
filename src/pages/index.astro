@@ -1,1287 +1,1488 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { Image } from "astro:assets";
-import { getCollection } from "astro:content";
 
-// 1. IMPORTACIÓN DE RECURSOS DE CONTRATACIÓN Y MULTIMEDIA (MORE/)
-import heroImg from "../assets/images/image1.webp";
-// import videoSrc from "../assets/videos/video1.mp4";
-// import videoSrc from "../assets/videos/video1_horizontal.mp4";
-import aboutImg from "../assets/images/image2.webp";
-
-// 2. RECUPERACIÓN DINÁMICA DE SERVICIOS (Escalabilidad y Mantenibilidad)
-const services = await getCollection("services");
-const featuredServices = services
-	.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
-	.slice(0, 4); // Mostramos solo los 4 principales en Home
-
-const allGallery = await getCollection("gallery");
-const recentProjects = allGallery
-	.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
-	.slice(0, 4);
+// ── Importar imágenes/ ──
+import heroImg from "../assets/images/image17.webp";
+import aboutImg from "../assets/images/image10.webp";
+import serviceRoofing from "../assets/images/image11.webp";
+import serviceBuildings from "../assets/images/image15.webp";
+import serviceConstruction from "../assets/images/image13.webp";
+import galleryPorch from "../assets/images/image16.webp";
+import galleryExterior from "../assets/images/image17.webp";
+import galleryInterior from "../assets/images/image18.webp";
+import galleryDeck from "../assets/images/image7.webp";
+import processImg from "../assets/images/image5.webp";
+import teamImg from "../assets/images/image4.webp";
 ---
 
 <BaseLayout
-	title="Inicio - Expertos en Roofing y Construcción en Carolina del Norte"
-	description="Soluciones profesionales de roofing, reparación y construcción residencial y comercial por Carolina Prime Construction & Remodeling LLC. Cotizaciones gratuitas en NC."
+    title="Home — Quality Roofing & Construction in North Carolina"
+    description="Carolina Prime Construction & Remodeling LLC delivers expert roofing, decks, porches, and custom builds across North Carolina. Licensed, insured, and trusted by homeowners since day one."
 >
-	<!-- ============================================================
-     HERO SECTION CON VIDEO DE FONDO E IMAGEN DE RESPALDO (PERFORMANCE & UX)
-     ============================================================ -->
-	<section
-		class="hero-container"
-		aria-label="Bienvenida y servicios iniciales"
-	>
-		<div class="video-overlay" aria-hidden="true"></div>
-		<video
-			id="video1"
-			autoplay
-			muted
-			loop
-			playsinline
-			poster={heroImg.src}
-			class="hero-video"
-			aria-hidden="true"
-		>
-			<!-- <source src={videoSrc} type="video/mp4" /> -->
-		</video>
-
-		<!-- Fallback si la imagen se carga en lugar del vídeo por conexiones lentas -->
-		<div
-			class="hero-fallback-bg"
-			style={`background-image: url(${heroImg.src});`}
-		>
-		</div>
-
-		<div class="hero-content container">
-			<span class="hero-badge"
-				>Carolina Prime Construction & Remodeling LLC</span
-			>
-			<h1>La máxima protección y diseño para tu hogar</h1>
-			<p>
-				Instalación de techos premium, mantenimiento correctivo y
-				soluciones estructurales en Carolina del Norte. Profesionales
-				del sector de confianza absoluta.
-			</p>
-			<div class="hero-actions">
-				<a
-					href={`${import.meta.env.BASE_URL}contact`}
-					class="btn-primary"
-					aria-label="Solicitar cotización gratuita"
-				>
-					Inspección Gratis →
-				</a>
-				<a
-					href={`${import.meta.env.BASE_URL}services`}
-					class="btn-secondary"
-					aria-label="Ver todos los servicios"
-				>
-					Nuestros Servicios
-				</a>
-			</div>
-		</div>
-	</section>
-
-	<!-- ============================================================
-     BANNER DE CONFIANZA / ATRIBUTOS CLAVE (ACCESIBILIDAD Y A11Y)
-     ============================================================ -->
-	<section
-		class="trust-banner"
-		aria-label="Razones clave para confiar en nosotros"
-	>
-		<div class="container grid-trust">
-			<div class="trust-item">
-				<div class="icon-wrap">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke-width="2"
-						stroke="currentColor"
-						aria-hidden="true"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-						></path>
-					</svg>
-				</div>
-				<div>
-					<h3>100% Asegurados y Certificados</h3>
-					<p>Licencia para operar en toda Carolina del Norte.</p>
-				</div>
-			</div>
-
-			<div class="trust-item">
-				<div class="icon-wrap">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke-width="2"
-						stroke="currentColor"
-						aria-hidden="true"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-						></path>
-					</svg>
-				</div>
-				<div>
-					<h3>Puntualidad y Rapidez</h3>
-					<p>Respuestas rápidas y presupuestos cerrados en 24h.</p>
-				</div>
-			</div>
-
-			<div class="trust-item">
-				<div class="icon-wrap">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke-width="2"
-						stroke="currentColor"
-						aria-hidden="true"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
-						></path>
-					</svg>
-				</div>
-				<div>
-					<h3>Garantía Profesional</h3>
-					<p>Materiales premium garantizados por escrito.</p>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<!-- ============================================================
-     SECCIÓN QUÉ HACEMOS (SERVICIOS DINÁMICOS DESDE CONTENT COLLECTIONS)
-     ============================================================ -->
-	<section class="services-teaser container">
-		<div class="section-header-cnt">
-			<span class="sec-subtitle">Nuestra especialidad</span>
-			<h2>Servicios Profesionales de Construcción</h2>
-			<p class="section-desc">
-				Ofrecemos soluciones integrales de instalación y reparación de
-				techuras diseñadas para soportar las condiciones climáticas del
-				sureste estadounidense.
-			</p>
-		</div>
-
-		<div class="services-grid">
-			{
-				featuredServices.map((service) => (
-					<article class="service-teaser-card">
-						<div class="service-media-icon">
-							{service.data.icon}
-						</div>
-						<div class="service-body">
-							<h3>{service.data.title}</h3>
-							<p>{service.data.tagline}</p>
-							<div class="card-footer">
-								<span class="service-badge-tag">
-									Garantizado
-								</span>
-								<a
-									href={`${import.meta.env.BASE_URL}services/${service.id}`}
-									class="text-link"
-									aria-label={`Saber más sobre ${service.data.title}`}
-								>
-									Saber más →
-								</a>
-							</div>
-						</div>
-					</article>
-				))
-			}
-		</div>
-	</section>
-
-	<!-- ============================================================
-     SECCIÓN SOBRE NOSOTROS (EXPERIENCIA E HISTORIA CON RECURSO "image2.webp")
-     ============================================================ -->
-	<section class="about-highlight">
-		<div class="container grid-about">
-			<div class="about-media">
-				<Image
-					src={aboutImg}
-					alt="Profesionales de Carolina Prime Construction & Remodeling LLC trabajando en la estructura del techo de un proyecto residencial"
-					width={600}
-					height={450}
-					quality={80}
-					loading="lazy"
-				/>
-				<div class="badge-stat">
-					<span class="stat-number">+10</span>
-					<span class="stat-text">Años Protegiendo Hogares en NC</span
-					>
-				</div>
-			</div>
-			<div class="about-text">
-				<span class="sec-subtitle">¿Quiénes somos?</span>
-				<h2>Compromiso absoluto, Calidad sin atajos</h2>
-				<p>
-					En <strong
-						>Carolina Prime Construction & Remodeling LLC</strong
-					>, nuestra prioridad es darte tranquilidad absoluta. Creemos
-					sinceramente que un techo es mucho más que tejas; es la
-					seguridad que cobija a las personas y negocios que
-					construyen el futuro de nuestra comunidad.
-				</p>
-				<p>
-					Con cada proyecto, cuidamos la precisión estética, los
-					estándares estructurales clave de seguridad y la entrega a
-					tiempo. Nos encargamos del proceso de principio a fin,
-					incluyendo la obtención de permisos o seguros.
-				</p>
-				<ul class="bullets-check">
-					<li>
-						<svg
-							class="check-svg"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-							aria-hidden="true"
-							><path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="3"
-								d="M5 13l4 4L19 7"></path></svg
-						>
-						Materiales evaluados de excelente durabilidad (shingles y
-						metal).
-					</li>
-					<li>
-						<svg
-							class="check-svg"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-							aria-hidden="true"
-							><path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="3"
-								d="M5 13l4 4L19 7"></path></svg
-						>
-						Ingeniería y mano de obra local altamente calificada.
-					</li>
-					<li>
-						<svg
-							class="check-svg"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-							aria-hidden="true"
-							><path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="3"
-								d="M5 13l4 4L19 7"></path></svg
-						>
-						Limpieza rigurosa e inspección post-proyecto.
-					</li>
-				</ul>
-				<a
-					href={`${import.meta.env.BASE_URL}about`}
-					class="btn-primary alt-btn">Conocer Nuestro Equipo</a
-				>
-			</div>
-		</div>
-	</section>
-
-	<!-- ============================================================
-     SECCIÓN GALERÍA DE PROYECTOS (ESTÍMULO VISUAL E INTERACCIÓN)
-     ============================================================ -->
-	<section class="gallery-teaser container">
-		<div class="section-header-cnt">
-			<span class="sec-subtitle">Nuestros Proyectos Recientes</span>
-			<h2>Resultados reales de los que nos sentimos orgullosos</h2>
-			<p class="section-desc">
-				Hogares reales transformados y protegidos. Explora nuestra
-				grilla interactiva y observa el nivel de detalle y solidez de
-				nuestros acabados.
-			</p>
-		</div>
-
-		<!-- Grilla interactiva interactiva que estimula la revisión detallada -->
-		<div class="gallery-interactive-grid">
-			{
-				recentProjects.map((proj) => (
-					<div class="proj-card-wrap">
-						<figure class="proj-card">
-							<div class="proj-img-box">
-								<Image
-									src={proj.data.image}
-									alt={proj.data.alt}
-									width={500}
-									height={380}
-									quality={85}
-									loading="lazy"
-									class="p-img"
-								/>
-								<div class="proj-overlay">
-									<div class="overlay-details">
-										<span class="proj-location">
-											{proj.data.location}
-										</span>
-										<h3 class="proj-title">
-											{proj.data.title}
-										</h3>
-										{/* <p class="proj-cta-text">
-											Ver portafolio de fotos →
-										</p> */}
-									</div>
-								</div>
-							</div>
-						</figure>
-					</div>
-				))
-			}
-		</div>
-
-		<div class="gallery-cta">
-			<a
-				href={`${import.meta.env.BASE_URL}gallery`}
-				class="btn-primary"
-				aria-label="Ver todos los proyectos de la galería"
-			>
-				Ver Galería de Proyectos Completa
-			</a>
-		</div>
-	</section>
-
-	<!-- ============================================================
-     SECCIÓN DE "COMO TRABAJAMOS" (PASO A PASO / REDUCCIÓN DE DISONANCIA)
-     ============================================================ -->
-	<section class="workflow-section">
-		<div class="container">
-			<div class="section-header-cnt centered">
-				<span class="sec-subtitle">Proceso Transparente</span>
-				<h2>Tu camino hacia un techo seguro, paso a paso</h2>
-			</div>
-
-			<div class="steps-grid">
-				<div class="step-card">
-					<span class="step-num">01</span>
-					<h3>Inspección Inicial Gratis</h3>
-					<p>
-						Un ingeniero certificado evalúa el estado real y las
-						áreas críticas de tu techo de manera gratuita.
-					</p>
-				</div>
-
-				<div class="step-card">
-					<span class="step-num">02</span>
-					<h3>Cotización Transparente</h3>
-					<p>
-						Dividimos el presupuesto por partidas detalladas,
-						recomendándote la mejor opción técnica sin sorpresas
-						ocultas.
-					</p>
-				</div>
-
-				<div class="step-card">
-					<span class="step-num">03</span>
-					<h3>Construcción Rápida</h3>
-					<p>
-						Ejecutamos la instalación minimizando las molestias
-						operativas y garantizando plazos estrictos.
-					</p>
-				</div>
-
-				<div class="step-card">
-					<span class="step-num">04</span>
-					<h3>Entrega y Limpieza</h3>
-					<p>
-						Realizamos un barrido magnético de clavos, retiramos
-						escombros y validamos tu garantía de materiales.
-					</p>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<!-- ============================================================
-     CTA FINAL / BANNER DE ACCIÓN RÁPIDA (CONVERTIDOR DE TRÁFICO)
-     ============================================================ -->
-	<section class="cta-banner container">
-		<div class="cta-banner-box">
-			<div class="cta-text-cnt">
-				<h2>¿Preocupado por goteras o daños de tormentas recientes?</h2>
-				<p>
-					No dejes pasar más tiempo. El daño por agua silencioso
-					arruina la propiedad. Te damos una inspección sin
-					compromiso.
-				</p>
-			</div>
-			<div class="cta-action-cnt">
-				<a
-					href={`${import.meta.env.BASE_URL}contact`}
-					class="btn-primary btn-white-accent"
-					>Agendar Mi Inspección Gratis</a
-				>
-			</div>
-		</div>
-	</section>
-</BaseLayout>
-
-<style>
-	/* ============================================================
-     ESTILOS HERO SECTION CON CONTEXTO VISUAL (MUTED BACKGROUND VIDEO)
-     ============================================================ */
-	.hero-container {
-		position: relative;
-		width: 100%;
-		min-height: 75vh; /* Altura generosa para Desktop */
-		display: flex;
-		align-items: center;
-		overflow: hidden;
-		color: #fff;
-		background-color: #1a1a1a; /* Background de respaldo */
-		padding: 100px 0;
-	}
-
-	/* El video ocupa todo el fondo dinámico */
-	.hero-video {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		min-width: 100%;
-		min-height: 100%;
-		width: auto;
-		height: auto;
-		z-index: 1;
-		transform: translate(-50%, -50%);
-		/* object-fit: cover; */
-		object-fit: contain;
-
-		/* way 2 */
-		/* 
-		min-width: unset;
-		min-height: unset;
-		width: 100vh;
-		height: 100vw;
-		transform: translate(-50%, -50%) rotate(90deg);
-		*/
-	}
-
-	.hero-fallback-bg {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background-size: cover;
-		background-position: center;
-		z-index: 1;
-		opacity: 0.15; /* Sutil detalle por si el video no carga */
-		filter: grayscale(20%);
-	}
-
-	/* Overlay de degradado oscuro que garantiza el contraste WCAG 2.1 AAA de color */
-	.video-overlay {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background: linear-gradient(
-			135deg,
-			rgba(15, 23, 42, 0.9) 0%,
-			rgba(26, 43, 76, 0.75) 50%,
-			rgba(15, 23, 42, 0.4) 100%
-		);
-		z-index: 2;
-	}
-
-	/* Contenido legible gracias al z-index alto */
-	.hero-content {
-		position: relative;
-		z-index: 3;
-		max-width: 750px;
-	}
-
-	.hero-badge {
-		display: inline-block;
-		background-color: #395ca0;
-		color: #fff;
-		font-size: 0.85rem;
-		font-weight: 700;
-		letter-spacing: 1px;
-		text-transform: uppercase;
-		padding: 6px 14px;
-		border-radius: 50px;
-		margin-bottom: 24px;
-		box-shadow: 0 4px 10px rgba(57, 92, 160, 0.4);
-	}
-
-	.hero-container h1 {
-		font-size: 3.5rem;
-		line-height: 1.15;
-		font-weight: 700;
-		margin-bottom: 20px;
-		letter-spacing: -1px;
-	}
-
-	.hero-container p {
-		font-size: 1.25rem;
-		color: #e2e8f0;
-		line-height: 1.6;
-		margin-bottom: 40px;
-	}
-
-	.hero-actions {
-		display: flex;
-		gap: 16px;
-		flex-wrap: wrap;
-	}
-
-	/* ============================================================
-     ESTILOS DE BOTONES (UI/UX)
-     ============================================================ */
-	.btn-primary {
-		background-color: #395ca0;
-		color: #fff;
-		padding: 14px 28px;
-		border-radius: 6px;
-		font-weight: 600;
-		font-size: 1rem;
-		border: none;
-		cursor: pointer;
-		box-shadow: 0 4px 15px rgba(57, 92, 160, 0.3);
-		transition: all 0.25s ease;
-		display: inline-block;
-		text-align: center;
-	}
-
-	.btn-primary:hover {
-		background-color: #293a8b;
-		transform: translateY(-2px);
-		box-shadow: 0 6px 20px rgba(57, 92, 160, 0.45);
-		color: #fff;
-	}
-
-	.btn-secondary {
-		background-color: rgba(255, 255, 255, 0.1);
-		color: #fff;
-		border: 1px solid rgba(255, 255, 255, 0.3);
-		padding: 14px 28px;
-		border-radius: 6px;
-		font-weight: 600;
-		font-size: 1rem;
-		transition: all 0.25s ease;
-		display: inline-block;
-		text-align: center;
-		backdrop-filter: blur(5px);
-	}
-
-	.btn-secondary:hover {
-		background-color: rgba(255, 255, 255, 0.2);
-		border-color: #fff;
-		color: #fff;
-	}
-
-	/* ============================================================
-     BARRAN DE CONFIANZA (SERIEDAD DE MARCA)
-     ============================================================ */
-	.trust-banner {
-		background-color: #f1f5f9;
-		padding: 30px 0;
-		border-bottom: 1px solid #e2e8f0;
-	}
-
-	.grid-trust {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-		gap: 32px;
-	}
-
-	.trust-item {
-		display: flex;
-		align-items: flex-start;
-		gap: 16px;
-	}
-
-	.icon-wrap {
-		background-color: rgba(57, 92, 160, 0.1);
-		color: #395ca0;
-		padding: 10px;
-		border-radius: 8px;
-		flex-shrink: 0;
-	}
-
-	.icon-wrap svg {
-		width: 24px;
-		height: 24px;
-	}
-
-	.trust-item h3 {
-		font-size: 1.1rem;
-		font-weight: 600;
-		color: #0f172a;
-		margin-bottom: 4px;
-	}
-
-	.trust-item p {
-		font-size: 0.9rem;
-		color: #64748b;
-		margin: 0;
-	}
-
-	/* ============================================================
-     SECCIÓN DE SERVICIOS DINÁMICOS
-     ============================================================ */
-	.services-teaser {
-		padding: 80px 24px;
-	}
-
-	.section-header-cnt {
-		max-width: 650px;
-		margin-bottom: 50px;
-	}
-
-	.section-header-cnt.centered {
-		margin-left: auto;
-		margin-right: auto;
-		text-align: center;
-	}
-
-	.sec-subtitle {
-		color: #395ca0;
-		font-size: 0.85rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 2px;
-		display: block;
-		margin-bottom: 12px;
-	}
-
-	.section-header-cnt h2 {
-		font-size: 2.25rem;
-		color: #0f172a;
-		font-weight: 700;
-		line-height: 1.2;
-		margin-bottom: 16px;
-	}
-
-	.section-desc {
-		font-size: 1.1rem;
-		color: #555;
-		line-height: 1.6;
-	}
-
-	.services-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-		gap: 24px;
-	}
-
-	.service-teaser-card {
-		background-color: #fff;
-		border: 1px solid #e2e8f0;
-		border-radius: 12px;
-		padding: 30px;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-		transition: all 0.3s ease;
-	}
-
-	.service-teaser-card:hover {
-		transform: translateY(-5px);
-		box-shadow:
-			0 20px 25px -5deg rgba(0, 0, 0, 0.08),
-			0 10px 10px -5px rgba(0, 0, 0, 0.04);
-		border-color: rgba(57, 92, 160, 0.3);
-	}
-
-	.service-media-icon {
-		font-size: 2.5rem;
-		margin-bottom: 20px;
-	}
-
-	.service-body h3 {
-		font-size: 1.25rem;
-		color: #0f172a;
-		font-weight: 700;
-		margin-bottom: 8px;
-	}
-
-	.service-body p {
-		font-size: 0.95rem;
-		color: #64748b;
-		line-height: 1.5;
-		margin-bottom: 24px;
-	}
-
-	.card-footer {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		border-top: 1px solid #f1f5f9;
-		padding-top: 16px;
-		margin-top: auto;
-	}
-
-	.service-badge-tag {
-		background-color: #f0fdf4;
-		color: #16a34a;
-		font-size: 0.75rem;
-		font-weight: 600;
-		padding: 4px 10px;
-		border-radius: 4px;
-	}
-
-	.text-link {
-		color: #395ca0;
-		font-weight: 600;
-		font-size: 0.9rem;
-		transition: color 0.2s ease;
-	}
-
-	.text-link:hover {
-		color: #293a8b;
-	}
-
-	/* ============================================================
-     SECCIÓN SOBRE NOSOTROS (EXPERIENCIA E HISTORIA DE APOYO)
-     ============================================================ */
-	.about-highlight {
-		background-color: #f8fafc;
-		padding: 90px 24px;
-		border-top: 1px solid #ebe5f2;
-		border-bottom: 1px solid #ebe5f2;
-	}
-
-	.grid-about {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-		gap: 60px;
-		align-items: center;
-	}
-
-	.about-media {
-		position: relative;
-	}
-
-	.about-media img {
-		border-radius: 12px;
-		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-		object-fit: cover;
-		width: 100%;
-		height: auto;
-	}
-
-	.badge-stat {
-		position: absolute;
-		bottom: -20px;
-		right: -10px;
-		background-color: #fff;
-		padding: 20px;
-		border-radius: 12px;
-		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-		display: flex;
-		flex-direction: column;
-		max-width: 180px;
-		border-left: 5px solid #395ca0;
-	}
-
-	.stat-number {
-		font-size: 2.25rem;
-		font-weight: 700;
-		color: #395ca0;
-		line-height: 1;
-		margin-bottom: 4px;
-	}
-
-	.stat-text {
-		font-size: 0.8rem;
-		font-weight: 600;
-		color: #334155;
-		line-height: 1.3;
-	}
-
-	.about-text h2 {
-		font-size: 2.25rem;
-		font-weight: 700;
-		color: #0f172a;
-		line-height: 1.2;
-		margin-bottom: 24px;
-	}
-
-	.about-text p {
-		font-size: 1.05rem;
-		color: #475569;
-		line-height: 1.7;
-		margin-bottom: 20px;
-	}
-
-	.bullets-check {
-		list-style: none;
-		margin-bottom: 35px;
-		padding: 0;
-	}
-
-	.bullets-check li {
-		display: flex;
-		align-items: center;
-		gap: 12px;
-		font-size: 1rem;
-		font-weight: 500;
-		color: #334155;
-		margin-bottom: 12px;
-	}
-
-	.check-svg {
-		width: 20px;
-		height: 20px;
-		color: #395ca0;
-		flex-shrink: 0;
-	}
-
-	.btn-primary.alt-btn {
-		background-color: transparent;
-		color: #395ca0;
-		border: 2px solid #395ca0;
-		box-shadow: none;
-	}
-
-	.btn-primary.alt-btn:hover {
-		background-color: #395ca0;
-		color: #fff;
-	}
-
-	/* ============================================================
-     SECCIÓN GALERÍA DE PROYECTOS (ESTÍMULO VISUAL E INTERACCIÓN)
-     ============================================================ */
-	.gallery-teaser {
-		padding: 90px 24px;
-	}
-
-	.gallery-interactive-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-		gap: 24px;
-	}
-
-	.proj-card-wrap {
-		perspective: 1000px; /* Soporta sensación 3D ligera */
-	}
-
-	.proj-card {
-		margin: 0;
-		overflow: hidden;
-		border-radius: 12px;
-		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-		background-color: #f1f5f9;
-	}
-
-	.proj-img-box {
-		position: relative;
-		width: 100%;
-		overflow: hidden;
-		aspect-ratio: 4 / 3;
-	}
-
-	.proj-img-box .p-img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-	}
-
-	/* Overlay interactivo en hover */
-	.proj-overlay {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background: linear-gradient(
-			to top,
-			rgba(15, 23, 42, 0.95) 0%,
-			rgba(15, 23, 42, 0.6) 60%,
-			rgba(15, 23, 42, 0.2) 100%
-		);
-		opacity: 0;
-		transition: opacity 0.35s ease;
-		display: flex;
-		align-items: flex-end;
-		padding: 24px;
-		z-index: 2;
-	}
-
-	.overlay-details {
-		transform: translateY(20px);
-		transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-	}
-
-	.proj-location {
-		color: #93c5fd;
-		font-size: 0.75rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 1.5px;
-		display: block;
-		margin-bottom: 6px;
-	}
-
-	.proj-title {
-		color: #fff;
-		font-size: 1.15rem;
-		font-weight: 700;
-		line-height: 1.3;
-		margin-bottom: 8px;
-	}
-
-	.proj-cta-text {
-		color: #fff;
-		font-size: 0.85rem;
-		font-weight: 600;
-		text-decoration: underline;
-		text-underline-offset: 3px;
-		margin: 0;
-	}
-
-	/* Animaciones Hover para despertar el interés ("Visualizar e Inspeccionar") */
-	.proj-card-wrap:hover .p-img {
-		transform: scale(1.1);
-	}
-
-	.proj-card-wrap:hover .proj-overlay {
-		opacity: 1;
-	}
-
-	.proj-card-wrap:hover .overlay-details {
-		transform: translateY(0);
-	}
-
-	.gallery-cta {
-		margin-top: 48px;
-		text-align: center;
-	}
-
-	/* ============================================================
-     SECCIÓN PASO A PASO
-     ============================================================ */
-	.workflow-section {
-		background-color: #0f172a;
-		color: #fff;
-		padding: 90px 24px;
-	}
-
-	.workflow-section .sec-subtitle {
-		color: #395ca0;
-	}
-
-	.workflow-section h2 {
-		color: #fff !important;
-	}
-
-	.steps-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-		gap: 32px;
-	}
-
-	.step-card {
-		background-color: rgba(255, 255, 255, 0.03);
-		border: 1px solid rgba(255, 255, 255, 0.08);
-		border-radius: 12px;
-		padding: 32px;
-		transition: background-color 0.25s ease;
-	}
-
-	.step-card:hover {
-		background-color: rgba(255, 255, 255, 0.06);
-	}
-
-	.step-num {
-		font-size: 3rem;
-		font-weight: 800;
-		color: rgba(57, 92, 160, 0.4);
-		display: block;
-		line-height: 1;
-		margin-bottom: 20px;
-		font-family: "Poppins", sans-serif;
-	}
-
-	.step-card h3 {
-		font-size: 1.2rem;
-		font-weight: 700;
-		margin-bottom: 12px;
-	}
-
-	.step-card p {
-		font-size: 0.9rem;
-		color: #cbd5e1;
-		line-height: 1.6;
-		margin: 0;
-	}
-
-	/* ============================================================
-     BANNER LLAMADO A LA ACCIÓN (CONVERSIÓN RÁPIDA)
-     ============================================================ */
-	.cta-banner {
-		padding: 80px 24px;
-	}
-
-	.cta-banner-box {
-		background-color: #395ca0;
-		border-radius: 16px;
-		padding: 48px 60px;
-		color: #fff;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		gap: 40px;
-		box-shadow: 0 20px 45px rgba(57, 92, 160, 0.25);
-	}
-
-	.cta-text-cnt {
-		max-width: 600px;
-	}
-
-	.cta-banner-box h2 {
-		font-size: 2rem;
-		font-weight: 700;
-		margin-bottom: 12px;
-		line-height: 1.2;
-	}
-
-	.cta-banner-box p {
-		font-size: 1.1rem;
-		color: #e2e8f0;
-		line-height: 1.5;
-		margin: 0;
-	}
-
-	.btn-white-accent {
-		background-color: #fff;
-		color: #395ca0;
-		padding: 16px 32px;
-		font-weight: 700;
-		font-size: 1.05rem;
-		box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-	}
-
-	.btn-white-accent:hover {
-		background-color: #f1f5f9;
-		color: #293a8b;
-		transform: translateY(-2px);
-		box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-	}
-
-	/* ============================================================
-     DISEÑO RESPONSIVO (MOBILE FIRST INTERNALLY)
-     ============================================================ */
-	@media (max-width: 1024px) {
-		.cta-banner-box {
-			flex-direction: column;
-			text-align: center;
-			padding: 40px;
-		}
-	}
-
-	@media (max-width: 768px) {
-		.hero-container {
-			min-height: 550px;
-			padding: 60px 0;
-		}
-
-		.hero-container h1 {
-			font-size: 2.25rem;
-		}
-
-		.hero-container p {
-			font-size: 1.1rem;
-		}
-
-		.grid-about {
-			gap: 40px;
-		}
-
-		.badge-stat {
-			position: static;
-			margin-top: 20px;
-			max-width: 100%;
-		}
-
-		.services-teaser,
-		.about-highlight,
-		.gallery-teaser,
-		.workflow-section,
-		.cta-banner {
-			padding: 60px 16px;
-		}
-	}
-
-	/* ============================================================
-   DARK MODE — index.astro
+    <!-- ═══════════════════════════════════════════════════════════════
+	     SECTION 1 — HERO
+	     Image background with overlay, title, subtitle and CTA
+	     ═══════════════════════════════════════════════════════════════ -->
+    <section
+        class="hero"
+        id="hero"
+        aria-label="Welcome to Carolina Prime Construction & Remodeling LLC"
+    >
+        <Image
+            src={heroImg}
+            alt="Expert roofing installation by Carolina Prime Construction & Remodeling in North Carolina"
+            class="hero__image"
+            loading="eager"
+            fetchpriority="high"
+        />
+
+        <div class="hero__overlay" aria-hidden="true"></div>
+
+        <div class="hero__content container">
+            <p class="hero__badge">Licensed & Insured in NC</p>
+            <h1 class="hero__title">
+                Building Trust,<br />
+                <span class="hero__title--accent">One Roof at a Time.</span>
+            </h1>
+            <p class="hero__subtitle">
+                Expert roofing, decks, porches & custom construction across
+                North Carolina.
+            </p>
+            <div class="hero__cta-group">
+                <a
+                    href={`${import.meta.env.BASE_URL}contact`}
+                    class="btn btn--primary"
+                    id="hero-cta-contact"
+                >
+                    Get a Free Estimate
+                </a>
+                <a
+                    href={`${import.meta.env.BASE_URL}services`}
+                    class="btn btn--outline"
+                    id="hero-cta-services"
+                >
+                    Our Services
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="hero__scroll" aria-hidden="true">
+            <span class="hero__scroll-line"></span>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+	     SECTION 2 — ABOUT
+	     Presentación breve con imagen lateral
+	     ═══════════════════════════════════════════════════════════════ -->
+    <section class="about" id="about" aria-labelledby="about-heading">
+        <div class="container about__grid">
+            <div class="about__image-wrap">
+                <Image
+                    src={aboutImg}
+                    alt="Carolina Prime Construction & Remodeling LLC team working on a residential deck project"
+                    width={600}
+                    height={450}
+                    loading="lazy"
+                    class="about__image"
+                />
+                <div class="about__image-accent" aria-hidden="true"></div>
+            </div>
+
+            <div class="about__content">
+                <p class="section-label">Who We Are</p>
+                <h2 id="about-heading" class="section-title">
+                    Craftsmanship You Can Count On
+                </h2>
+                <p class="about__text">
+                    At Carolina Prime Construction & Remodeling LLC, we bring
+                    years of hands-on experience to every project. From full
+                    roof replacements to custom decks and screen porches, our
+                    team delivers durable results with the attention to detail
+                    your home deserves.
+                </p>
+                <p class="about__text">
+                    Based in North Carolina, we understand the local climate
+                    challenges and building codes. Every project is completed on
+                    time, within budget, and backed by our quality guarantee.
+                </p>
+                <a
+                    href={`${import.meta.env.BASE_URL}about`}
+                    class="btn btn--secondary"
+                    id="about-cta"
+                >
+                    Learn More About Us →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+	     SECTION 3 — SERVICES
+	     Grid de 4 servicios con imagen, ícono y descripción
+	     ═══════════════════════════════════════════════════════════════ -->
+    <section class="services" id="services" aria-labelledby="services-heading">
+        <div class="container">
+            <p class="section-label section-label--center">What We Do</p>
+            <h2
+                id="services-heading"
+                class="section-title section-title--center"
+            >
+                Our Services
+            </h2>
+            <p class="section-subtitle">
+                Comprehensive construction solutions for residential and
+                commercial properties.
+            </p>
+
+            <div class="services__grid">
+                <!-- Service 1 -->
+                <article class="service-item" id="service-roofing">
+                    <div class="service-item__image-wrap">
+                        <Image
+                            src={serviceRoofing}
+                            alt="Professional shingle roof installation in progress"
+                            width={400}
+                            height={300}
+                            loading="lazy"
+                            class="service-item__image"
+                        />
+                    </div>
+                    <div class="service-item__body">
+                        <div class="service-item__icon" aria-hidden="true">
+                            🏠
+                        </div>
+                        <h3 class="service-item__title">Roofing</h3>
+                        <p class="service-item__desc">
+                            Full replacements, repairs & inspections. Shingle,
+                            metal, and flat roofing systems.
+                        </p>
+                        <a
+                            href={`${import.meta.env.BASE_URL}services/reparacion-goteras`}
+                            class="service-item__link"
+                        >
+                            Learn More →
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Service 2 -->
+                <article class="service-item" id="service-decks">
+                    <div class="service-item__image-wrap">
+                        <Image
+                            src={processImg}
+                            alt="Custom wood deck frame construction"
+                            width={400}
+                            height={300}
+                            loading="lazy"
+                            class="service-item__image"
+                        />
+                    </div>
+                    <div class="service-item__body">
+                        <div class="service-item__icon" aria-hidden="true">
+                            🪵
+                        </div>
+                        <h3 class="service-item__title">Decks & Porches</h3>
+                        <p class="service-item__desc">
+                            Custom-built decks, screen porches, and covered
+                            patios designed for NC weather.
+                        </p>
+                        <a
+                            href={`${import.meta.env.BASE_URL}services/instalacion-residencial`}
+                            class="service-item__link"
+                        >
+                            Learn More →
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Service 3 -->
+                <article class="service-item" id="service-buildings">
+                    <div class="service-item__image-wrap">
+                        <Image
+                            src={serviceBuildings}
+                            alt="Storage building under construction with siding"
+                            width={400}
+                            height={300}
+                            loading="lazy"
+                            class="service-item__image"
+                        />
+                    </div>
+                    <div class="service-item__body">
+                        <div class="service-item__icon" aria-hidden="true">
+                            🏗️
+                        </div>
+                        <h3 class="service-item__title">Buildings & Sheds</h3>
+                        <p class="service-item__desc">
+                            Storage buildings, workshops, and utility structures
+                            built to last.
+                        </p>
+                        <a
+                            href={`${import.meta.env.BASE_URL}services/techos-de-metal`}
+                            class="service-item__link"
+                        >
+                            Learn More →
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Service 4 -->
+                <article class="service-item" id="service-construction">
+                    <div class="service-item__image-wrap">
+                        <Image
+                            src={serviceConstruction}
+                            alt="New construction wall framing on a foundation"
+                            width={400}
+                            height={300}
+                            loading="lazy"
+                            class="service-item__image"
+                        />
+                    </div>
+                    <div class="service-item__body">
+                        <div class="service-item__icon" aria-hidden="true">
+                            🔨
+                        </div>
+                        <h3 class="service-item__title">New Construction</h3>
+                        <p class="service-item__desc">
+                            Ground-up residential builds and major renovations
+                            with full project management.
+                        </p>
+                        <a
+                            href={`${import.meta.env.BASE_URL}services/techado-comercial`}
+                            class="service-item__link"
+                        >
+                            Learn More →
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+	     SECTION 4 — GALLERY (Proyectos Destacados)
+	     Grid asimétrico con imágenes de proyectos reales
+	     ═══════════════════════════════════════════════════════════════ -->
+    <section class="gallery" id="gallery" aria-labelledby="gallery-heading">
+        <div class="container">
+            <p class="section-label section-label--center">Our Work</p>
+            <h2
+                id="gallery-heading"
+                class="section-title section-title--center"
+            >
+                Featured Projects
+            </h2>
+            <p class="section-subtitle">
+                Real results from real projects across North Carolina.
+            </p>
+
+            <div class="gallery__grid">
+                <figure
+                    class="gallery__item gallery__item--large"
+                    id="gallery-item-1"
+                >
+                    <Image
+                        src={galleryPorch}
+                        alt="Finished screen porch interior with ceiling fan and natural light"
+                        width={700}
+                        height={500}
+                        loading="lazy"
+                        class="gallery__image"
+                    />
+                    <figcaption class="gallery__caption">
+                        <span class="gallery__caption-title">Screen Porch</span>
+                        <span class="gallery__caption-location">Eastern NC</span
+                        >
+                    </figcaption>
+                </figure>
+
+                <figure class="gallery__item" id="gallery-item-2">
+                    <Image
+                        src={galleryExterior}
+                        alt="Completed screen porch exterior with new siding"
+                        width={400}
+                        height={400}
+                        loading="lazy"
+                        class="gallery__image"
+                    />
+                    <figcaption class="gallery__caption">
+                        <span class="gallery__caption-title"
+                            >Porch Exterior</span
+                        >
+                        <span class="gallery__caption-location"
+                            >Residential</span
+                        >
+                    </figcaption>
+                </figure>
+
+                <figure class="gallery__item" id="gallery-item-3">
+                    <Image
+                        src={galleryInterior}
+                        alt="Screen porch interior detail with beadboard ceiling"
+                        width={400}
+                        height={400}
+                        loading="lazy"
+                        class="gallery__image"
+                    />
+                    <figcaption class="gallery__caption">
+                        <span class="gallery__caption-title"
+                            >Interior Detail</span
+                        >
+                        <span class="gallery__caption-location"
+                            >Custom Build</span
+                        >
+                    </figcaption>
+                </figure>
+
+                <figure
+                    class="gallery__item gallery__item--wide"
+                    id="gallery-item-4"
+                >
+                    <Image
+                        src={galleryDeck}
+                        alt="Completed deck with porch structure and accessibility ramp"
+                        width={700}
+                        height={400}
+                        loading="lazy"
+                        class="gallery__image"
+                    />
+                    <figcaption class="gallery__caption">
+                        <span class="gallery__caption-title"
+                            >Deck & Structure</span
+                        >
+                        <span class="gallery__caption-location"
+                            >Full Renovation</span
+                        >
+                    </figcaption>
+                </figure>
+            </div>
+
+            <div class="gallery__cta">
+                <a
+                    href={`${import.meta.env.BASE_URL}gallery`}
+                    class="btn btn--secondary"
+                    id="gallery-cta"
+                >
+                    View All Projects →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+	     SECTION 5 — PROCESS
+	     Pasos del proceso de trabajo
+	     ═══════════════════════════════════════════════════════════════ -->
+    <section class="process" id="process" aria-labelledby="process-heading">
+        <div class="container">
+            <p class="section-label section-label--center">How It Works</p>
+            <h2
+                id="process-heading"
+                class="section-title section-title--center"
+            >
+                Our Simple Process
+            </h2>
+            <p class="section-subtitle">
+                From your first call to project completion — clear, efficient,
+                stress-free.
+            </p>
+
+            <div class="process__steps">
+                <div class="process__step" id="process-step-1">
+                    <div class="process__number" aria-hidden="true">01</div>
+                    <h3 class="process__step-title">Free Consultation</h3>
+                    <p class="process__step-desc">
+                        We visit your property, assess the scope, and discuss
+                        your vision and budget.
+                    </p>
+                </div>
+
+                <div class="process__connector" aria-hidden="true"></div>
+
+                <div class="process__step" id="process-step-2">
+                    <div class="process__number" aria-hidden="true">02</div>
+                    <h3 class="process__step-title">Detailed Estimate</h3>
+                    <p class="process__step-desc">
+                        You receive a transparent, itemized quote — no hidden
+                        fees, no surprises.
+                    </p>
+                </div>
+
+                <div class="process__connector" aria-hidden="true"></div>
+
+                <div class="process__step" id="process-step-3">
+                    <div class="process__number" aria-hidden="true">03</div>
+                    <h3 class="process__step-title">Expert Execution</h3>
+                    <p class="process__step-desc">
+                        Our crew handles everything with quality materials and
+                        professional craftsmanship.
+                    </p>
+                </div>
+
+                <div class="process__connector" aria-hidden="true"></div>
+
+                <div class="process__step" id="process-step-4">
+                    <div class="process__number" aria-hidden="true">04</div>
+                    <h3 class="process__step-title">Final Walkthrough</h3>
+                    <p class="process__step-desc">
+                        We walk through every detail together to ensure your
+                        complete satisfaction.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+	     SECTION 6 — STATS
+	     Cifras clave con animación de conteo
+	     ═══════════════════════════════════════════════════════════════ -->
+    <section class="stats" id="stats" aria-label="Company statistics">
+        <div class="stats__bg-image">
+            <Image
+                src={teamImg}
+                alt=""
+                width={1400}
+                height={600}
+                loading="lazy"
+                class="stats__bg-photo"
+                aria-hidden="true"
+            />
+        </div>
+        <div class="stats__overlay" aria-hidden="true"></div>
+        <div class="container stats__content">
+            <div class="stats__item" id="stat-projects">
+                <span class="stats__number" data-target="150">0</span>
+                <span class="stats__suffix">+</span>
+                <p class="stats__label">Projects Completed</p>
+            </div>
+            <div class="stats__item" id="stat-years">
+                <span class="stats__number" data-target="10">0</span>
+                <span class="stats__suffix">+</span>
+                <p class="stats__label">Years of Experience</p>
+            </div>
+            <div class="stats__item" id="stat-satisfaction">
+                <span class="stats__number" data-target="100">0</span>
+                <span class="stats__suffix">%</span>
+                <p class="stats__label">Client Satisfaction</p>
+            </div>
+            <div class="stats__item" id="stat-warranty">
+                <span class="stats__number" data-target="5">0</span>
+                <span class="stats__suffix">+ yr</span>
+                <p class="stats__label">Warranty Coverage</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+	     SECTION 7 — TESTIMONIALS
+	     Testimonios de clientes con diseño tipo tarjeta
+	     ═══════════════════════════════════════════════════════════════ -->
+    <section
+        class="testimonials"
+        id="testimonials"
+        aria-labelledby="testimonials-heading"
+    >
+        <div class="container">
+            <p class="section-label section-label--center">What Clients Say</p>
+            <h2
+                id="testimonials-heading"
+                class="section-title section-title--center"
+            >
+                Trusted by Homeowners
+            </h2>
+
+            <div class="testimonials__grid">
+                <blockquote class="testimonial" id="testimonial-1">
+                    <div
+                        class="testimonial__stars"
+                        aria-label="5 out of 5 stars"
+                    >
+                        ★★★★★
+                    </div>
+                    <p class="testimonial__text">
+                        "They replaced our entire roof in two days.
+                        Professional, clean, and the price was exactly what they
+                        quoted. Highly recommend!"
+                    </p>
+                    <footer class="testimonial__author">
+                        <div class="testimonial__avatar" aria-hidden="true">
+                            JM
+                        </div>
+                        <div>
+                            <cite class="testimonial__name">James M.</cite>
+                            <span class="testimonial__role"
+                                >Homeowner, Raleigh NC</span
+                            >
+                        </div>
+                    </footer>
+                </blockquote>
+
+                <blockquote class="testimonial" id="testimonial-2">
+                    <div
+                        class="testimonial__stars"
+                        aria-label="5 out of 5 stars"
+                    >
+                        ★★★★★
+                    </div>
+                    <p class="testimonial__text">
+                        "Our screen porch turned out amazing. The crew was
+                        respectful, communicative, and the quality exceeded
+                        expectations."
+                    </p>
+                    <footer class="testimonial__author">
+                        <div class="testimonial__avatar" aria-hidden="true">
+                            SL
+                        </div>
+                        <div>
+                            <cite class="testimonial__name">Sarah L.</cite>
+                            <span class="testimonial__role"
+                                >Homeowner, Greenville NC</span
+                            >
+                        </div>
+                    </footer>
+                </blockquote>
+
+                <blockquote class="testimonial" id="testimonial-3">
+                    <div
+                        class="testimonial__stars"
+                        aria-label="5 out of 5 stars"
+                    >
+                        ★★★★★
+                    </div>
+                    <p class="testimonial__text">
+                        "From the first estimate to the final walkthrough,
+                        everything was seamless. They built us a beautiful deck
+                        that transformed our backyard."
+                    </p>
+                    <footer class="testimonial__author">
+                        <div class="testimonial__avatar" aria-hidden="true">
+                            RD
+                        </div>
+                        <div>
+                            <cite class="testimonial__name">Robert D.</cite>
+                            <span class="testimonial__role"
+                                >Homeowner, Wilson NC</span
+                            >
+                        </div>
+                    </footer>
+                </blockquote>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+	     SECTION 8 — CTA FINAL
+	     Llamada a la acción con degradado y contacto
+	     ═══════════════════════════════════════════════════════════════ -->
+    <section
+        class="cta-final"
+        id="cta-final"
+        aria-label="Contact us for a free estimate"
+    >
+        <div class="container cta-final__content">
+            <h2 class="cta-final__title">Ready to Start Your Project?</h2>
+            <p class="cta-final__text">
+                Get a free, no-obligation estimate today. Let's build something
+                great together.
+            </p>
+            <div class="cta-final__actions">
+                <a
+                    href={`${import.meta.env.BASE_URL}contact`}
+                    class="btn btn--primary btn--large"
+                    id="cta-final-contact"
+                >
+                    Request Free Estimate
+                </a>
+                <a
+                    href="tel:+19195551234"
+                    class="btn btn--outline btn--large"
+                    id="cta-final-phone"
+                >
+                    📞 (919) 555-1234
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+     ESTILOS SCOPED — Mobile-First, Responsive, con Micro-Animaciones
+     ═══════════════════════════════════════════════════════════════════ -->
+    <style>
+        /* ── Design Tokens ── */
+        :root {
+            --color-primary: #395ca0;
+            --color-primary-dark: #293a8b;
+            --color-primary-light: #4a7fd4;
+            --color-accent: #d4a853;
+            --color-accent-light: #f0d48a;
+            --color-dark: #1a1a2e;
+            --color-dark-soft: #16213e;
+            --color-text: #2d2d2d;
+            --color-text-light: #6b7280;
+            --color-text-inverse: #f8fafc;
+            --color-bg: #fafafa;
+            --color-bg-alt: #f1f5f9;
+            --color-border: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.15);
+            --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.2);
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ── Shared Section Utilities ── */
+        .section-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--color-primary);
+            margin-bottom: 8px;
+        }
+        .section-label--center {
+            text-align: center;
+        }
+
+        .section-title {
+            font-family: "Poppins", sans-serif;
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 700;
+            color: var(--color-dark);
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+        .section-title--center {
+            text-align: center;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--color-text-light);
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin: 0 auto 48px;
+            line-height: 1.6;
+        }
+
+        /* ── Buttons ── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: "Poppins", sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 14px 28px;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all var(--transition);
+            border: 2px solid transparent;
+            line-height: 1;
+        }
+        .btn--primary {
+            background: var(--color-primary);
+            color: #fff;
+            border-color: var(--color-primary);
+        }
+        .btn--primary:hover {
+            background: var(--color-primary-dark);
+            border-color: var(--color-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            color: #fff;
+        }
+        .btn--outline {
+            background: transparent;
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        .btn--outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #fff;
+            color: #fff;
+        }
+        .btn--secondary {
+            background: transparent;
+            color: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+        .btn--secondary:hover {
+            background: var(--color-primary);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .btn--large {
+            padding: 18px 36px;
+            font-size: 1rem;
+        }
+
+        /* ═══════ HERO ═══════ */
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 65vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: var(--color-dark);
+        }
+        .hero__image {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+        .hero__overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                135deg,
+                rgba(26, 26, 46, 0.85) 0%,
+                rgba(57, 92, 160, 0.55) 100%
+            );
+            z-index: 1;
+        }
+        .hero__content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 40px 24px;
+            max-width: 800px;
+        }
+        .hero__badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--color-accent);
+            border: 1px solid rgba(212, 168, 83, 0.4);
+            padding: 6px 16px;
+            border-radius: 50px;
+            margin-bottom: 24px;
+            animation: fadeInDown 0.8s ease-out 0.2s both;
+        }
+        .hero__title {
+            font-family: "Poppins", sans-serif;
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.15;
+            margin-bottom: 20px;
+            animation: fadeInDown 0.8s ease-out 0.4s both;
+        }
+        .hero__title--accent {
+            color: var(--color-accent);
+        }
+        .hero__subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.6;
+            margin-bottom: 36px;
+            animation: fadeInDown 0.8s ease-out 0.6s both;
+        }
+        .hero__cta-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out 0.8s both;
+        }
+        .hero__scroll {
+            position: absolute;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+        .hero__scroll-line {
+            display: block;
+            width: 2px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 2px;
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        /* ═══════ ABOUT ═══════ */
+        .about {
+            padding: 80px 0;
+            background: var(--color-bg);
+        }
+        .about__grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+        .about__image-wrap {
+            position: relative;
+        }
+        .about__image {
+            border-radius: var(--radius-md);
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            box-shadow: var(--shadow-lg);
+        }
+        .about__image-accent {
+            position: absolute;
+            bottom: -12px;
+            right: -12px;
+            width: 60%;
+            height: 60%;
+            border: 3px solid var(--color-accent);
+            border-radius: var(--radius-md);
+            z-index: -1;
+        }
+        .about__content {
+            max-width: 540px;
+        }
+        .about__text {
+            color: var(--color-text-light);
+            font-size: 1rem;
+            line-height: 1.75;
+            margin-bottom: 16px;
+        }
+        .about__content .btn {
+            margin-top: 16px;
+        }
+
+        /* ═══════ SERVICES ═══════ */
+        .services {
+            padding: 80px 0;
+            background: var(--color-bg-alt);
+        }
+        .services__grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+        .service-item {
+            background: #fff;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition);
+            border: 1px solid var(--color-border);
+        }
+        .service-item:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+        }
+        .service-item__image-wrap {
+            overflow: hidden;
+            height: 200px;
+        }
+        .service-item__image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        .service-item:hover .service-item__image {
+            transform: scale(1.08);
+        }
+        .service-item__body {
+            padding: 24px;
+        }
+        .service-item__icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+        .service-item__title {
+            font-family: "Poppins", sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--color-dark);
+            margin-bottom: 8px;
+        }
+        .service-item__desc {
+            color: var(--color-text-light);
+            font-size: 0.92rem;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        .service-item__link {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            text-decoration: none;
+            transition: color var(--transition);
+        }
+        .service-item__link:hover {
+            color: var(--color-primary-dark);
+        }
+
+        /* ═══════ GALLERY ═══════ */
+        .gallery {
+            padding: 80px 0;
+            background: var(--color-bg);
+        }
+        .gallery__grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+        .gallery__item {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--radius-md);
+            margin: 0;
+            cursor: pointer;
+        }
+        .gallery__image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        .gallery__item:hover .gallery__image {
+            transform: scale(1.05);
+        }
+        .gallery__caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.75));
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            transform: translateY(100%);
+            transition: transform var(--transition);
+        }
+        .gallery__item:hover .gallery__caption {
+            transform: translateY(0);
+        }
+        .gallery__caption-title {
+            color: #fff;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .gallery__caption-location {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+        }
+        .gallery__cta {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        /* ═══════ PROCESS ═══════ */
+        .process {
+            padding: 80px 0;
+            background: var(--color-bg-alt);
+        }
+        .process__steps {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            align-items: center;
+        }
+        .process__step {
+            text-align: center;
+            max-width: 260px;
+        }
+        .process__number {
+            font-family: "Poppins", sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            opacity: 0.2;
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+        .process__step-title {
+            font-family: "Poppins", sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-dark);
+            margin-bottom: 8px;
+        }
+        .process__step-desc {
+            color: var(--color-text-light);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .process__connector {
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(
+                to bottom,
+                var(--color-primary),
+                transparent
+            );
+            border-radius: 2px;
+        }
+
+        /* ═══════ STATS ═══════ */
+        .stats {
+            position: relative;
+            padding: 80px 0;
+            overflow: hidden;
+        }
+        .stats__bg-image {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+        .stats__bg-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .stats__overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                135deg,
+                rgba(26, 26, 46, 0.92) 0%,
+                rgba(57, 92, 160, 0.88) 100%
+            );
+            z-index: 1;
+        }
+        .stats__content {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            text-align: center;
+        }
+        .stats__item {
+            padding: 16px;
+        }
+        .stats__number {
+            font-family: "Poppins", sans-serif;
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            font-weight: 700;
+            color: #fff;
+            line-height: 1;
+        }
+        .stats__suffix {
+            font-family: "Poppins", sans-serif;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 600;
+            color: var(--color-accent);
+        }
+        .stats__label {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 0.85rem;
+            margin-top: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ═══════ TESTIMONIALS ═══════ */
+        .testimonials {
+            padding: 80px 0;
+            background: var(--color-bg);
+        }
+        .testimonials__grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+        .testimonial {
+            background: #fff;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 32px;
+            margin: 0;
+            transition: all var(--transition);
+            position: relative;
+        }
+        .testimonial:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-4px);
+        }
+        .testimonial__stars {
+            color: var(--color-accent);
+            font-size: 1.2rem;
+            margin-bottom: 16px;
+            letter-spacing: 2px;
+        }
+        .testimonial__text {
+            color: var(--color-text);
+            font-size: 0.95rem;
+            line-height: 1.75;
+            margin-bottom: 24px;
+            font-style: italic;
+        }
+        .testimonial__author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .testimonial__avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(
+                135deg,
+                var(--color-primary),
+                var(--color-primary-light)
+            );
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+        .testimonial__name {
+            font-style: normal;
+            font-weight: 600;
+            color: var(--color-dark);
+            font-size: 0.9rem;
+            display: block;
+        }
+        .testimonial__role {
+            color: var(--color-text-light);
+            font-size: 0.8rem;
+        }
+
+        /* ═══════ CTA FINAL ═══════ */
+        .cta-final {
+            padding: 80px 0;
+            background: linear-gradient(
+                135deg,
+                var(--color-dark) 0%,
+                var(--color-dark-soft) 50%,
+                var(--color-primary-dark) 100%
+            );
+            text-align: center;
+        }
+        .cta-final__content {
+            max-width: 650px;
+        }
+        .cta-final__title {
+            font-family: "Poppins", sans-serif;
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+        .cta-final__text {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 36px;
+        }
+        .cta-final__actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ============================================================
+   DARK MODE — index2.astro
    ============================================================ */
-	@media (prefers-color-scheme: dark) {
-		/* ---- Reutilizables de sección ---- */
-		.section-header-cnt h2 {
-			color: #f1f5f9;
-		}
-		.section-desc {
-			color: #94a3b8;
-		}
-		.sec-subtitle {
-			color: #60a5fa;
-		}
+        @media (prefers-color-scheme: dark) {
+            /* ---- Re-tokenización ---- */
+            :root {
+                --color-primary: #4a7fd4;
+                --color-primary-light: #60a5fa;
+                --color-bg: #0f172a;
+                --color-bg-alt: #1e293b;
+                --color-text: #e2e8f0;
+                --color-text-light: #94a3b8;
+                /* --color-dark se mantiene en #1a1a2e para no romper el CTA gradient */
+                --color-border: rgba(255, 255, 255, 0.08);
+                --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+                --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+                --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6);
+                --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.7);
+            }
 
-		/* ---- Trust Banner ---- */
-		.trust-banner {
-			background-color: #1e293b;
-			border-bottom-color: rgba(255, 255, 255, 0.06);
-		}
-		.trust-item h3 {
-			color: #f1f5f9;
-		}
-		.trust-item p {
-			color: #94a3b8;
-		}
-		.icon-wrap {
-			background-color: rgba(96, 165, 250, 0.1);
-			color: #60a5fa;
-		}
+            /* ---- Headings que usan --color-dark (texto) ---- */
+            /* --color-dark no se pudo cambiar arriba sin romper el CTA bg,
+       así que se sobreescribe manualmente en los selectores de texto */
+            .section-title,
+            .service-item__title,
+            .process__step-title,
+            .testimonial__name {
+                color: #f1f5f9;
+            }
 
-		/* ---- Servicios ---- */
-		.service-teaser-card {
-			background-color: #1e293b;
-			border-color: rgba(255, 255, 255, 0.08);
-		}
-		.service-teaser-card:hover {
-			border-color: rgba(96, 165, 250, 0.3);
-			box-shadow:
-				0 20px 25px -5px rgba(0, 0, 0, 0.4),
-				0 10px 10px -5px rgba(0, 0, 0, 0.2);
-		}
-		.service-body h3 {
-			color: #f1f5f9;
-		}
-		.service-body p {
-			color: #94a3b8;
-		}
-		.card-footer {
-			border-top-color: rgba(255, 255, 255, 0.08);
-		}
-		.service-badge-tag {
-			background-color: rgba(74, 222, 128, 0.1);
-			color: #4ade80;
-		}
-		.text-link {
-			color: #60a5fa;
-		}
-		.text-link:hover {
-			color: #93c5fd;
-		}
+            /* ---- Cards con bg hardcodeado #fff ---- */
+            .service-item {
+                background: #1e293b;
+            }
+            .service-item:hover {
+                box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+            }
 
-		/* ---- About Highlight ---- */
-		.about-highlight {
-			background-color: #1e293b;
-			border-top-color: rgba(255, 255, 255, 0.08);
-			border-bottom-color: rgba(255, 255, 255, 0.08);
-		}
-		.about-text h2 {
-			color: #f1f5f9;
-		}
-		.about-text p {
-			color: #94a3b8;
-		}
-		.bullets-check li {
-			color: #cbd5e1;
-		}
-		.check-svg {
-			color: #60a5fa;
-		}
-		.about-media img {
-			box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-		}
-		.badge-stat {
-			background-color: #0f172a;
-			border-left-color: #60a5fa;
-			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-		}
-		.stat-number {
-			color: #60a5fa;
-		}
-		.stat-text {
-			color: #94a3b8;
-		}
-		.btn-primary.alt-btn {
-			color: #60a5fa;
-			border-color: #60a5fa;
-		}
-		.btn-primary.alt-btn:hover {
-			background-color: #60a5fa;
-			color: #0f172a;
-		}
+            .testimonial {
+                background: #1e293b;
+            }
 
-		/* ---- Galería ---- */
-		.proj-card {
-			background-color: #1e293b;
-		}
-		.proj-card-wrap:hover .p-img {
-			/* El efecto de escala ya funciona, no hay cambio */
-		}
+            /* ---- About accent border ---- */
+            .about__image-accent {
+                border-color: var(--color-primary-light);
+            }
 
-		/* ---- Workflow (ya es oscuro por defecto, solo ajuste sutil) ---- */
-		.workflow-section {
-			/* background ya es #0f172a — se mantiene */
-		}
-		.step-card {
-			border-color: rgba(255, 255, 255, 0.06);
-		}
+            /* ---- Process connector (re-colorear para dark bg-alt) ---- */
+            .process__connector {
+                background: linear-gradient(
+                    to bottom,
+                    var(--color-primary-light),
+                    transparent
+                );
+            }
 
-		/* ---- CTA Banner (ya es azul oscuro — se mantiene) ---- */
-		.btn-white-accent {
-			background-color: #1e293b;
-			/* color: #60a5fa; */
-			color: #f1f5f9;
-			border: 2px solid #60a5fa;
-		}
-		.btn-white-accent:hover {
-			background-color: #60a5fa;
-			/* color: #0f172a; */
-			color: #e3effb;
-		}
+            /* ---- Btn outline (en hero sobre overlay oscuro — se mantiene blanco) ---- */
+            /* .btn--outline ya usa color:#fff y border rgba(255,255,255,0.5) — OK en dark */
 
-		/* ---- Botones globales en contexto dark ---- */
-		.btn-primary {
-			background-color: #4a7fd4;
-			border-color: #4a7fd4;
-		}
-		.btn-primary:hover {
-			background-color: #3b6cbf;
-			border-color: #3b6cbf;
-		}
-		.btn-secondary {
-			color: #60a5fa;
-			border-color: #60a5fa;
-		}
-		.btn-secondary:hover {
-			background-color: #60a5fa;
-			color: #0f172a;
-		}
-	}
-</style>
+            /* ---- Btn secondary (sobre bg oscuro) ---- */
+            .btn--secondary {
+                color: var(--color-primary-light);
+                border-color: var(--color-primary-light);
+            }
+            .btn--secondary:hover {
+                background: var(--color-primary-light);
+                color: #0f172a;
+            }
+        }
 
-<script>
-	// const video = document.getElementById("video1") as HTMLVideoElement | null;
-	// if (video) {
-	// 	video.addEventListener("loadedmetadata", () => {
-	// 		video.playbackRate = 0.4;
-	// 	});
-	// }
-</script>
+        /* Process connector horizontal en tablet+ */
+        @media (prefers-color-scheme: dark) and (min-width: 768px) {
+            .process__connector {
+                background: linear-gradient(
+                    to right,
+                    var(--color-primary-light),
+                    transparent
+                );
+            }
+        }
+
+        /* ═══════ ANIMATIONS ═══════ */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes scrollPulse {
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: scaleY(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scaleY(1.3);
+            }
+        }
+
+        /* ═══════ RESPONSIVE — Tablet (768px+) ═══════ */
+        @media (min-width: 768px) {
+            .about__grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .services__grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .gallery__grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .gallery__item--large {
+                grid-column: span 2;
+            }
+            .gallery__item--large .gallery__image {
+                height: 360px;
+            }
+            .testimonials__grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .testimonials__grid .testimonial:last-child {
+                grid-column: span 2;
+                max-width: 480px;
+                margin: 0 auto;
+            }
+            .stats__content {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .process__steps {
+                flex-direction: row;
+                justify-content: center;
+                gap: 0;
+            }
+            .process__connector {
+                width: 60px;
+                height: 2px;
+                align-self: center;
+                background: linear-gradient(
+                    to right,
+                    var(--color-primary),
+                    transparent
+                );
+                margin-top: -24px;
+            }
+        }
+
+        /* ═══════ RESPONSIVE — Desktop (1024px+) ═══════ */
+        @media (min-width: 1024px) {
+            .about {
+                padding: 120px 0;
+            }
+            .services,
+            .gallery,
+            .process,
+            .testimonials {
+                padding: 100px 0;
+            }
+            .services__grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .gallery__grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .gallery__item--large {
+                grid-column: span 1;
+                grid-row: span 2;
+            }
+            .gallery__item--large .gallery__image {
+                height: 100%;
+            }
+            .gallery__item--wide {
+                grid-column: span 2;
+            }
+            .testimonials__grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .testimonials__grid .testimonial:last-child {
+                grid-column: span 1;
+                max-width: none;
+                margin: 0;
+            }
+            .gallery__caption {
+                transform: translateY(0);
+                opacity: 0;
+                transition: opacity var(--transition);
+            }
+            .gallery__item:hover .gallery__caption {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+
+    <!-- ═══════ Script: Stats Counter Animation ═══════ -->
+    <script>
+        // Animación de conteo para las estadísticas
+        // Se ejecuta cuando la sección entra en viewport
+        const observerOptions = {
+            root: null,
+            rootMargin: "0px",
+            threshold: 0.3,
+        };
+
+        const animateCounter = (element: HTMLElement) => {
+            const target = parseInt(element.dataset.target || "0", 10);
+            const duration = 2000;
+            const startTime = performance.now();
+
+            const updateCount = (currentTime: number) => {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                // Ease-out cubic
+                const easedProgress = 1 - Math.pow(1 - progress, 3);
+                const currentCount = Math.round(target * easedProgress);
+
+                element.textContent = currentCount.toString();
+
+                if (progress < 1) {
+                    requestAnimationFrame(updateCount);
+                }
+            };
+
+            requestAnimationFrame(updateCount);
+        };
+
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const counters =
+                        entry.target.querySelectorAll<HTMLElement>(
+                            ".stats__number",
+                        );
+                    counters.forEach((counter) => animateCounter(counter));
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        const statsSection = document.getElementById("stats");
+        if (statsSection) {
+            statsObserver.observe(statsSection);
+        }
+
+        // Animación fade-in para secciones al scroll
+        const fadeObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("is-visible");
+                        fadeObserver.unobserve(entry.target);
+                    }
+                });
+            },
+            { threshold: 0.1 },
+        );
+
+        document
+            .querySelectorAll(
+                ".about, .services, .gallery, .process, .testimonials, .cta-final",
+            )
+            .forEach((section) => {
+                section.classList.add("fade-section");
+                fadeObserver.observe(section);
+            });
+    </script>
+
+    <style is:global>
+        /* Fade-in animation para secciones al scroll */
+        .fade-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition:
+                opacity 0.8s ease-out,
+                transform 0.8s ease-out;
+        }
+        .fade-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</BaseLayout>
