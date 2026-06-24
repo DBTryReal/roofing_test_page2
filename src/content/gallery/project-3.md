@@ -1,7 +1,7 @@
 ---
 title: "Commercial Roof with TPO Membrane"
 location: "Fayetteville, NC"
-category: "comercial"
+category: "commercial"
 image: "../../assets/images/gallery/project-3.webp"
 alt: "Flat roof of a commercial building covered with white TPO membrane in Fayetteville, NC"
 featured: true

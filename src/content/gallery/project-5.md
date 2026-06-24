@@ -1,7 +1,7 @@
 ---
 title: "Sealing & Repair of Recurring Leaks"
 location: "Clinton, NC"
-category: "reparacion"
+category: "repair"
 image: "../../assets/images/gallery/project-5.webp"
 alt: "Inspection and sealing of leaks in skylight area of a residential home in Clinton, NC"
 featured: true

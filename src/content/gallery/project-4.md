@@ -1,7 +1,7 @@
 ---
 title: "Corrugated Metal Roof in Industrial Warehouse"
 location: "Jacksonville, NC"
-category: "comercial"
+category: "commercial"
 image: "../../assets/images/gallery/project-4.webp"
 alt: "Installation of galvanized corrugated metal panels on an industrial warehouse in Jacksonville, NC"
 featured: true

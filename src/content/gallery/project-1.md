@@ -1,7 +1,7 @@
 ---
 title: "Complete Residential Roof Replacement"
 location: "Wilmington, NC"
-category: "instalacion"
+category: "installation"
 image: "../../assets/images/gallery/project-1.webp"
 alt: "New residential roof with architectural asphalt shingles installed in Wilmington, NC"
 featured: true
