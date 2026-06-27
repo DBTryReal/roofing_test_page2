@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import logoLight from "../assets/logo-light.webp";
-import logoDark from "../assets/logo-dark.webp";
+// import logoDark from "../assets/logo-dark.webp";
 ---
 
 <header class="site-header">
@@ -21,7 +21,7 @@ import logoDark from "../assets/logo-dark.webp";
                 decoding="async"
             />
 
-            <Image
+            <!-- <Image
                 src={logoDark}
                 alt="Carolina Prime Construction & Remodeling LLC Logo"
                 width={120}
@@ -29,7 +29,7 @@ import logoDark from "../assets/logo-dark.webp";
                 loading="eager"
                 decoding="async"
                 class="logo-theme-dark"
-            />
+            /> -->
         </a>
 
         <button
@@ -68,27 +68,29 @@ import logoDark from "../assets/logo-dark.webp";
         display: flex;
         align-items: center;
         flex-shrink: 0;
-        border-bottom: none;
+        /* filter: drop-shadow(0 0 1px #ffffff)
+            drop-shadow(0 0 4px rgba(255, 255, 255, 0.9)); */
+        filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 4px #fff);
     }
 
-    .logo-img {
+    /* .logo-img {
         height: 48px;
         width: auto;
-    }
+    } */
 
     /* Por defecto: modo claro activo, modo oscuro oculto */
-    .logo-theme-dark {
+    /* .logo-theme-dark {
         display: none;
     }
 
-    @media (prefers-color-scheme: dark) {
+    /* @media (prefers-color-scheme: dark) {
         .logo-theme-light {
             display: none;
         }
         .logo-theme-dark {
             display: block;
         }
-    }
+    } */
 
     /* ============================================================
        BOTÓN HAMBURGER — oculto en desktop
