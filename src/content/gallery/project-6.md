@@ -1,12 +1,17 @@
 ---
-title: "Roof Installation for New Construction"
+title: "Interior & Exterior Painting"
 location: "Wallace, NC"
-category: "installation"
+category: "painting"
 image: "../../assets/images/gallery/project-6.webp"
-alt: "New roof with architectural laminated shingles installed during home construction in Wallace, NC"
-featured: true
+alt: "Fresh interior and exterior painting on a residential property in Wallace, NC"
+featured: false
 date: 2024-11-05
 order: 6
+images:
+    - image: "../../assets/images/others/2/01.jpeg"
+      alt: "Painting — detail 1"
+    - image: "../../assets/images/others/2/02.jpeg"
+      alt: "Painting — detail 2"
 ---
 
-We worked alongside the general contractor to install the roof of a new 3,100 square foot home. We utilized high-quality laminated shingles with strong synthetic underlayment. The project was completed on schedule without delaying subsequent phases of construction.
+We delivered a clean, two-coat finish on interior and exterior surfaces with proper surface preparation, priming, and protection of surrounding areas.

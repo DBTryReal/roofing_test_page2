@@ -1,21 +1,22 @@
 ---
-title: "Residential Roof Installation"
-tagline: "New roofing systems with material and workmanship warranties"
+title: "Roofing"
+tagline: "Full re-roof, repairs & inspections across shingle, metal and flat systems."
 price: 5000
+featured: true
 icon: "🏠"
 order: 1
---------
+---
 
 ## What's Included in This Service?
 
-We install complete roofing systems for new homes and replace damaged or aging roofs using certified materials designed for the humid climate and hurricane seasons of the southeastern United States.
+We install complete roofing systems for new homes and replace damaged or aging roofs using certified materials designed for the humid climate and hurricane seasons of North Carolina.
 
 ### This service includes:
 
 * Free structural roof inspection
 * Removal and disposal of the existing roof
 * Installation of a moisture barrier (underlayment)
-* Installation of high-performance asphalt shingles (30-year warranty)
+* Installation of high-performance shingles or metal panels (30-year warranty)
 * Sealing of roof edges, gutters, and chimneys
 * Complete cleanup of the work area
 * Written workmanship warranty (5 years)
@@ -29,4 +30,4 @@ We install complete roofing systems for new homes and replace damaged or aging r
 
 ## Who Is This Service Ideal For?
 
-Homeowners in North Carolina who need to replace a roof that is more than 15 years old and shows visible damage from hail, strong winds, or accumulated moisture.
+Homeowners and property managers in North Carolina who need to replace a roof that is more than 15 years old and shows visible damage from hail, strong winds, or accumulated moisture.

@@ -11,53 +11,28 @@ const sortedServices = services.sort((a, b) => {
     const orderB = b.data.order ?? 999;
     return orderA - orderB;
 });
-
-// Diccionario de traducciones dinámicas para mantener el sistema de Markdown intacto
-const serviceTranslations: Record<string, { title: string; tagline: string }> =
-    {
-        "instalacion-residencial": {
-            title: "Residential Roof Installation",
-            tagline:
-                "New roofing systems with comprehensive material and workmanship warranties.",
-        },
-        "reparacion-goteras": {
-            title: "Roof & Leak Repair",
-            tagline:
-                "Rapid diagnosis and reliable solutions for active leaks and storm damage.",
-        },
-        "techado-comercial": {
-            title: "Commercial Roofing",
-            tagline:
-                "High-quality, large-scale solutions for commercial buildings and facilities.",
-        },
-        "techos-de-metal": {
-            title: "Metal Roofing Systems",
-            tagline:
-                "Superior durability and maximum resistance against hurricanes and hail.",
-        },
-    };
 ---
 
 <BaseLayout
-    title="Professional Roofing Services — Carolina Prime Construction"
-    description="Explore our high-quality residential, commercial, metal roofing, and repair services in Magnolia, NC, and surrounding areas within 70 miles."
+     title="Our Services — Carolina Prime Construction"
+     description="Explore our roofing, decks & porches, gates & exteriors, bathrooms & remodeling, flooring & finishes, and painting services in Magnolia, NC, and surrounding areas within 70 miles."
 >
-    <!-- PAGE HERO -->
-    <section class="page-hero">
-        <div class="container">
-            <span class="page-hero__badge">Our Expertise</span>
-            <h1 class="page-hero__title">
-                Professional <span class="page-hero__title--accent"
-                    >Roofing Services</span
-                >
-            </h1>
-            <p class="page-hero__subtitle">
-                Comprehensive residential and commercial roofing solutions to
-                protect your property in Magnolia, NC, and surrounding
-                communities within 70 miles.
-            </p>
-        </div>
-    </section>
+      <!-- PAGE HERO -->
+      <section class="page-hero">
+          <div class="container">
+              <span class="page-hero__badge">Our Expertise</span>
+              <h1 class="page-hero__title">
+                 Our <span class="page-hero__title--accent"
+                      >Services</span
+                  >
+              </h1>
+              <p class="page-hero__subtitle">
+                 Comprehensive construction and remodeling solutions for
+                 residential and commercial properties in Magnolia, NC, and
+                 surrounding communities within 70 miles.
+              </p>
+          </div>
+      </section>
 
     <!-- SERVICES LISTING -->
     <section class="services-listing container">
@@ -71,37 +46,33 @@ const serviceTranslations: Record<string, { title: string; tagline: string }> =
         </div>
 
         <div class="services-grid">
-            {
-                sortedServices.map((service) => {
-                    const translation = serviceTranslations[service.id] || {
-                        title: service.data.title,
-                        tagline: service.data.tagline,
-                    };
-                    return (
-                        <article class="service-teaser-card">
-                            <div class="service-media-icon" aria-hidden="true">
-                                {service.data.icon}
-                            </div>
-                            <div class="service-body">
-                                <h3>{translation.title}</h3>
-                                <p>{translation.tagline}</p>
-                                <div class="card-footer">
-                                    <span class="service-badge-tag">
-                                        Guaranteed
-                                    </span>
-                                    <a
-                                        href={`${import.meta.env.BASE_URL}services/${service.id}`}
-                                        class="text-link"
-                                        aria-label={`Learn more about ${translation.title}`}
-                                    >
-                                        Learn More →
-                                    </a>
-                                </div>
-                            </div>
-                        </article>
-                    );
-                })
-            }
+              {
+                 sortedServices.map((service) => {
+                     return (
+                          <article class="service-teaser-card">
+                              <div class="service-media-icon" aria-hidden="true">
+                                  {service.data.icon}
+                              </div>
+                              <div class="service-body">
+                                  <h3>{service.data.title}</h3>
+                                  <p>{service.data.tagline}</p>
+                                  <div class="card-footer">
+                                      <span class="service-badge-tag">
+                                         Guaranteed
+                                      </span>
+                                      <a
+                                         href={`${import.meta.env.BASE_URL}services/${service.id}`}
+                                         class="text-link"
+                                         aria-label={`Learn more about ${service.data.title}`}
+                                      >
+                                         Learn More →
+                                      </a>
+                                  </div>
+                              </div>
+                          </article>
+                      );
+                  })
+              }
         </div>
 
         {

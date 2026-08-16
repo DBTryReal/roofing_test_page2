@@ -8,6 +8,7 @@ import aboutImg from "../assets/images/image10.webp";
 import serviceRoofing from "../assets/images/image11.webp";
 import serviceBuildings from "../assets/images/image15.webp";
 import serviceConstruction from "../assets/images/image13.webp";
+import serviceExteriorPaint from "../assets/images/image8.webp";
 import galleryPorch from "../assets/images/image16.webp";
 import galleryExterior from "../assets/images/image17.webp";
 import galleryInterior from "../assets/images/image18.webp";
@@ -137,127 +138,193 @@ import teamImg from "../assets/images/image4.webp";
                 commercial properties.
             </p>
 
-            <div class="services__grid">
-                <!-- Service 1 -->
-                <article class="service-item" id="service-roofing">
-                    <div class="service-item__image-wrap">
-                        <Image
-                            src={serviceRoofing}
-                            alt="Professional shingle roof installation in progress"
-                            width={400}
-                            height={300}
-                            loading="lazy"
-                            class="service-item__image"
-                        />
-                    </div>
-                    <div class="service-item__body">
-                        <div class="service-item__icon" aria-hidden="true">
-                            🏠
-                        </div>
-                        <h3 class="service-item__title">Roofing</h3>
-                        <p class="service-item__desc">
-                            Full replacements, repairs & inspections. Shingle,
-                            metal, and flat roofing systems.
-                        </p>
-                        <a
-                            href={`${import.meta.env.BASE_URL}services/reparacion-goteras`}
-                            class="service-item__link"
-                        >
-                            Learn More →
-                        </a>
-                    </div>
-                </article>
+             <div class="services__grid">
+                  <!-- Service 1 — Roofing -->
+                  <article class="service-item" id="service-roofing">
+                      <div class="service-item__image-wrap">
+                          <Image
+                             src={serviceRoofing}
+                             alt="Professional shingle roof installation in progress"
+                             width={400}
+                             height={300}
+                             loading="lazy"
+                             class="service-item__image"
+                          />
+                      </div>
+                      <div class="service-item__body">
+                          <div class="service-item__icon" aria-hidden="true">
+                              🏠
+                          </div>
+                          <h3 class="service-item__title">Roofing</h3>
+                          <p class="service-item__desc">
+                             Full replacements, repairs & inspections. Shingle,
+                             metal, and flat roofing systems.
+                          </p>
+                          <a
+                             href={`${import.meta.env.BASE_URL}services/roofing`}
+                             class="service-item__link"
+                          >
+                             Learn More →
+                          </a>
+                      </div>
+                  </article>
 
-                <!-- Service 2 -->
-                <article class="service-item" id="service-decks">
-                    <div class="service-item__image-wrap">
-                        <Image
-                            src={processImg}
-                            alt="Custom wood deck frame construction"
-                            width={400}
-                            height={300}
-                            loading="lazy"
-                            class="service-item__image"
-                        />
-                    </div>
-                    <div class="service-item__body">
-                        <div class="service-item__icon" aria-hidden="true">
-                            🪵
-                        </div>
-                        <h3 class="service-item__title">Decks & Porches</h3>
-                        <p class="service-item__desc">
-                            Custom-built decks, screen porches, and covered
-                            patios designed for NC weather.
-                        </p>
-                        <a
-                            href={`${import.meta.env.BASE_URL}services/instalacion-residencial`}
-                            class="service-item__link"
-                        >
-                            Learn More →
-                        </a>
-                    </div>
-                </article>
+                  <!-- Service 2 — Decks & Porches -->
+                  <article class="service-item" id="service-decks">
+                      <div class="service-item__image-wrap">
+                          <Image
+                             src={processImg}
+                             alt="Custom wood deck frame construction"
+                             width={400}
+                             height={300}
+                             loading="lazy"
+                             class="service-item__image"
+                          />
+                      </div>
+                      <div class="service-item__body">
+                          <div class="service-item__icon" aria-hidden="true">
+                              🪵
+                          </div>
+                          <h3 class="service-item__title">Decks & Porches</h3>
+                          <p class="service-item__desc">
+                             Custom-built decks, screen porches, and covered
+                             patios designed for NC weather.
+                          </p>
+                          <a
+                             href={`${import.meta.env.BASE_URL}services/decks-porches`}
+                             class="service-item__link"
+                          >
+                             Learn More →
+                          </a>
+                      </div>
+                  </article>
 
-                <!-- Service 3 -->
-                <article class="service-item" id="service-buildings">
-                    <div class="service-item__image-wrap">
-                        <Image
-                            src={serviceBuildings}
-                            alt="Storage building under construction with siding"
-                            width={400}
-                            height={300}
-                            loading="lazy"
-                            class="service-item__image"
-                        />
-                    </div>
-                    <div class="service-item__body">
-                        <div class="service-item__icon" aria-hidden="true">
-                            🏗️
-                        </div>
-                        <h3 class="service-item__title">Buildings & Sheds</h3>
-                        <p class="service-item__desc">
-                            Storage buildings, workshops, and utility structures
-                            built to last.
-                        </p>
-                        <a
-                            href={`${import.meta.env.BASE_URL}services/techos-de-metal`}
-                            class="service-item__link"
-                        >
-                            Learn More →
-                        </a>
-                    </div>
-                </article>
+                  <!-- Service 3 — Gates & Exteriors -->
+                  <article class="service-item" id="service-gates">
+                      <div class="service-item__image-wrap">
+                          <Image
+                             src={serviceBuildings}
+                             alt="Driveway gate and perimeter fencing install"
+                             width={400}
+                             height={300}
+                             loading="lazy"
+                             class="service-item__image"
+                          />
+                      </div>
+                      <div class="service-item__body">
+                          <div class="service-item__icon" aria-hidden="true">
+                              🚪
+                          </div>
+                          <h3 class="service-item__title">
+                             Gates & Exteriors
+                          </h3>
+                          <p class="service-item__desc">
+                             Driveway gates, fencing & exterior finishes that
+                             complete the property.
+                          </p>
+                          <a
+                             href={`${import.meta.env.BASE_URL}services/gates-exteriors`}
+                             class="service-item__link"
+                          >
+                             Learn More →
+                          </a>
+                      </div>
+                  </article>
 
-                <!-- Service 4 -->
-                <article class="service-item" id="service-construction">
-                    <div class="service-item__image-wrap">
-                        <Image
-                            src={serviceConstruction}
-                            alt="New construction wall framing on a foundation"
-                            width={400}
-                            height={300}
-                            loading="lazy"
-                            class="service-item__image"
-                        />
-                    </div>
-                    <div class="service-item__body">
-                        <div class="service-item__icon" aria-hidden="true">
-                            🔨
-                        </div>
-                        <h3 class="service-item__title">New Construction</h3>
-                        <p class="service-item__desc">
-                            Ground-up residential builds and major renovations
-                            with full project management.
-                        </p>
-                        <a
-                            href={`${import.meta.env.BASE_URL}services/techado-comercial`}
-                            class="service-item__link"
-                        >
-                            Learn More →
-                        </a>
-                    </div>
-                </article>
-            </div>
+                  <!-- Service 4 — Bathrooms & Remodeling -->
+                  <article class="service-item" id="service-bathrooms">
+                      <div class="service-item__image-wrap">
+                          <Image
+                             src={serviceConstruction}
+                             alt="Modern bathroom remodel in progress"
+                             width={400}
+                             height={300}
+                             loading="lazy"
+                             class="service-item__image"
+                          />
+                      </div>
+                      <div class="service-item__body">
+                          <div class="service-item__icon" aria-hidden="true">
+                              🛁
+                          </div>
+                          <h3 class="service-item__title">
+                             Bathrooms & Remodeling
+                          </h3>
+                          <p class="service-item__desc">
+                             Tile, fixtures, waterproofing & finishes for
+                             modern, functional spaces.
+                          </p>
+                          <a
+                             href={`${import.meta.env.BASE_URL}services/bathrooms-remodeling`}
+                             class="service-item__link"
+                          >
+                             Learn More →
+                          </a>
+                      </div>
+                  </article>
+
+                  <!-- Service 5 — Flooring & Finishes -->
+                  <article class="service-item" id="service-flooring">
+                      <div class="service-item__image-wrap">
+                          <Image
+                             src={galleryInterior}
+                             alt="Hardwood and tile flooring installation"
+                             width={400}
+                             height={300}
+                             loading="lazy"
+                             class="service-item__image"
+                          />
+                      </div>
+                      <div class="service-item__body">
+                          <div class="service-item__icon" aria-hidden="true">
+                              🏗️
+                          </div>
+                          <h3 class="service-item__title">
+                             Flooring & Finishes
+                          </h3>
+                          <p class="service-item__desc">
+                             Hardwood, tile, laminate & concrete flooring
+                             prepared for the local climate.
+                          </p>
+                          <a
+                             href={`${import.meta.env.BASE_URL}services/flooring-finishes`}
+                             class="service-item__link"
+                          >
+                             Learn More →
+                          </a>
+                      </div>
+                  </article>
+
+                  <!-- Service 6 — Painting -->
+                  <article class="service-item" id="service-painting">
+                      <div class="service-item__image-wrap">
+                          <Image
+                             src={serviceExteriorPaint}
+                             alt="Exterior painting on a residential property"
+                             width={400}
+                             height={300}
+                             loading="lazy"
+                             class="service-item__image"
+                          />
+                      </div>
+                      <div class="service-item__body">
+                          <div class="service-item__icon" aria-hidden="true">
+                              🎨
+                          </div>
+                          <h3 class="service-item__title">Painting</h3>
+                          <p class="service-item__desc">
+                             Interior & exterior painting with premium prep
+                             and durable finishes.
+                          </p>
+                          <a
+                             href={`${import.meta.env.BASE_URL}services/painting`}
+                             class="service-item__link"
+                          >
+                             Learn More →
+                          </a>
+                      </div>
+                  </article>
+              </div>
         </div>
     </section>
 
@@ -1362,14 +1429,14 @@ import teamImg from "../assets/images/image4.webp";
             .testimonials {
                 padding: 100px 0;
             }
-            .services__grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-            .gallery__grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            .gallery__item--large {
-                grid-column: span 1;
+              .services__grid {
+                 grid-template-columns: repeat(3, 1fr);
+              }
+              .gallery__grid {
+                 grid-template-columns: repeat(3, 1fr);
+              }
+              .gallery__item--large {
+                 grid-column: span 1;
                 grid-row: span 2;
             }
             .gallery__item--large .gallery__image {

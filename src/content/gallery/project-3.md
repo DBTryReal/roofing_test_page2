@@ -1,12 +1,19 @@
 ---
-title: "Commercial Roof with TPO Membrane"
+title: "Driveway Gate & Fencing"
 location: "Fayetteville, NC"
-category: "commercial"
+category: "gates-exteriors"
 image: "../../assets/images/gallery/project-3.webp"
-alt: "Flat roof of a commercial building covered with white TPO membrane in Fayetteville, NC"
-featured: true
+alt: "Installed driveway gate and perimeter fencing for a property in Fayetteville, NC"
+featured: false
 date: 2024-09-30
 order: 3
+images:
+    - image: "../../assets/images/others/5/01.jpeg"
+      alt: "Gate & fencing — detail 1"
+    - image: "../../assets/images/others/5/02.jpeg"
+      alt: "Gate & fencing — detail 2"
+    - image: "../../assets/images/others/5/03.jpeg"
+      alt: "Gate & fencing — detail 3"
 ---
 
-We installed a 60-mil TPO membrane on the flat roof of a 4,200 square foot commercial building. This reflective membrane reduces indoor heat by up to 20% in the summer. The project also included repairs to the substrate structure and perimeter drainage.
+We installed a driveway gate with secure hardware and matching perimeter fencing, with properly set post footings and a finish sealing treatment.

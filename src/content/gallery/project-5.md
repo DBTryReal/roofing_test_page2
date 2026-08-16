@@ -1,12 +1,17 @@
 ---
-title: "Sealing & Repair of Recurring Leaks"
+title: "Hardwood Flooring Install"
 location: "Clinton, NC"
-category: "repair"
+category: "flooring-finishes"
 image: "../../assets/images/gallery/project-5.webp"
-alt: "Inspection and sealing of leaks in skylight area of a residential home in Clinton, NC"
-featured: true
+alt: "Installed hardwood flooring in a residential living space in Clinton, NC"
+featured: false
 date: 2024-10-22
 order: 5
+images:
+    - image: "../../assets/images/others/7/1.jpeg"
+      alt: "Flooring — detail 1"
+    - image: "../../assets/images/others/7/2.jpeg"
+      alt: "Flooring — detail 2"
 ---
 
-The homeowner reported leaks around the skylight area whenever it rained. We identified the exact source of water penetration, replaced the damaged flashing, and applied a long-lasting elastomeric sealant. No leaks have occurred since our intervention 8 months ago.
+We prepared and installed hardwood flooring with proper subfloor leveling, transitions, and trim in a residential living space.

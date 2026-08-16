@@ -6,740 +6,826 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 const allProjects = await getCollection("gallery");
 const projects = allProjects.sort(
-  (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999),
+   (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999),
 );
-const categories = [...new Set(projects.map((p) => p.data.category))];
 
-// Dictionary to translate content categories dynamically into English labels
-const categoryTranslations: Record<string, string> = {
-  instalacion: "Installation",
-  reparacion: "Repairs",
-  comercial: "Commercial",
-  mantenimiento: "Maintenance",
+// Orden fijo de categorías para que los filtros aparezcan en un orden estable.
+const CATEGORY_ORDER = [
+   "roofing",
+   "decks-porches",
+   "gates-exteriors",
+   "bathrooms-remodeling",
+   "flooring-finishes",
+   "painting",
+];
+// Human-readable labels for the filter buttons.
+const CATEGORY_LABELS: Record<string, string> = {
+   roofing: "Roofing",
+   "decks-porches": "Decks & Porches",
+   "gates-exteriors": "Gates & Exteriors",
+   "bathrooms-remodeling": "Bathrooms & Remodeling",
+   "flooring-finishes": "Flooring & Finishes",
+   painting: "Painting",
 };
+
+// Solo las categorías que realmente tienen proyectos, en el orden fijo.
+const categories = CATEGORY_ORDER.filter((cat) =>
+   projects.some((p) => p.data.category === cat)
+);
+
+// Helper: total de fotos de un proyecto = portada + fotos extra.
+const photoCount = (project: (typeof projects)[number]) =>
+   1 + project.data.images.length;
 ---
 
 <BaseLayout
   title="Project Gallery — Carolina Prime Construction"
-  description="Explore completed roofing and home construction work by Carolina Prime Construction. Premium services in Magnolia, NC, and surrounding areas."
+  description="Explore completed roofing, decks, gates, remodeling, flooring, and painting projects by Carolina Prime Construction. Premium services in Magnolia, NC, and surrounding areas."
 >
-  <!-- PAGE HERO -->
-  <section class="page-hero">
-    <div class="container">
-      <span class="page-hero__badge">Our Work</span>
-      <h1 class="page-hero__title">
-        Project <span class="page-hero__title--accent">Gallery</span>
-      </h1>
-      <p class="page-hero__subtitle">
-        Explore our outstanding roofing, repair, and installation projects
-        across Magnolia, NC, and surrounding communities within 70 miles.
-      </p>
-    </div>
-  </section>
+   <!-- PAGE HERO -->
+   <section class="page-hero">
+     <div class="container">
+       <span class="page-hero__badge">Our Work</span>
+       <h1 class="page-hero__title">
+         Project <span class="page-hero__title--accent">Gallery</span>
+       </h1>
+       <p class="page-hero__subtitle">
+         Explore our outstanding projects across roofing, decks & porches, gates &
+         exteriors, remodeling, flooring, and painting in Magnolia, NC, and
+         surrounding communities within 70 miles.
+       </p>
+     </div>
+   </section>
 
-  <!-- GALLERY FILTERS -->
-  <div
-    class="gallery-filters container"
-    role="group"
-    aria-label="Filter projects by category"
-  >
-    <button class="filter-btn active" data-filter="all" aria-pressed="true">
-      All ({projects.length})
-    </button>
-    {
-      categories.map((cat) => (
-        <button class="filter-btn" data-filter={cat} aria-pressed="false">
-          {categoryTranslations[cat] ||
-            cat.charAt(0).toUpperCase() + cat.slice(1)}{" "}
-          ({projects.filter((p) => p.data.category === cat).length})
-        </button>
-      ))
-    }
-  </div>
+   <!-- GALLERY FILTERS -->
+   <div
+     class="gallery-filters container"
+     role="group"
+     aria-label="Filter projects by category"
+   >
+     <button class="filter-btn active" data-filter="all" aria-pressed="true">
+       All ({projects.length})
+     </button>
+     {
+       categories.map((cat) => {
+         const count = projects.filter((p) => p.data.category === cat).length;
+           return (
+              <button class="filter-btn" data-filter={cat} aria-pressed="false">
+                 {CATEGORY_LABELS[cat] || cat} ({count})
+              </button>
+            );
+       })
+     }
+   </div>
 
-  <!-- GALLERY GRID -->
-  <div class="gallery-grid container" id="gallery-grid" role="list">
-    {
-      projects.map((project, index) => (
-        <figure
-          class="gallery-item"
-          data-category={project.data.category}
-          role="listitem"
-        >
-          <button
-            class="gallery-trigger"
-            aria-label={`Enlarge image: ${project.data.title} in ${project.data.location}`}
-            data-index={index}
-          >
-            <Image
-              src={project.data.image}
-              alt={project.data.alt}
-              width={800}
-              height={600}
-              loading="lazy"
-              decoding="async"
-              class="gallery-img"
-            />
+   <!-- GALLERY GRID -->
+   <div class="gallery-grid container" id="gallery-grid" role="list">
+     {
+       projects.map((project) => (
+           <figure
+             class="gallery-item"
+             data-category={project.data.category}
+             role="listitem"
+           >
+             <button
+               class="gallery-trigger"
+               aria-label={`View ${project.data.title} in ${project.data.location} — ${photoCount(project)} photos`}
+             >
+               <Image
+                 src={project.data.image}
+                 alt={project.data.alt}
+                 width={800}
+                 height={600}
+                 loading="lazy"
+                 decoding="async"
+                 class="gallery-img"
+               />
 
-            <div class="gallery-overlay" aria-hidden="true">
-              <strong>{project.data.title}</strong>
-              <span>{project.data.location}</span>
-            </div>
-          </button>
+               <div class="gallery-overlay" aria-hidden="true">
+                 <strong>{project.data.title}</strong>
+                 <span>
+                   {project.data.location}
+                    · {photoCount(project)} photos
+                 </span>
+               </div>
+             </button>
 
-          <figcaption>
-            <strong>{project.data.title}</strong>
-            <span>{project.data.location}</span>
-          </figcaption>
-        </figure>
-      ))
-    }
-  </div>
+             <figcaption>
+               <strong>{project.data.title}</strong>
+               <span>{project.data.location}</span>
+             </figcaption>
 
-  <!-- EMPTY STATE NOTIFICATION -->
-  <p
-    class="gallery-empty container"
-    id="gallery-empty"
-    aria-live="polite"
-    hidden
-  >
-    No projects in this category yet.
-  </p>
+               <!-- Fotos del proyecto (portada + extra). El <template> evita
+                que se descarguen hasta que se abre el lightbox. -->
+             <template class="lb-set">
+               <Image
+                 src={project.data.image}
+                 alt={project.data.alt}
+                 width={1200}
+                 height={900}
+               />
+               {
+                 project.data.images.map((photo) => (
+                        <Image
+                           src={photo.image}
+                           alt={photo.alt}
+                           width={1200}
+                           height={900}
+                        />
+                      )
+                 )
+               }
+               <span class="lb-set-title">{project.data.title}</span>
+               <span class="lb-set-location">{project.data.location}</span>
+             </template>
+           </figure>
+       ))
+     }
+   </div>
 
-  <!-- LIGHTBOX (NATIVE DIALOG MODAL) -->
-  <dialog
-    class="lightbox"
-    id="lightbox"
-    aria-modal="true"
-    aria-label="Image viewer"
-  >
-    <button
-      class="lightbox-close"
-      id="lightbox-close"
-      aria-label="Close image viewer"
-    >
-      ✕
-    </button>
+   <!-- EMPTY STATE NOTIFICATION -->
+   <p
+     class="gallery-empty container"
+     id="gallery-empty"
+     aria-live="polite"
+     hidden
+   >
+     No projects in this category yet.
+   </p>
 
-    <button
-      class="lightbox-nav lightbox-prev"
-      id="lightbox-prev"
-      aria-label="Previous image"
-    >
-      ‹
-    </button>
+   <!-- LIGHTBOX (NATIVE DIALOG MODAL) -->
+   <dialog
+     class="lightbox"
+     id="lightbox"
+     aria-modal="true"
+     aria-label="Image viewer"
+   >
+     <button
+       class="lightbox-close"
+       id="lightbox-close"
+       aria-label="Close image viewer"
+     >
+       ✕
+     </button>
 
-    <figure class="lightbox-figure">
-      <img
-        id="lightbox-img"
-        src=""
-        alt=""
-        width="1200"
-        height="900"
-        decoding="async"
-      />
-      <figcaption id="lightbox-caption" class="lightbox-caption"></figcaption>
-    </figure>
+     <button
+       class="lightbox-nav lightbox-prev"
+       id="lightbox-prev"
+       aria-label="Previous image"
+     >
+       ‹
+     </button>
 
-    <button
-      class="lightbox-nav lightbox-next"
-      id="lightbox-next"
-      aria-label="Next image"
-    >
-      ›
-    </button>
-  </dialog>
+     <figure class="lightbox-figure">
+       <img
+         id="lightbox-img"
+         src=""
+         alt=""
+         width="1200"
+         height="900"
+         decoding="async"
+       />
+       <figcaption id="lightbox-caption" class="lightbox-caption"></figcaption>
+       <div id="lightbox-counter" class="lightbox-counter"></div>
+     </figure>
 
-  <!-- CTA BANNER -->
-  <section class="cta-banner container">
-    <div class="cta-banner-box">
-      <div class="cta-text-cnt">
-        <h2>Ready for Your Next Project?</h2>
-        <p>
-          Contact us today to receive a free inspection and a detailed estimate
-          in less than 24 hours.
-        </p>
-      </div>
-      <div class="cta-action-cnt">
-        <a href={`${import.meta.env.BASE_URL}contact`} class="btn-white-accent">
-          Request Free Estimate →
-        </a>
-      </div>
-    </div>
-  </section>
+     <button
+       class="lightbox-nav lightbox-next"
+       id="lightbox-next"
+       aria-label="Next image"
+     >
+       ›
+     </button>
+   </dialog>
+
+   <!-- CTA BANNER -->
+   <section class="cta-banner container">
+     <div class="cta-banner-box">
+       <div class="cta-text-cnt">
+          <h2>Ready for Your Next Project?</h2>
+          <p>
+             Contact us today to receive a free inspection and a detailed
+             estimate in less than 24 hours.
+          </p>
+       </div>
+       <div class="cta-action-cnt">
+          <a href={`${import.meta.env.BASE_URL}contact`} class="btn-white-accent">
+            Request Free Estimate →
+          </a>
+       </div>
+     </div>
+   </section>
 </BaseLayout>
 
 <style>
-  /* ── Design Tokens ── */
-  :root {
-    --color-primary: #395ca0;
-    --color-primary-dark: #293a8b;
-    --color-primary-light: #4a7fd4;
-    --color-accent: #d4a853;
-    --color-accent-light: #f0d48a;
-    --color-dark: #1a1a2e;
-    --color-dark-soft: #16213e;
-    --color-text: #2d2d2d;
-    --color-text-light: #6b7280;
-    --color-text-inverse: #f8fafc;
-    --color-bg: #fafafa;
-    --color-bg-alt: #f1f5f9;
-    --color-border: #e2e8f0;
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.15);
-    --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.2);
-    --radius-sm: 6px;
-    --radius-md: 12px;
-    --radius-lg: 20px;
-    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
+   /* ── Design Tokens ── */
+   :root {
+     --color-primary: #395ca0;
+     --color-primary-dark: #293a8b;
+     --color-primary-light: #4a7fd4;
+     --color-accent: #d4a853;
+     --color-accent-light: #f0d48a;
+     --color-dark: #1a1a2e;
+     --color-dark-soft: #16213e;
+     --color-text: #2d2d2d;
+     --color-text-light: #6b7280;
+     --color-text-inverse: #f8fafc;
+     --color-bg: #fafafa;
+     --color-bg-alt: #f1f5f9;
+     --color-border: #e2e8f0;
+     --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+     --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+     --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.15);
+     --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.2);
+     --radius-sm: 6px;
+     --radius-md: 12px;
+     --radius-lg: 20px;
+     --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+   }
 
-  /* ── PAGE HERO (Matches index2/about header designs) ─────────────────────── */
-  .page-hero {
-    position: relative;
-    background: linear-gradient(
-      135deg,
-      rgba(26, 26, 46, 0.9) 0%,
-      rgba(57, 92, 160, 0.75) 100%
-    );
-    color: #fff;
-    padding: 100px 24px;
-    text-align: center;
-  }
-  .page-hero__badge {
-    display: inline-block;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--color-accent);
-    border: 1px solid rgba(212, 168, 83, 0.4);
-    padding: 6px 16px;
-    border-radius: 50px;
-    margin-bottom: 24px;
-  }
-  .page-hero__title {
-    font-family: "Poppins", sans-serif;
-    font-size: clamp(2rem, 5vw, 3.25rem);
-    font-weight: 700;
-    color: #fff;
-    line-height: 1.15;
-    margin-bottom: 20px;
-  }
-  .page-hero__title--accent {
-    color: var(--color-accent);
-  }
-  .page-hero__subtitle {
-    font-size: clamp(1rem, 2.5vw, 1.2rem);
-    color: rgba(255, 255, 255, 0.85);
-    line-height: 1.6;
-    max-width: 700px;
-    margin: 0 auto;
-  }
-
-  /* ── FILTERS ─────────────────────────────────────────────────────── */
-  .gallery-filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
-    padding: 0 0 32px;
-    margin-top: 80px;
-  }
-  .filter-btn {
-    background: #f0f4f8;
-    border: 2px solid transparent;
-    border-radius: 999px;
-    padding: 8px 20px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all var(--transition);
-    color: var(--color-text);
-    font-family: inherit;
-  }
-  .filter-btn:hover {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
-  }
-  .filter-btn.active,
-  .filter-btn[aria-pressed="true"] {
-    background: var(--color-primary);
-    color: #fff;
-    border-color: var(--color-primary);
-  }
-  .filter-btn:focus-visible {
-    outline: 3px solid var(--color-primary);
-    outline-offset: 2px;
-  }
-
-  /* ── GRID ────────────────────────────────────────────────────────── */
-  .gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-    padding-bottom: 64px;
-    align-items: start;
-  }
-
-  /* ── ITEM CARDS ─────────────────────────────────────────────────── */
-  .gallery-item {
-    margin: 0;
-    border-radius: var(--radius-sm);
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
-    transition: all var(--transition);
-    background: #fff;
-    border: 1px solid var(--color-border);
-  }
-  .gallery-item:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-  }
-  .gallery-item[hidden] {
-    display: none;
-  }
-
-  /* ── TRIGGER BUTTON ────────────────────────────────────────────── */
-  .gallery-trigger {
-    position: relative;
-    width: 100%;
-    padding: 0;
-    border: none;
-    background: none;
-    cursor: pointer;
-    display: block;
-    overflow: hidden;
-  }
-  .gallery-trigger:focus-visible {
-    outline: 3px solid var(--color-primary);
-    outline-offset: 0;
-  }
-
-  /* ── IMAGE zoom effect ─────────────────────────────────────────── */
-  .gallery-img {
-    width: 100%;
-    height: 220px;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.35s ease;
-  }
-  .gallery-trigger:hover .gallery-img,
-  .gallery-trigger:focus-visible .gallery-img {
-    transform: scale(1.06);
-  }
-
-  /* ── HOVER OVERLAY ──────────────────────────────────────────────── */
-  .gallery-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to top,
-      rgba(41, 58, 139, 0.88) 0%,
-      rgba(57, 92, 160, 0.3) 60%,
-      transparent 100%
-    );
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 16px;
-    color: #fff;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  .gallery-trigger:hover .gallery-overlay,
-  .gallery-trigger:focus-visible .gallery-overlay {
-    opacity: 1;
-  }
-  .gallery-overlay strong {
-    font-size: 0.95rem;
-    font-weight: 600;
-    display: block;
-  }
-  .gallery-overlay span {
-    font-size: 0.8rem;
-    opacity: 0.85;
-  }
-
-  /* ── CAPTIONS ───────────────────────────────────────────────────── */
-  .gallery-item figcaption {
-    padding: 12px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-  .gallery-item figcaption strong {
-    font-size: 0.9rem;
-    color: var(--color-dark);
-  }
-  .gallery-item figcaption span {
-    font-size: 0.8rem;
-    color: var(--color-text-light);
-  }
-
-  /* ── EMPTY STATE ────────────────────────────────────────────────── */
-  .gallery-empty {
-    text-align: center;
-    color: var(--color-text-light);
-    padding: 48px 24px;
-    font-size: 1rem;
-  }
-
-  /* ── LIGHTBOX (Modal) ───────────────────────────────────────────── */
-  .lightbox {
-    border: none;
-    padding: 0;
-    background: transparent;
-    max-width: 100vw;
-    max-height: 100dvh;
-    width: 100vw;
-    height: 100dvh;
-    position: fixed;
-  }
-  .lightbox::backdrop {
-    background: rgba(0, 0, 0, 0.92);
-    backdrop-filter: blur(4px);
-  }
-  .lightbox-figure {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100dvh;
-    margin: 0;
-    padding: 64px 80px;
-    box-sizing: border-box;
-  }
-  #lightbox-img {
-    max-height: calc(100dvh - 140px);
-    max-width: 100%;
-    object-fit: contain;
-    border-radius: var(--radius-sm);
-    box-shadow: 0 8px 48px rgba(0, 0, 0, 0.5);
-  }
-  .lightbox-caption {
-    color: #ddd;
-    font-size: 0.9rem;
-    margin-top: 14px;
-    text-align: center;
-  }
-  .lightbox-close {
-    position: fixed;
-    top: 16px;
-    right: 20px;
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    color: #fff;
-    font-size: 1.4rem;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s;
-    font-family: inherit;
-  }
-  .lightbox-close:hover {
-    background: rgba(255, 255, 255, 0.28);
-  }
-  .lightbox-nav {
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    color: #fff;
-    font-size: 2.2rem;
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s;
-    line-height: 1;
-    font-family: inherit;
-  }
-  .lightbox-prev {
-    left: 16px;
-  }
-  .lightbox-next {
-    right: 16px;
-  }
-  .lightbox-nav:hover {
-    background: rgba(255, 255, 255, 0.28);
-  }
-  .lightbox-nav:disabled {
-    opacity: 0.25;
-    cursor: not-allowed;
-  }
-  .lightbox-close:focus-visible,
-  .lightbox-nav:focus-visible {
-    outline: 3px solid #fff;
-    outline-offset: 2px;
-  }
-
-  /* ── CTA BANNER (Carolina Prime aesthetic) ───────────────────────── */
-  .cta-banner {
-    padding: 80px 24px;
-  }
-  .cta-banner-box {
-    background: linear-gradient(
-      135deg,
-      var(--color-primary) 0%,
-      var(--color-primary-dark) 100%
-    );
-    border-radius: var(--radius-md);
-    padding: 48px 60px;
-    color: var(--color-text-inverse);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 40px;
-    box-shadow: var(--shadow-xl);
-  }
-  .cta-text-cnt {
-    max-width: 600px;
-  }
-  .cta-banner-box h2 {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 12px;
-    line-height: 1.2;
-  }
-  .cta-banner-box p {
-    font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.85);
-    line-height: 1.5;
-    margin: 0;
-  }
-  .btn-white-accent {
-    display: inline-flex;
-    align-items: center;
-    background-color: var(--color-accent);
-    color: var(--color-dark);
-    padding: 16px 32px;
-    border-radius: var(--radius-sm);
-    font-weight: 700;
-    font-size: 1.05rem;
-    text-decoration: none;
-    white-space: nowrap;
-    box-shadow: var(--shadow-md);
-    transition: all var(--transition);
-  }
-  .btn-white-accent:hover {
-    background-color: var(--color-accent-light);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-  }
-
-  /* ============================================================
-     DARK MODE SUPPORT
-     ============================================================ */
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --color-primary: #4a7fd4;
-      --color-primary-light: #60a5fa;
-      --color-bg: #0f172a;
-      --color-bg-alt: #1e293b;
-      --color-text: #e2e8f0;
-      --color-text-light: #94a3b8;
-      --color-border: rgba(255, 255, 255, 0.08);
-      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
-      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
-      --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6);
-      --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.7);
-    }
-
-    body {
-      background-color: var(--color-bg);
-      color: var(--color-text);
-    }
-
-    /* Cards context adjustment in dark */
-    .gallery-item {
-      background: #1e293b;
-      border-color: var(--color-border);
-      box-shadow: var(--shadow-sm);
-    }
-    .gallery-item:hover {
-      box-shadow: var(--shadow-lg);
-    }
-    .gallery-item figcaption strong {
-      color: #f1f5f9;
-    }
-    .gallery-item figcaption span {
-      color: var(--color-text-light);
-    }
-
-    /* Filters toggler in dark */
-    .filter-btn {
-      background: #1e293b;
-      color: var(--color-text-light);
-      border-color: var(--color-border);
-    }
-    .filter-btn:hover {
-      border-color: var(--color-primary-light);
-      color: var(--color-primary-light);
-    }
-    .filter-btn.active,
-    .filter-btn[aria-pressed="true"] {
-      background: var(--color-primary);
-      border-color: var(--color-primary);
+   /* ── PAGE HERO (Matches index2/about header designs) ─────────────────────── */
+   .page-hero {
+       position: relative;
+       background: linear-gradient(
+          135deg,
+       rgba(26, 26, 46, 0.9) 0%,
+       rgba(57, 92, 160, 0.75) 100%
+      );
       color: #fff;
-    }
-    .filter-btn:focus-visible {
-      outline-color: var(--color-primary-light);
-    }
-
-    .gallery-empty {
-      color: var(--color-text-light);
-    }
-  }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 640px) {
-    .gallery-grid {
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 12px;
-    }
-    .page-hero {
-      padding: 60px 16px;
-    }
-    .cta-banner {
-      padding: 60px 16px;
-    }
-    .cta-banner-box {
-      flex-direction: column;
+      padding: 100px 24px;
       text-align: center;
-      padding: 40px;
-    }
-    .lightbox-figure {
-      padding: 52px 12px 32px;
-    }
-    .lightbox-nav {
-      display: none;
-    }
-  }
+   }
+   .page-hero__badge {
+       display: inline-block;
+       font-size: 0.75rem;
+       font-weight: 600;
+       letter-spacing: 2px;
+       text-transform: uppercase;
+       color: var(--color-accent);
+       border: 1px solid rgba(212, 168, 83, 0.4);
+       padding: 6px 16px;
+       border-radius: 50px;
+       margin-bottom: 24px;
+   }
+   .page-hero__title {
+       font-family: "Poppins", sans-serif;
+       font-size: clamp(2rem, 5vw, 3.25rem);
+       font-weight: 700;
+       color: #fff;
+       line-height: 1.15;
+       margin-bottom: 20px;
+   }
+   .page-hero__title--accent {
+       color: var(--color-accent);
+   }
+   .page-hero__subtitle {
+       font-size: clamp(1rem, 2.5vw, 1.2rem);
+       color: rgba(255, 255, 255, 0.85);
+       line-height: 1.6;
+       max-width: 700px;
+       margin: 0 auto;
+   }
+
+   /* ── FILTERS ─────────────────────────────────────────────────────── */
+   .gallery-filters {
+       display: flex;
+       flex-wrap: wrap;
+       gap: 8px;
+       justify-content: center;
+       padding: 0 0 32px;
+       margin-top: 80px;
+   }
+   .filter-btn {
+       background: #f0f4f8;
+       border: 2px solid transparent;
+       border-radius: 999px;
+       padding: 8px 20px;
+       font-size: 0.875rem;
+       font-weight: 500;
+       cursor: pointer;
+       transition: all var(--transition);
+       color: var(--color-text);
+       font-family: inherit;
+   }
+   .filter-btn:hover {
+       border-color: var(--color-primary);
+       color: var(--color-primary);
+   }
+   .filter-btn.active,
+   .filter-btn[aria-pressed="true"] {
+       background: var(--color-primary);
+       color: #fff;
+       border-color: var(--color-primary);
+   }
+   .filter-btn:focus-visible {
+       outline: 3px solid var(--color-primary);
+       outline-offset: 2px;
+   }
+
+   /* ── GRID ────────────────────────────────────────────────────────── */
+   .gallery-grid {
+       display: grid;
+       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+       gap: 20px;
+       padding-bottom: 64px;
+       align-items: start;
+   }
+
+   /* ── ITEM CARDS ─────────────────────────────────────────────────── */
+   .gallery-item {
+       margin: 0;
+       border-radius: var(--radius-sm);
+       overflow: hidden;
+       box-shadow: var(--shadow-sm);
+       transition: all var(--transition);
+       background: #fff;
+       border: 1px solid var(--color-border);
+   }
+   .gallery-item:hover {
+       transform: translateY(-4px);
+       box-shadow: var(--shadow-lg);
+   }
+   .gallery-item[hidden] {
+       display: none;
+   }
+
+   /* ── TRIGGER BUTTON ────────────────────────────────────────────── */
+   .gallery-trigger {
+       position: relative;
+       width: 100%;
+       padding: 0;
+       border: none;
+       background: none;
+       cursor: pointer;
+       display: block;
+       overflow: hidden;
+   }
+   .gallery-trigger:focus-visible {
+       outline: 3px solid var(--color-primary);
+       outline-offset: 0;
+   }
+
+   /* ── IMAGE zoom effect ─────────────────────────────────────────── */
+   .gallery-img {
+       width: 100%;
+       height: 220px;
+       object-fit: cover;
+       display: block;
+       transition: transform 0.35s ease;
+   }
+   .gallery-trigger:hover .gallery-img,
+   .gallery-trigger:focus-visible .gallery-img {
+       transform: scale(1.06);
+   }
+
+   /* ── HOVER OVERLAY ──────────────────────────────────────────────── */
+   .gallery-overlay {
+       position: absolute;
+       inset: 0;
+       background: linear-gradient(
+       to top,
+       rgba(41, 58, 139, 0.88) 0%,
+       rgba(57, 92, 160, 0.3) 60%,
+       transparent 100%
+      );
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 16px;
+      color: #fff;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+   }
+   .gallery-trigger:hover .gallery-overlay,
+   .gallery-trigger:focus-visible .gallery-overlay {
+       opacity: 1;
+   }
+   .gallery-overlay strong {
+       font-size: 0.95rem;
+       font-weight: 600;
+       display: block;
+   }
+   .gallery-overlay span {
+       font-size: 0.8rem;
+       opacity: 0.85;
+   }
+
+   /* ── CAPTIONS ───────────────────────────────────────────────────── */
+   .gallery-item figcaption {
+       padding: 12px 16px;
+       display: flex;
+       flex-direction: column;
+       gap: 2px;
+   }
+   .gallery-item figcaption strong {
+       font-size: 0.9rem;
+       color: var(--color-dark);
+   }
+   .gallery-item figcaption span {
+       font-size: 0.8rem;
+       color: var(--color-text-light);
+   }
+
+   /* ── EMPTY STATE ────────────────────────────────────────────────── */
+   .gallery-empty {
+       text-align: center;
+       color: var(--color-text-light);
+       padding: 48px 24px;
+       font-size: 1rem;
+   }
+
+   /* ── LIGHTBOX (Modal) ───────────────────────────────────────────── */
+   .lightbox {
+       border: none;
+       padding: 0;
+       background: transparent;
+       max-width: 100vw;
+       max-height: 100dvh;
+       width: 100vw;
+       height: 100dvh;
+       position: fixed;
+   }
+   .lightbox::backdrop {
+       background: rgba(0, 0, 0, 0.92);
+       backdrop-filter: blur(4px);
+   }
+   .lightbox-figure {
+       display: flex;
+       flex-direction: column;
+       align-items: center;
+       justify-content: center;
+       height: 100dvh;
+       margin: 0;
+       padding: 64px 80px;
+       box-sizing: border-box;
+   }
+   #lightbox-img {
+       max-height: calc(100dvh - 180px);
+       max-width: 100%;
+       object-fit: contain;
+       border-radius: var(--radius-sm);
+       box-shadow: 0 8px 48px rgba(0, 0, 0, 0.5);
+   }
+   .lightbox-caption {
+       color: #fff;
+       font-family: "Poppins", sans-serif;
+       font-size: 1.1rem;
+       font-weight: 600;
+       margin-top: 14px;
+       text-align: center;
+   }
+   .lightbox-counter {
+       color: rgba(255, 255, 255, 0.7);
+       font-size: 0.85rem;
+       margin-top: 6px;
+       text-align: center;
+       letter-spacing: 1px;
+   }
+   .lightbox-close {
+       position: fixed;
+       top: 16px;
+       right: 20px;
+       background: rgba(255, 255, 255, 0.12);
+       border: 1px solid rgba(255, 255, 255, 0.25);
+       color: #fff;
+       font-size: 1.4rem;
+       width: 44px;
+       height: 44px;
+       border-radius: 50%;
+       cursor: pointer;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       transition: background 0.2s;
+       font-family: inherit;
+   }
+   .lightbox-close:hover {
+       background: rgba(255, 255, 255, 0.28);
+   }
+   .lightbox-nav {
+       position: fixed;
+       top: 50%;
+       transform: translateY(-50%);
+       background: rgba(255, 255, 255, 0.12);
+       border: 1px solid rgba(255, 255, 255, 0.25);
+       color: #fff;
+       font-size: 2.2rem;
+       width: 52px;
+       height: 52px;
+       border-radius: 50%;
+       cursor: pointer;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       transition: background 0.2s;
+       line-height: 1;
+       font-family: inherit;
+   }
+   .lightbox-prev {
+       left: 16px;
+   }
+   .lightbox-next {
+       right: 16px;
+   }
+   .lightbox-nav:hover {
+       background: rgba(255, 255, 255, 0.28);
+   }
+   .lightbox-nav:disabled {
+       opacity: 0;
+       pointer-events: none;
+   }
+   .lightbox-close:focus-visible,
+   .lightbox-nav:focus-visible {
+       outline: 3px solid #fff;
+       outline-offset: 2px;
+   }
+
+   /* ── CTA BANNER (Carolina Prime aesthetic) ───────────────────────── */
+   .cta-banner {
+       padding: 80px 24px;
+   }
+   .cta-banner-box {
+       background: linear-gradient(
+          135deg,
+       var(--color-primary) 0%,
+       var(--color-primary-dark) 100%
+      );
+      border-radius: var(--radius-md);
+      padding: 48px 60px;
+      color: var(--color-text-inverse);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 40px;
+      box-shadow: var(--shadow-xl);
+   }
+   .cta-text-cnt {
+       max-width: 600px;
+   }
+   .cta-banner-box h2 {
+       font-size: 2rem;
+       font-weight: 700;
+       margin-bottom: 12px;
+       line-height: 1.2;
+   }
+   .cta-banner-box p {
+       font-size: 1.1rem;
+       color: rgba(255, 255, 255, 0.85);
+       line-height: 1.5;
+       margin: 0;
+   }
+   .btn-white-accent {
+       display: inline-flex;
+       align-items: center;
+       background-color: var(--color-accent);
+       color: var(--color-dark);
+       padding: 16px 32px;
+       border-radius: var(--radius-sm);
+       font-weight: 700;
+       font-size: 1.05rem;
+       text-decoration: none;
+       white-space: nowrap;
+       box-shadow: var(--shadow-md);
+       transition: all var(--transition);
+   }
+   .btn-white-accent:hover {
+       background-color: var(--color-accent-light);
+       transform: translateY(-2px);
+       box-shadow: var(--shadow-lg);
+   }
+
+   /* ============================================================
+     DARK MODE SUPPORT
+      ============================================================ */
+   @media (prefers-color-scheme: dark) {
+     :root {
+         --color-primary: #4a7fd4;
+         --color-primary-light: #60a5fa;
+         --color-bg: #0f172a;
+         --color-bg-alt: #1e293b;
+         --color-text: #e2e8f0;
+         --color-text-light: #94a3b8;
+         --color-border: rgba(255, 255, 255, 0.08);
+         --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+         --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+         --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6);
+         --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.7);
+     }
+
+     body {
+         background-color: var(--color-bg);
+         color: var(--color-text);
+     }
+
+     /* Cards context adjustment in dark */
+     .gallery-item {
+         background: #1e293b;
+         border-color: var(--color-border);
+         box-shadow: var(--shadow-sm);
+     }
+     .gallery-item:hover {
+         box-shadow: var(--shadow-lg);
+     }
+     .gallery-item figcaption strong {
+         color: #f1f5f9;
+     }
+     .gallery-item figcaption span {
+         color: var(--color-text-light);
+     }
+
+     /* Filters toggler in dark */
+     .filter-btn {
+         background: #1e293b;
+         color: var(--color-text-light);
+         border-color: var(--color-border);
+     }
+     .filter-btn:hover {
+         border-color: var(--color-primary-light);
+         color: var(--color-primary-light);
+     }
+     .filter-btn.active,
+     .filter-btn[aria-pressed="true"] {
+         background: var(--color-primary);
+         border-color: var(--color-primary);
+         color: #fff;
+     }
+     .filter-btn:focus-visible {
+         outline-color: var(--color-primary-light);
+     }
+
+     .gallery-empty {
+         color: var(--color-text-light);
+     }
+   }
+
+   /* ── RESPONSIVE ── */
+   @media (max-width: 640px) {
+     .gallery-grid {
+         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+         gap: 12px;
+     }
+     .page-hero {
+         padding: 60px 16px;
+     }
+     .cta-banner {
+         padding: 60px 16px;
+     }
+     .cta-banner-box {
+         flex-direction: column;
+         text-align: center;
+         padding: 40px;
+     }
+     .lightbox-figure {
+         padding: 52px 12px 32px;
+     }
+     .lightbox-nav {
+         display: none;
+     }
+   }
 </style>
 
-<!-- client-side scripts (completely untouched logic) -->
 <script>
-  const filterBtns =
-    document.querySelectorAll<HTMLButtonElement>(".filter-btn");
-  const items = document.querySelectorAll<HTMLElement>(".gallery-item");
-  const emptyMsg = document.getElementById(
-    "gallery-empty",
-  ) as HTMLParagraphElement;
+   const filterBtns =
+     document.querySelectorAll<HTMLButtonElement>(".filter-btn");
+   const items = document.querySelectorAll<HTMLElement>(".gallery-item");
+   const emptyMsg = document.getElementById(
+      "gallery-empty",
+   ) as HTMLParagraphElement;
 
-  filterBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const filter = btn.dataset.filter!;
+   filterBtns.forEach((btn) => {
+     btn.addEventListener("click", () => {
+       const filter = btn.dataset.filter!;
 
-      filterBtns.forEach((b) => {
-        b.classList.remove("active");
-        b.setAttribute("aria-pressed", "false");
-      });
-      btn.classList.add("active");
-      btn.setAttribute("aria-pressed", "true");
+       filterBtns.forEach((b) => {
+         b.classList.remove("active");
+         b.setAttribute("aria-pressed", "false");
+       });
+       btn.classList.add("active");
+       btn.setAttribute("aria-pressed", "true");
 
-      let visibleCount = 0;
-      items.forEach((item) => {
-        const isMatch = filter === "all" || item.dataset.category === filter;
-        item.hidden = !isMatch;
-        if (isMatch) visibleCount++;
-      });
+       let visibleCount = 0;
+       items.forEach((item) => {
+         const isMatch = filter === "all" || item.dataset.category === filter;
+         item.hidden = !isMatch;
+         if (isMatch) visibleCount++;
+       });
 
-      emptyMsg.hidden = visibleCount > 0;
-    });
-  });
+       emptyMsg.hidden = visibleCount > 0;
+     });
+   });
 
-  const lightbox = document.getElementById("lightbox") as HTMLDialogElement;
-  const lbImg = document.getElementById("lightbox-img") as HTMLImageElement;
-  const lbCaption = document.getElementById("lightbox-caption") as HTMLElement;
-  const lbClose = document.getElementById("lightbox-close")!;
-  const lbPrev = document.getElementById("lightbox-prev") as HTMLButtonElement;
-  const lbNext = document.getElementById("lightbox-next") as HTMLButtonElement;
+   /* ── LIGHTBOX PER PROJECT ────────────────────────────────────────
+    Each project's photos live inside a <template class="lb-set"> so they
+    are NOT downloaded until the project's lightbox opens. When a project
+    card is clicked, we read its template and navigate only within that
+    project's own set of photos. */
+   type Photo = { src: string; alt: string };
 
-  let currentIndex = 0;
+   const lightbox = document.getElementById("lightbox") as HTMLDialogElement;
+   const lbImg = document.getElementById("lightbox-img") as HTMLImageElement;
+   const lbCaption = document.getElementById(
+      "lightbox-caption",
+   ) as HTMLElement;
+   const lbCounter = document.getElementById(
+      "lightbox-counter",
+   ) as HTMLElement;
+   const lbClose = document.getElementById("lightbox-close")!;
+   const lbPrev = document.getElementById("lightbox-prev") as HTMLButtonElement;
+   const lbNext = document.getElementById("lightbox-next") as HTMLButtonElement;
 
-  function getVisibleTriggers(): HTMLButtonElement[] {
-    return Array.from(
-      document.querySelectorAll<HTMLButtonElement>(".gallery-trigger"),
-    ).filter((t) => !(t.closest(".gallery-item") as HTMLElement)?.hidden);
-  }
+   let currentSet: Photo[] = [];
+   let currentIndex = 0;
+   let projectTitle = "";
 
-  function openLightbox(index: number) {
-    const visible = getVisibleTriggers();
-    if (index < 0 || index >= visible.length) return;
-    currentIndex = index;
+   function renderSet(index: number) {
+     if (index < 0 || index >= currentSet.length) return;
+     currentIndex = index;
+     const photo = currentSet[index];
 
-    const trigger = visible[index];
-    const img = trigger.querySelector("img")!;
-    const captionEl = trigger
-      .closest(".gallery-item")!
-      .querySelector("figcaption")!;
+     lbImg.src = photo.src;
+     lbImg.alt = photo.alt;
 
-    lbImg.src = img.src;
-    lbImg.alt = img.alt;
-    lbCaption.textContent = captionEl.textContent?.trim() ?? "";
+     // Caption: project title, or the photo alt if it describes the shot.
+     lbCaption.textContent =
+       photo.alt && photo.alt.length <= 80 ? photo.alt : projectTitle;
+     lbCounter.textContent = `${index + 1} / ${currentSet.length}`;
 
-    lbPrev.disabled = index === 0;
-    lbNext.disabled = index === visible.length - 1;
+     // Single-photo projects: hide the nav arrows entirely.
+     lbPrev.style.display = currentSet.length <= 1 ? "none" : "";
+     lbNext.style.display = currentSet.length <= 1 ? "none" : "";
 
-    lightbox.showModal();
-  }
+     lightbox.showModal();
+   }
 
-  document
-    .querySelectorAll<HTMLButtonElement>(".gallery-trigger")
-    .forEach((trigger) => {
-      trigger.addEventListener("click", () => {
-        const visible = getVisibleTriggers();
-        const visibleIndex = visible.indexOf(trigger);
-        if (visibleIndex !== -1) openLightbox(visibleIndex);
-      });
-    });
+   document
+      .querySelectorAll<HTMLButtonElement>(".gallery-trigger")
+      .forEach((trigger) => {
+          trigger.addEventListener("click", () => {
+             // El set de fotos de este proyecto (portada + fotos extra).
+             const template = trigger
+                .closest(".gallery-item")!
+                .querySelector<HTMLTemplateElement>(".lb-set");
+             if (!template) return;
 
-  lbClose.addEventListener("click", () => lightbox.close());
+             currentSet = Array.from(
+                template.content.querySelectorAll("img")
+             ).map((img) => ({
+                src: img.currentSrc || img.getAttribute("src") || "",
+                alt: img.getAttribute("alt") || "",
+             }));
 
-  lbPrev.addEventListener("click", () => {
-    if (currentIndex > 0) openLightbox(currentIndex - 1);
-  });
-  lbNext.addEventListener("click", () => {
-    const visible = getVisibleTriggers();
-    if (currentIndex < visible.length - 1) openLightbox(currentIndex + 1);
-  });
+             projectTitle =
+                template.content?.querySelector(".lb-set-title")?.textContent ??
+                "";
 
-  lightbox.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowLeft" && !lbPrev.disabled) lbPrev.click();
-    if (e.key === "ArrowRight" && !lbNext.disabled) lbNext.click();
-  });
+             renderSet(0);
+          });
+       });
 
-  lightbox.addEventListener("click", (e) => {
-    if (e.target === lightbox) lightbox.close();
-  });
+   lbClose.addEventListener("click", () => lightbox.close());
 
-  let touchStartX = 0;
-  lightbox.addEventListener(
-    "touchstart",
-    (e) => {
-      touchStartX = e.touches[0].clientX;
-    },
-    { passive: true },
-  );
-  lightbox.addEventListener(
-    "touchend",
-    (e) => {
-      const delta = e.changedTouches[0].clientX - touchStartX;
-      if (Math.abs(delta) > 50) {
-        if (delta < 0) lbNext.click();
-        else lbPrev.click();
-      }
-    },
-    { passive: true },
-  );
+   lbPrev.addEventListener("click", () => {
+     renderSet(currentIndex === 0 ? currentSet.length - 1 : currentIndex - 1);
+   });
+   lbNext.addEventListener("click", () => {
+     renderSet(currentIndex === currentSet.length - 1 ? 0 : currentIndex + 1);
+   });
+
+   const onKeyDown = (e: KeyboardEvent) => {
+     switch (e.key) {
+        case "ArrowLeft":
+           lbPrev.click();
+           break;
+        case "ArrowRight":
+           lbNext.click();
+           break;
+     }
+   };
+   lightbox.addEventListener("keydown", onKeyDown);
+
+   // Cerrar al hacer clic en el backdrop.
+   lightbox.addEventListener("click", (e) => {
+     if (e.target === lightbox) lightbox.close();
+   });
+
+   // Navegación táctil dentro del proyecto.
+   let touchStartX = 0;
+   lightbox.addEventListener(
+      "touchstart",
+      (e) => {
+          touchStartX = e.touches[0].clientX;
+       },
+      { passive: true },
+   );
+   lightbox.addEventListener(
+      "touchend",
+      (e) => {
+          const delta = e.changedTouches[0].clientX - touchStartX;
+          if (Math.abs(delta) > 50) {
+             if (delta < 0) lbNext.click();
+             else lbPrev.click();
+          }
+       },
+      { passive: true },
+   );
 </script>

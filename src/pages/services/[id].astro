@@ -17,56 +17,26 @@ const { service } = Astro.props;
 
 // Convertir el markdown a componente HTML
 const { Content } = await render(service);
-
-// Diccionario para traducir datos de markdown Frontmatter a nivel de UI
-const serviceTranslations: Record<string, { title: string; tagline: string }> =
-    {
-        "instalacion-residencial": {
-            title: "Residential Roof Installation",
-            tagline:
-                "New roofing systems with comprehensive material and workmanship warranties.",
-        },
-        "reparacion-goteras": {
-            title: "Roof & Leak Repair",
-            tagline:
-                "Rapid diagnosis and reliable solutions for active leaks and storm damage.",
-        },
-        "techado-comercial": {
-            title: "Commercial Roofing",
-            tagline:
-                "High-quality, large-scale solutions for commercial buildings and facilities.",
-        },
-        "techos-de-metal": {
-            title: "Metal Roofing Systems",
-            tagline:
-                "Superior durability and maximum resistance against hurricanes and hail.",
-        },
-    };
-
-const translation = serviceTranslations[service.id] || {
-    title: service.data.title,
-    tagline: service.data.tagline,
-};
 ---
 
 <BaseLayout
-    title={`${translation.title} — Carolina Prime Construction`}
-    description={`${translation.tagline} Professional roofing, remodeling and construction services based in Magnolia, NC.`}
+     title={`${service.data.title} — Carolina Prime Construction`}
+     description={`${service.data.tagline} Professional roofing, remodeling and construction services based in Magnolia, NC.`}
 >
-    <!-- PAGE HERO -->
-    <section class="page-hero">
-        <div class="container">
-            <a href={`${import.meta.env.BASE_URL}services`} class="back-link">
-                ← All Services
-            </a>
-            <div class="hero-inner">
-                <span class="service-icon" aria-hidden="true">
-                    {service.data.icon}
-                </span>
-                <div>
-                    <span class="page-hero__badge">Our Services</span>
-                    <h1 class="page-hero__title">{translation.title}</h1>
-                    <p class="page-hero__subtitle">{translation.tagline}</p>
+       <!-- PAGE HERO -->
+       <section class="page-hero">
+           <div class="container">
+                <a href={`${import.meta.env.BASE_URL}services`} class="back-link">
+                    ← All Services
+                </a>
+                <div class="hero-inner">
+                    <span class="service-icon" aria-hidden="true">
+                        {service.data.icon}
+                    </span>
+                    <div>
+                        <span class="page-hero__badge">Our Services</span>
+                        <h1 class="page-hero__title">{service.data.title}</h1>
+                        <p class="page-hero__subtitle">{service.data.tagline}</p>
                     <p class="service-price">
                         Estimates From
                         <strong> ${service.data.price} USD</strong>
