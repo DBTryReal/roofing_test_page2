@@ -1,0 +1,35 @@
+---
+title: "Screen Porch & Deck Build"
+location: "Goldsboro, NC"
+category: "decks-porches"
+order: 2
+images:
+   - image: "../../../assets/images/services/2-decks-porches/project-001/01.webp"
+     alt: "Deck & porch — detail 1"
+   - image: "../../../assets/images/services/2-decks-porches/project-001/02.webp"
+     alt: "Deck & porch — detail 2"
+   - image: "../../../assets/images/services/2-decks-porches/project-001/03.webp"
+     alt: "Deck & porch — detail 3"
+   - image: "../../../assets/images/services/2-decks-porches/project-001/04.webp"
+     alt: "Deck & porch — detail 4"
+   - image: "../../../assets/images/services/2-decks-porches/project-001/05.webp"
+     alt: "Deck & porch — detail 5"
+   - image: "../../../assets/images/services/2-decks-porches/project-001/06.webp"
+     alt: "Deck & porch — detail 6"
+   - image: "../../../assets/images/services/2-decks-porches/project-001/07.webp"
+     alt: "Deck & porch — detail 7"
+   - image: "../../../assets/images/services/2-decks-porches/project-001/08.webp"
+     alt: "Deck & porch — detail 8"
+   - image: "../../../assets/images/services/2-decks-porches/project-001/09.webp"
+     alt: "Deck & porch — detail 9"
+   - image: "../../../assets/images/services/2-decks-porches/project-001/10.webp"
+     alt: "Deck & porch — detail 10"
+   - image: "../../../assets/images/services/2-decks-porches/project-001/11.webp"
+     alt: "Deck & porch — detail 11"
+   - image: "../../../assets/images/services/2-decks-porches/project-001/12.webp"
+     alt: "Deck & porch — detail 12"
+   - image: "../../../assets/images/services/2-decks-porches/project-001/13.webp"
+     alt: "Deck & porch — detail 13"
+---
+
+We built a custom covered porch and deck with treated lumber framing and a screened roof section, engineered for the local NC climate and code-compliant railings.

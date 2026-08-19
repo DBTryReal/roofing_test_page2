@@ -42,15 +42,19 @@ const services = defineCollection({
 });
 
 // ── Colección (gallery) ─────────────────────────────────────────────────
+// Un .md por proyecto, en subcarpetas por categoría:
+//   src/content/gallery/<category>/project-001.md
+// El conteo por categoría = número de .md de esa categoría. La portada de
+// cada tarjeta es la primera imagen del array `images`.
 const gallery = defineCollection({
     loader: glob({
         base: "src/content/gallery",
-        pattern: "*.md",
+        pattern: "**/[^_]*.md",
     }),
     schema: ({ image }) =>
         z.object({
             title: z.string(),
-            location: z.string(),
+            location: z.string().optional(),
             category: z.enum([
                 "roofing",
                 "decks-porches",
@@ -59,21 +63,20 @@ const gallery = defineCollection({
                 "flooring-finishes",
                 "painting",
             ]),
-             // image() en lugar de z.string() activa la optimización de Astro:
-             // resuelve la ruta relativa, verifica que el archivo existe,
-             // y provee metadata (width, height) para <Image>
-            image: image(),
-             // Resto de fotos del proyecto (la portada es "image").
-             // Se recorren en el lightbox de cada proyecto.
-            images: z.array(z.object({
-                image: image({ width: 1200, height: 900 }),
-                alt: z.string(),
-            })).default([]),
-            alt: z.string(),
-            featured: z.boolean().default(false),
-            date: z.date().optional(),
-            order: z.number().optional(),
-         }),
+             // Todas las fotos del proyecto (la primera es la portada).
+             // Se recorren en el lightbox de cada proyecto. image() resuelve
+             // la ruta, verifica que el archivo existe y aporta width/height.
+             images: z
+                .array(
+                    z.object({
+                        image: image(),
+                        alt: z.string(),
+                    })
+                )
+                .min(1),
+             featured: z.boolean().default(false),
+             order: z.number().optional(),
+          }),
 });
 
 export const collections = {

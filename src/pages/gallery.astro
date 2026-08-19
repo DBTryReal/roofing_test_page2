@@ -4,38 +4,26 @@ import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-const allProjects = await getCollection("gallery");
-const projects = allProjects.sort(
-   (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999),
+// Proyectos de la galería (un .md por proyecto), ordenados por "order".
+const projects = (await getCollection("gallery")).sort(
+     (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999),
 );
 
-// Orden fijo de categorías para que los filtros aparezcan en un orden estable.
-const CATEGORY_ORDER = [
-   "roofing",
-   "decks-porches",
-   "gates-exteriors",
-   "bathrooms-remodeling",
-   "flooring-finishes",
-   "painting",
-];
-// Human-readable labels for the filter buttons.
-const CATEGORY_LABELS: Record<string, string> = {
-   roofing: "Roofing",
-   "decks-porches": "Decks & Porches",
-   "gates-exteriors": "Gates & Exteriors",
-   "bathrooms-remodeling": "Bathrooms & Remodeling",
-   "flooring-finishes": "Flooring & Finishes",
-   painting: "Painting",
-};
-
-// Solo las categorías que realmente tienen proyectos, en el orden fijo.
-const categories = CATEGORY_ORDER.filter((cat) =>
-   projects.some((p) => p.data.category === cat)
+// Las pestañas se toman de la colección "services": así siempre se listan
+// todas las categorías (incluso las vacías, p. ej. "Painting (0)") con su
+// etiqueta legible y su orden estable. id de cada servicio coincide con el
+// campo "category" de los proyectos.
+const services = (await getCollection("services")).sort(
+     (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999),
 );
 
-// Helper: total de fotos de un proyecto = portada + fotos extra.
-const photoCount = (project: (typeof projects)[number]) =>
-   1 + project.data.images.length;
+// Pestañas = servicios, con el conteo de proyectos de esa categoría.
+// El conteo es el NÚMERO DE PROYECTOS (c. uno .md), no de fotos.
+const categories = services.map((service) => ({
+     id: service.id,
+     label: service.data.title,
+     count: projects.filter((p) => p.data.category === service.id).length,
+}));
 ---
 
 <BaseLayout
@@ -63,84 +51,80 @@ const photoCount = (project: (typeof projects)[number]) =>
      role="group"
      aria-label="Filter projects by category"
    >
-     <button class="filter-btn active" data-filter="all" aria-pressed="true">
-       All ({projects.length})
-     </button>
-     {
-       categories.map((cat) => {
-         const count = projects.filter((p) => p.data.category === cat).length;
-           return (
-              <button class="filter-btn" data-filter={cat} aria-pressed="false">
-                 {CATEGORY_LABELS[cat] || cat} ({count})
-              </button>
-            );
-       })
-     }
+      <button class="filter-btn active" data-filter="all" aria-pressed="true">
+         All ({projects.length})
+       </button>
+       {
+        categories.map((cat) => (
+            <button class="filter-btn" data-filter={cat.id} aria-pressed="false">
+                   {cat.label} ({cat.count})
+            </button>
+          ))
+       }
    </div>
 
    <!-- GALLERY GRID -->
    <div class="gallery-grid container" id="gallery-grid" role="list">
-     {
-       projects.map((project) => (
-           <figure
-             class="gallery-item"
-             data-category={project.data.category}
-             role="listitem"
-           >
-             <button
-               class="gallery-trigger"
-               aria-label={`View ${project.data.title} in ${project.data.location} — ${photoCount(project)} photos`}
+       {
+        projects.map((project) => {
+          // La portada de la tarjeta es la primera imagen del proyecto.
+          const cover = project.data.images[0];
+          return (
+             <figure
+              class="gallery-item"
+              data-category={project.data.category}
+              role="listitem"
              >
-               <Image
-                 src={project.data.image}
-                 alt={project.data.alt}
-                 width={800}
-                 height={600}
-                 loading="lazy"
-                 decoding="async"
-                 class="gallery-img"
-               />
+               <button
+                class="gallery-trigger"
+                aria-label={`View ${project.data.title}${project.data.location ? " in " + project.data.location : ""} — ${project.data.images.length} photos`}
+               >
+                 <Image
+                  src={cover.image}
+                  alt={project.data.title}
+                  width={800}
+                  height={600}
+                  loading="lazy"
+                  decoding="async"
+                  class="gallery-img"
+                 />
 
-               <div class="gallery-overlay" aria-hidden="true">
+                 <div class="gallery-overlay" aria-hidden="true">
+                   <strong>{project.data.title}</strong>
+                   <span>
+                     {project.data.location ?? ""}
+                      · {project.data.images.length} photos
+                   </span>
+                 </div>
+               </button>
+
+               <figcaption>
                  <strong>{project.data.title}</strong>
-                 <span>
-                   {project.data.location}
-                    · {photoCount(project)} photos
-                 </span>
-               </div>
-             </button>
+                 <span>{project.data.location ?? ""}</span>
+               </figcaption>
 
-             <figcaption>
-               <strong>{project.data.title}</strong>
-               <span>{project.data.location}</span>
-             </figcaption>
-
-               <!-- Fotos del proyecto (portada + extra). El <template> evita
-                que se descarguen hasta que se abre el lightbox. -->
-             <template class="lb-set">
-               <Image
-                 src={project.data.image}
-                 alt={project.data.alt}
-                 width={1200}
-                 height={900}
-               />
-               {
-                 project.data.images.map((photo) => (
-                        <Image
-                           src={photo.image}
-                           alt={photo.alt}
-                           width={1200}
-                           height={900}
-                        />
-                      )
-                 )
-               }
-               <span class="lb-set-title">{project.data.title}</span>
-               <span class="lb-set-location">{project.data.location}</span>
-             </template>
-           </figure>
-       ))
-     }
+                 <!-- Fotos del proyecto. El <template> evita que se
+                 descarguen hasta que se abre el lightbox; el JS recorre
+                 todas las imágenes de ESTE proyecto al hacer clic. -->
+               <template class="lb-set">
+                 {
+                  project.data.images.map((photo) => (
+                          <Image
+                            src={photo.image}
+                            alt={photo.alt}
+                            width={1200}
+                            height={900}
+                          />
+                        )
+                   )
+                 }
+                 <span class="lb-set-title">{project.data.title}</span>
+                 <span class="lb-set-location">{project.data.location ?? ""}</span>
+               </template>
+             </figure>
+          );
+      })
+      }
    </div>
 
    <!-- EMPTY STATE NOTIFICATION -->
